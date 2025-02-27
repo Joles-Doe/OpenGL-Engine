@@ -2,6 +2,10 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <iostream>
 
 
@@ -44,9 +48,12 @@ int main()
 	//triangle points - OpenGL vertices go counter clockwise
 	//This doesn't need to include z since it's 2D but it does here
 	const GLfloat positions[] = {
-		0.0f, 0.5f, 0.0f,
-		0.0f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f
+		-0.5f, -0.5f, 0.0f,
+		-0.5f, 0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.5f, 0.5f, 0.0f
 	};
 	
 	//handle to reference the VBO
@@ -74,9 +81,9 @@ int main()
 	//Prepare Color VBO
 
 	const GLfloat colors[] = {
-		1.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f
 	};
 
 	GLuint colorsVboId = 0;
@@ -123,8 +130,7 @@ int main()
 	// and flag it to be used
 	glBindBuffer(GL_ARRAY_BUFFER, positionsVboId);
 
-
-	//Specify how the cooridinate data goes into attribute index 0 and has 3 floats per vertex
+	//Specify how the coordinate data goes into attribute index 0 and has 3 floats per vertex
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
 		3 * sizeof(GLfloat), (void*)0);
 
@@ -135,8 +141,8 @@ int main()
 	// and flag it to be used
 	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
 
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE,
-		4 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+		2 * sizeof(GLfloat), (void*)0);
 
 	glEnableVertexAttribArray(1);
 
@@ -144,11 +150,50 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+	// ================================================================================================ //
+
+	// Load a texture
+
+	int textureW{ 0 };
+	int textureH{ 0 };
+
+	unsigned char* textureData = stbi_load("image.png", &textureW, &textureH, NULL, 4);
+
+	if (!textureData)
+	{
+		throw std::exception();
+	}
+
+	// Create and bind a texture.
+	GLuint textureId = 0;
+	glGenTextures(1, &textureId);
+
+	if (!textureId)
+	{
+		throw std::exception();
+	}
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	// Upload the image data to the bound texture unit in the GPU
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureW, textureH, 0, GL_RGBA,
+		GL_UNSIGNED_BYTE, textureData);
+
+	// Generate Mipmap so the texture can be mapped correctly
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	free(textureData);
+
+	// Unbind the texture because we are done operating on it
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// ================================================================================================ //
+
 	const GLchar* vertexShaderSrc =
 		"attribute vec3 a_Position;            " \
-		"attribute vec4 a_Color;               " \
+		"attribute vec2 a_TexCoord;               " \
 		"                                       " \
-		"varying vec4 v_Color;                 " \
+		"varying vec2 v_TexCoord;                 " \
 		"                                       " \
 		"uniform mat4 u_Projection;" \
 		"uniform mat4 u_Model;" \
@@ -156,7 +201,7 @@ int main()
 		"void main()                            " \
 		"{                                      " \
 		" gl_Position = u_Projection * u_Model * vec4(a_Position, 1.0); " \
-		" v_Color = a_Color;                  " \
+		" v_TexCoord = a_TexCoord;                  " \
 		"}                                      " \
 		"                                       ";
 
@@ -174,11 +219,13 @@ int main()
 	}
 
 	const GLchar* fragmentShaderSrc =
-		"varying vec4 v_Color;    " \
+		"uniform sampler2D u_Texture;   " \
 		"                          " \
+		"varying vec2 v_TexCoord;" \
 		"void main()               " \
 		"{                         " \
-		" gl_FragColor = v_Color; " \
+		" vec4 tex = texture2D(u_Texture, v_TexCoord); " \
+		" gl_FragColor = tex; " \
 		"}                         " \
 		"                          ";
 
@@ -194,6 +241,7 @@ int main()
 		throw std::exception();
 	}
 
+	// ================================================================================================ //
 
 	// Create new shader program and attach our shader objects
 	GLuint programId = glCreateProgram();
@@ -205,7 +253,7 @@ int main()
 	glBindAttribLocation(programId, 0, "a_Position");
 
 	//Bind color to second position
-	glBindAttribLocation(programId, 1, "a_Color");
+	glBindAttribLocation(programId, 1, "a_TexCoord");
 
 	// Perform the link and check for failure
 	glLinkProgram(programId);
@@ -228,11 +276,12 @@ int main()
 	GLint modelLoc = glGetUniformLocation(programId, "u_Model");
 	GLint projectionLoc = glGetUniformLocation(programId, "u_Projection");
 
+	// ================================================================================================ //
+
 	float angle{ 0 };
 	int width = 0;
 	int height = 0;
 
-	
 	bool quit = false;
 	while (!quit)
 	{
@@ -264,6 +313,7 @@ int main()
 		//Instruct OpenGL to use our shader program and our VAO
 		glUseProgram(programId);
 		glBindVertexArray(vaoId);
+		glBindTexture(GL_TEXTURE_2D, textureId);
 
 		// Upload the model matrix
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -274,7 +324,7 @@ int main()
 
 		// Draw shape as before
 
-		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		//Draw the vertices of the triangle
@@ -283,6 +333,7 @@ int main()
 		//Reset the state
 		glUseProgram(0);
 		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		//Do drawing
 		SDL_GL_SwapWindow(window);
