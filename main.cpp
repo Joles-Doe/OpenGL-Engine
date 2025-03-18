@@ -4,10 +4,11 @@
 #include <glm/ext.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include "Model.h"
+#include "Texture.h"
+//#include <stb_image.h>
 
 #include <iostream>
-
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -39,154 +40,12 @@ int main()
 		throw std::runtime_error("Failed to initialise glew");
 	}
 
-	
-
-	//Prepare Position VBO
-
-	// VBO is a memory buffer in the high speed memomry of the GPU. It holds information about the vertices
-
-	//triangle points - OpenGL vertices go counter clockwise
-	//This doesn't need to include z since it's 2D but it does here
-	const GLfloat positions[] = {
-		-0.5f, -0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		0.5f, -0.5f, 0.0f,
-		0.5f, 0.5f, 0.0f
-	};
-	
-	//handle to reference the VBO
-	GLuint positionsVboId = 0;
-
-	//Create a new Vertex Buffer Object on the GPU and bind it
-	//Buffer Objects - store an array of unformatted memory allocated by the OpenGL context (GPU)
-	//glGenBufferes creates the buffer object
-	glGenBuffers(1, &positionsVboId);
-
-	if (!positionsVboId)
-	{
-		throw std::runtime_error("Couldn't bind the VBO");
-	}
-
-
-	//This tells the GL_ARRAY_BUFFER that any data it gets is going to be copied into positionVboId 
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboId);
-
-	// Upload a copy of the data from memory into the new VBO
-	//GL_STATIC_DRAW - static memory on the graphics card
-	//GL_ARRAY_BUFFER is given the positions so it copies the vertex data into the VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
-
-	//Prepare Color VBO
-
-	const GLfloat colors[] = {
-		1.0f, 1.0f,
-		0.0f, 1.0f,
-		1.0f, 0.0f
-	};
-
-	GLuint colorsVboId = 0;
-
-	// Create a colors VBO on the GPU and bind it
-	glGenBuffers(1, &colorsVboId);
-
-	if (!colorsVboId)
-	{
-		throw std::exception();
-	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
-
-	// Upload a copy of the data from memory into the new VBO
-	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-
-	// Reset the state
-	//Clear GL_ARRAY_BUFFER since it doesn't need the positions data anymore
-	//since positionsVboId has it now
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
-	//Prepare VAO
-	//VAOs contain VBOs. Designed to store info about the complete rendered object
-	//So it stores each VBO(vertex) of the triangle
-
-	//handle to reference the VAO
-	GLuint vaoId = 0;
-
-	// Create a new Vertex Array Object on the GPU and assign it to vaoId
-	glGenVertexArrays(1, &vaoId);
-
-	if (!vaoId)
-	{
-		throw std::runtime_error("Couldn't bind the VAO");
-	}
-
-	//Bind the VAO as the current used object - This object is going to be drawn
-	glBindVertexArray(vaoId);
-
-	// Bind the position VBO, assign it to position 0 on the bound VAO
-	// and flag it to be used
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboId);
-
-	//Specify how the coordinate data goes into attribute index 0 and has 3 floats per vertex
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-		3 * sizeof(GLfloat), (void*)0);
-
-	//Enable attribute index 0 as being used
-	glEnableVertexAttribArray(0);
-
-	// Bind the color VBO, assign it to position 1 on the bound VAO
-	// and flag it to be used
-	glBindBuffer(GL_ARRAY_BUFFER, colorsVboId);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-		2 * sizeof(GLfloat), (void*)0);
-
-	glEnableVertexAttribArray(1);
-
-	// Reset the state
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
 	// ================================================================================================ //
+	
+	Model testModel = Model("TestSkull/Skull.obj");
 
-	// Load a texture
-
-	int textureW{ 0 };
-	int textureH{ 0 };
-
-	unsigned char* textureData = stbi_load("image.png", &textureW, &textureH, NULL, 4);
-
-	if (!textureData)
-	{
-		throw std::exception();
-	}
-
-	// Create and bind a texture.
-	GLuint textureId = 0;
-	glGenTextures(1, &textureId);
-
-	if (!textureId)
-	{
-		throw std::exception();
-	}
-
-	glBindTexture(GL_TEXTURE_2D, textureId);
-
-	// Upload the image data to the bound texture unit in the GPU
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureW, textureH, 0, GL_RGBA,
-		GL_UNSIGNED_BYTE, textureData);
-
-	// Generate Mipmap so the texture can be mapped correctly
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	free(textureData);
-
-	// Unbind the texture because we are done operating on it
-	glBindTexture(GL_TEXTURE_2D, 0);
-
+	Texture testTexture = Texture("TestSkull/Skull.jpg");
+	
 	// ================================================================================================ //
 
 	const GLchar* vertexShaderSrc =
@@ -312,8 +171,8 @@ int main()
 		// Make sure the current program is bound
 		//Instruct OpenGL to use our shader program and our VAO
 		glUseProgram(programId);
-		glBindVertexArray(vaoId);
-		glBindTexture(GL_TEXTURE_2D, textureId);
+		glBindVertexArray(testModel.VaoID());
+		glBindTexture(GL_TEXTURE_2D, testTexture.ID());
 
 		// Upload the model matrix
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));

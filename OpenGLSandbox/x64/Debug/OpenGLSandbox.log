@@ -1,2 +1,5 @@
-﻿  main.cpp
-  OpenGLSandbox.vcxproj -> D:\s5623772\3DGP-Lab-Work\x64\Debug\OpenGLSandbox.exe
+﻿  Texture.cpp
+  main.cpp
+  Generating Code...
+C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(88,1): warning C4715: 'Texture::ID': not all control paths return a value
+  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\x64\Debug\OpenGLSandbox.exe
