@@ -100,7 +100,7 @@ GLsizei Model::VertexCount() const
     return (GLsizei)mFaces.size() * 3;
 }
 
-GLuint Model::VaoID()
+GLuint Model::ID()
 {
     if (!mFaces.size())
     {

@@ -18,7 +18,7 @@ public:
 	virtual ~Model();
 
 	GLsizei VertexCount() const;
-	GLuint VaoID();
+	GLuint ID();
 
 private:
 	struct Vertex
