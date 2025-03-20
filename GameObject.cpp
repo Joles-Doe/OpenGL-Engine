@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject(const char* _modelPath, const char* _texturePath)
+GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEventManager(nullptr)
 {
 	mModel = std::make_shared<Model>(_modelPath);
 	mTexture = std::make_shared<Texture>(_texturePath);
@@ -11,6 +11,11 @@ GameObject::GameObject(const char* _modelPath, const char* _texturePath)
 
 GameObject::~GameObject()
 {
+	mEventManager = nullptr;
+}
+
+void GameObject::Update()
+{
 }
 
 void GameObject::Draw(ShaderProgram* _shader)
@@ -18,7 +23,11 @@ void GameObject::Draw(ShaderProgram* _shader)
 	glBindVertexArray(mModel->ID());
 	glBindTexture(GL_TEXTURE_2D, mTexture->ID());
 
-	_shader->SetUniform("uModel", mMatrixCoords);
+	// Sets position of model
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -10.0f));
+
+	_shader->SetUniform("uModel", model);
 
 	// Draw shape
 	glDrawArrays(GL_TRIANGLES, 0, mModel->VertexCount());

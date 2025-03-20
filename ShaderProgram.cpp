@@ -117,7 +117,7 @@ void ShaderProgram::LoadProgram(const std::string& _vertexPath, const std::strin
 
 void ShaderProgram::SetActive()
 {
-	glUseProgram(mID);
+	glUseProgram(ID());
 }
 
 GLuint ShaderProgram::ID()
@@ -127,20 +127,24 @@ GLuint ShaderProgram::ID()
 
 void ShaderProgram::SetUniform(const std::string& _name, glm::mat4 _value)
 {
+	glUseProgram(ID());
 	glUniformMatrix4fv(glGetUniformLocation(mID, _name.c_str()), 1, GL_FALSE, glm::value_ptr(_value));
 }
 
 void ShaderProgram::SetUniform(const std::string& _name, glm::vec4 _value)
 {
+	glUseProgram(ID());
 	glUniform4fv(glGetUniformLocation(mID, _name.c_str()), 4, glm::value_ptr(_value));
 }
 
 void ShaderProgram::SetUniform(const std::string& _name, glm::vec3 _value)
 {
+	glUseProgram(ID());
 	glUniform3fv(glGetUniformLocation(mID, _name.c_str()), 3, glm::value_ptr(_value));
 }
 
 void ShaderProgram::SetUniform(const std::string& _name, float _value)
 {
+	glUseProgram(ID());
 	glUniform1f(glGetUniformLocation(mID, _name.c_str()), _value);
 }

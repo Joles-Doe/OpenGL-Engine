@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "EventManager.h"
 #include "GameObject.h"
 #include "ShaderProgram.h"
 
@@ -19,13 +20,16 @@ public:
 
 	void Update();
 	void AddObject(GameObject* _obj);
+
+	EventManager* GetEventManager() { return mEventManager; }
+	bool GetQuitState();
 private:
 	SDL_Window* mWindow;
+	EventManager* mEventManager;
 	ShaderProgram* mCurrentShader;
 
 	glm::mat4 mProjection;
 	glm::mat4 mView;
-	glm::mat4 mModel;
 
 	std::vector<std::shared_ptr<GameObject>> mObjects;
 };

@@ -85,4 +85,6 @@ GLuint Texture::ID()
 
 		mDirty = false;
 	}
+
+	return mID;
 }

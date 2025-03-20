@@ -19,19 +19,25 @@ Window::Window(int _w, int _h, const std::string& _name) :
 		throw std::runtime_error("GLEW initialisation error");
 	}
 
+	mEventManager = new EventManager();
+
 	mCurrentShader = new ShaderProgram();
 
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 	mProjection = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
 	mView = glm::mat4(1.0f);
-	mModel = glm::mat4(1.0f);
-	mModel = glm::translate(mModel, glm::vec3(0.0f, 0.0f, 10.0f));
+	
 }
 
 Window::~Window()
 {
 	SDL_DestroyWindow(mWindow);
+
+	delete mWindow;
+	delete mEventManager;
+	delete mCurrentShader;
 }
 
 void Window::Update()
@@ -47,11 +53,14 @@ void Window::Update()
 	// Instruct OpenGL to use our shader program, VAO and texture
 	mCurrentShader->SetActive();
 
-	mCurrentShader->SetUniform("u_View", mView);
-	mCurrentShader->SetUniform("u_Projection", mProjection);
+	mCurrentShader->SetUniform("uView", mView);
+	mCurrentShader->SetUniform("uProjection", mProjection);
+
+	mEventManager->PollEvents();
 
 	for (int i = 0; i < mObjects.size(); i++)
 	{
+		mObjects[i]->Update();
 		mObjects[i]->Draw(mCurrentShader);
 	}
 
@@ -64,4 +73,9 @@ void Window::AddObject(GameObject* _obj)
 {
 	std::shared_ptr<GameObject> newPtr(_obj);
 	mObjects.push_back(newPtr);
+}
+
+bool Window::GetQuitState()
+{
+	return mEventManager->GetQuitState();
 }

@@ -30,8 +30,7 @@ public:
 
 private:
 	bool mDirty;
-	std::vector<float> mData;
+	std::vector<unsigned char> mData;
 	glm::ivec2 mSize;
 	GLuint mID;
 };
-

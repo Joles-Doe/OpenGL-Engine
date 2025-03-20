@@ -14,19 +14,17 @@ int main()
 
 	GameObject testModel("./data/models/curuthers/curuthers.obj", 
 		"./data/models/curuthers/Whiskers_diffuse.png");
+	testModel.AttachEventManager(window.GetEventManager());
 
 	window.AddObject(&testModel);
 
 	bool quit = false;
-	SDL_Event e{ 0 };
 	while (!quit)
 	{
-		while (SDL_PollEvent(&e))
+		if (window.GetQuitState())
 		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
+			quit = true;
+			break;
 		}
 
 		window.Update();
