@@ -33,11 +33,12 @@ Window::Window(int _w, int _h, const std::string& _name) :
 
 Window::~Window()
 {
-	SDL_DestroyWindow(mWindow);
-
-	delete mWindow;
 	delete mEventManager;
 	delete mCurrentShader;
+
+	SDL_GL_DeleteContext(mWindow);
+	SDL_DestroyWindow(mWindow);
+	SDL_Quit();
 }
 
 void Window::Update()

@@ -12,6 +12,10 @@ ShaderProgram::ShaderProgram(const std::string& _vertexPath, const std::string& 
 
 ShaderProgram::~ShaderProgram()
 {
+	if (mID)
+	{
+		glDeleteProgram(mID);
+	}
 }
 
 void ShaderProgram::LoadProgram(const std::string& _vertexPath, const std::string& _fragPath)

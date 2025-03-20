@@ -12,6 +12,10 @@ Texture::Texture(glm::ivec2 _size) : mDirty(true), mSize(_size), mID(0)
 
 Texture::~Texture()
 {
+	if (mID)
+	{
+		glDeleteTextures(1, &mID);
+	}
 }
 
 void Texture::SetSize(glm::ivec2 _size)
