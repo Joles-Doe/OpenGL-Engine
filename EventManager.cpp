@@ -8,6 +8,8 @@ void EventManager::ResetVariables()
 	mKeyDown = false;
 	mMouseDown = false;
 	mMouseMove = false;
+	mMouseMovement.x = 0;
+	mMouseMovement.y = 0;
 }
 
 void EventManager::PollEvents()
@@ -120,6 +122,8 @@ void EventManager::PollEvents()
 			mMouseMove = true;
 			mMouseMovement.x = mCurrentEvent.motion.xrel;
 			mMouseMovement.y = mCurrentEvent.motion.yrel;
+
+			std::cout << mMouseMovement.x << std::endl;
 			break;
 		}
 	}

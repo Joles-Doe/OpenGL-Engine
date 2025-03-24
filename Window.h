@@ -11,6 +11,7 @@
 #include "EventManager.h"
 #include "GameObject.h"
 #include "ShaderProgram.h"
+#include "Camera.h"
 
 
 class Window
@@ -32,7 +33,8 @@ private:
 	SDL_bool mMouseLocked;
 
 	glm::mat4 mProjection;
-	glm::mat4 mView;
+	
+	Camera mCamera;
 
 	std::vector<std::shared_ptr<GameObject>> mObjects;
 };

@@ -32,6 +32,8 @@ int main()
 
 	window.AddObject(testModel2);
 
+	//==============================
+
 	bool quit = false;
 	while (!quit)
 	{

@@ -3,7 +3,8 @@
 Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow(nullptr),
 	mCurrentShader(nullptr),
-	mMouseLocked(SDL_FALSE)
+	mMouseLocked(SDL_FALSE),
+	mCamera()
 {
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -28,8 +29,7 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	glEnable(GL_DEPTH_TEST);
 
 	mProjection = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
-	mView = glm::mat4(1.0f);
-	
+	mCamera.AttachEventManager(mEventManager);
 }
 
 Window::~Window()
@@ -51,6 +51,8 @@ void Window::Update()
 
 	//Inputs
 	mEventManager->PollEvents();
+
+	mCamera.Update();
 
 	if (mEventManager->GetKeyDown("right"))
 	{
@@ -105,22 +107,19 @@ void Window::Update()
 		mView = glm::rotate(mView, glm::radians(angleX), glm::vec3(1, 0, 0));
 		mView = glm::rotate(mView, glm::radians(angleY), glm::vec3(0, 1, 0));
 	}*/
-
-	if (mEventManager->GetKeyDown("a"))
+	/*if (mEventManager->GetKeyDown("a"))
 	{
 		mView = glm::translate(mView, glm::vec3(1, 0, 0));
 	}
 	if (mEventManager->GetKeyDown("d"))
 	{
 		mView = glm::translate(mView, glm::vec3(-1, 0, 0));
-	}
+	}*/
 
 	mCurrentShader->SetActive();
 
-	mCurrentShader->SetUniform("uView", mView);
+	mCurrentShader->SetUniform("uView", mCamera.GetView());
 	mCurrentShader->SetUniform("uProjection", mProjection);
-
-	mEventManager->PollEvents();
 
 	for (int i = 0; i < mObjects.size(); i++)
 	{
