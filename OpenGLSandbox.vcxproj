@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainOLD.cpp" />
     <ClCompile Include="mainOLD2.cpp" />
@@ -147,7 +146,6 @@
   <ItemGroup>
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Texture.h" />

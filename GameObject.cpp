@@ -11,14 +11,13 @@ GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEven
 
 GameObject::~GameObject()
 {
-	mEventManager = nullptr;
 }
 
 void GameObject::Update()
 {
 }
 
-void GameObject::Draw(ShaderProgram* _shader)
+void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 {
 	glBindVertexArray(mModel->ID());
 	glBindTexture(GL_TEXTURE_2D, mTexture->ID());

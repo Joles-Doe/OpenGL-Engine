@@ -16,12 +16,12 @@ public:
 	~GameObject();
 
 	virtual void Update();
-	void Draw(ShaderProgram* _shader);
+	void Draw(std::shared_ptr<ShaderProgram> _shader);
 	void Move(glm::vec3 _movement);
 
-	void AttachEventManager(EventManager* _manager) { mEventManager = _manager; }
+	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
 private:
-	EventManager* mEventManager;
+	std::shared_ptr<EventManager> mEventManager;
 
 	std::shared_ptr<Model> mModel;
 	std::shared_ptr<Texture> mTexture;

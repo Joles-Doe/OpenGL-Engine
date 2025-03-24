@@ -3,6 +3,8 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 
+#include <memory>
+
 #include "Window.h"
 #include "GameObject.h"
 
@@ -12,11 +14,11 @@ int main()
 {
 	Window window(WINDOW_WIDTH, WINDOW_HEIGHT, "test");
 
-	GameObject testModel("./data/models/curuthers/curuthers.obj", 
+	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj", 
 		"./data/models/curuthers/Whiskers_diffuse.png");
-	testModel.AttachEventManager(window.GetEventManager());
+	testModel->AttachEventManager(window.GetEventManager());
 
-	window.AddObject(&testModel);
+	window.AddObject(testModel);
 
 	bool quit = false;
 	while (!quit)

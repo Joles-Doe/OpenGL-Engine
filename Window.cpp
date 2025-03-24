@@ -19,9 +19,9 @@ Window::Window(int _w, int _h, const std::string& _name) :
 		throw std::runtime_error("GLEW initialisation error");
 	}
 
-	mEventManager = new EventManager();
+	mEventManager = std::make_shared<EventManager>();
 
-	mCurrentShader = new ShaderProgram();
+	mCurrentShader = std::make_shared<ShaderProgram>();
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -33,9 +33,6 @@ Window::Window(int _w, int _h, const std::string& _name) :
 
 Window::~Window()
 {
-	delete mEventManager;
-	delete mCurrentShader;
-
 	SDL_GL_DeleteContext(mWindow);
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
@@ -70,10 +67,9 @@ void Window::Update()
 	SDL_GL_SwapWindow(mWindow);
 }
 
-void Window::AddObject(GameObject* _obj)
+void Window::AddObject(std::shared_ptr<GameObject> _obj)
 {
-	std::shared_ptr<GameObject> newPtr(_obj);
-	mObjects.push_back(newPtr);
+	mObjects.push_back(_obj);
 }
 
 bool Window::GetQuitState()

@@ -6,6 +6,7 @@
 #include <glm/ext.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "EventManager.h"
 #include "GameObject.h"
@@ -19,14 +20,14 @@ public:
 	~Window();
 
 	void Update();
-	void AddObject(GameObject* _obj);
+	void AddObject(std::shared_ptr<GameObject> _obj);
 
-	EventManager* GetEventManager() { return mEventManager; }
+	std::shared_ptr<EventManager> GetEventManager() { return mEventManager; }
 	bool GetQuitState();
 private:
 	SDL_Window* mWindow;
-	EventManager* mEventManager;
-	ShaderProgram* mCurrentShader;
+	std::shared_ptr<EventManager> mEventManager;
+	std::shared_ptr<ShaderProgram> mCurrentShader;
 
 	glm::mat4 mProjection;
 	glm::mat4 mView;
