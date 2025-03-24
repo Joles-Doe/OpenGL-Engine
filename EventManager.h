@@ -3,6 +3,12 @@
 #include <SDL2/SDL.h>
 #include <string>
 
+struct MouseAxis
+{
+	int x;
+	int y;
+};
+
 class EventManager
 {
 private:
@@ -29,9 +35,11 @@ private:
 	bool mSpaceDown{ false };
 	//Mouse
 	bool mMouseDown{ false };
+	bool mMouseMove{ false };
 	//Mouse specific
 	bool mMouse1Down{ false };
 	bool mMouse2Down{ false };
+	MouseAxis mMouseMovement;
 
 public:
 	//Polls all events
@@ -50,5 +58,8 @@ public:
 	bool GetMouseDown(const std::string& _button);
 	//Returns true or false if any mouse button has been pressed
 	bool GetMouseDown() { return mMouseDown; }
+
+	bool GetMouseMove() { return mMouseMove; }
+	MouseAxis GetMouseAxis() { return mMouseMovement; }
 };
 

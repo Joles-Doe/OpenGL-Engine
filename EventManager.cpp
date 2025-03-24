@@ -1,9 +1,13 @@
 #include "EventManager.h"
 
+//remove
+#include <iostream>
+
 void EventManager::ResetVariables()
 {
 	mKeyDown = false;
 	mMouseDown = false;
+	mMouseMove = false;
 }
 
 void EventManager::PollEvents()
@@ -111,8 +115,13 @@ void EventManager::PollEvents()
 				break;
 			}
 			break;
+		//Mouse movement
+		case SDL_MOUSEMOTION:
+			mMouseMove = true;
+			mMouseMovement.x = mCurrentEvent.motion.xrel;
+			mMouseMovement.y = mCurrentEvent.motion.yrel;
+			break;
 		}
-
 	}
 }
 

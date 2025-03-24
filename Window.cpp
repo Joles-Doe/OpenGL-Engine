@@ -1,8 +1,9 @@
 #include "Window.h"
 
-Window::Window(int _w, int _h, const std::string& _name) : 
+Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow(nullptr),
-	mCurrentShader(nullptr)
+	mCurrentShader(nullptr),
+	mMouseLocked(SDL_FALSE)
 {
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -48,7 +49,72 @@ void Window::Update()
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Instruct OpenGL to use our shader program, VAO and texture
+	//Inputs
+	mEventManager->PollEvents();
+
+	if (mEventManager->GetKeyDown("right"))
+	{
+		if (mMouseLocked == SDL_TRUE)
+		{
+			mMouseLocked = SDL_FALSE;
+		}
+		else
+		{
+			mMouseLocked = SDL_TRUE;
+		}
+		SDL_SetRelativeMouseMode(mMouseLocked);
+	}
+
+	/*if (mEventManager->GetMouseMove())
+	{
+		MouseAxis currentAxis = mEventManager->GetMouseAxis();
+
+		mView = glm::rotate(mView, glm::radians(((float)currentAxis.x) * 0.1f), glm::vec3(0, 1, 0));
+	}*/
+
+	/*if (mEventManager->GetMouseMove())
+	{
+		float angleX = 0;
+		float angleY = 0;
+
+		int x = 0;
+		int y = 0;
+
+		MouseAxis currentAxis = mEventManager->GetMouseAxis();
+		if (currentAxis.x < 0)
+		{
+			angleX = -10;
+			x = 1;
+		}
+		else if (currentAxis.x > 0)
+		{
+			angleX = 10;
+			x = 1;
+		}
+		
+		if (currentAxis.y < 0)
+		{
+			angleY = -10;
+			y = 1;
+		}
+		else if (currentAxis.y > 0)
+		{
+			angleY = 10;
+			y = 1;
+		}
+		mView = glm::rotate(mView, glm::radians(angleX), glm::vec3(1, 0, 0));
+		mView = glm::rotate(mView, glm::radians(angleY), glm::vec3(0, 1, 0));
+	}*/
+
+	if (mEventManager->GetKeyDown("a"))
+	{
+		mView = glm::translate(mView, glm::vec3(1, 0, 0));
+	}
+	if (mEventManager->GetKeyDown("d"))
+	{
+		mView = glm::translate(mView, glm::vec3(-1, 0, 0));
+	}
+
 	mCurrentShader->SetActive();
 
 	mCurrentShader->SetUniform("uView", mView);

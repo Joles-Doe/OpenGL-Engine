@@ -29,6 +29,8 @@ private:
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<ShaderProgram> mCurrentShader;
 
+	SDL_bool mMouseLocked;
+
 	glm::mat4 mProjection;
 	glm::mat4 mView;
 
