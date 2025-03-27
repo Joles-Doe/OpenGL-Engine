@@ -3,8 +3,7 @@
 Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow(nullptr),
 	mCurrentShader(nullptr),
-	mMouseLocked(SDL_FALSE),
-	mCamera()
+	mMouseLocked(SDL_FALSE)
 {
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -29,7 +28,6 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	glEnable(GL_DEPTH_TEST);
 
 	mProjection = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
-	mCamera.AttachEventManager(mEventManager);
 }
 
 Window::~Window()
@@ -52,7 +50,10 @@ void Window::Update()
 	//Inputs
 	mEventManager->PollEvents();
 
-	mCamera.Update();
+	for (int i = 0; i < mCameras.size(); i++)
+	{
+		mCameras[i]->Update();
+	};
 
 	if (mEventManager->GetKeyDown("right"))
 	{
@@ -67,46 +68,6 @@ void Window::Update()
 		SDL_SetRelativeMouseMode(mMouseLocked);
 	}
 
-	/*if (mEventManager->GetMouseMove())
-	{
-		MouseAxis currentAxis = mEventManager->GetMouseAxis();
-
-		mView = glm::rotate(mView, glm::radians(((float)currentAxis.x) * 0.1f), glm::vec3(0, 1, 0));
-	}*/
-
-	/*if (mEventManager->GetMouseMove())
-	{
-		float angleX = 0;
-		float angleY = 0;
-
-		int x = 0;
-		int y = 0;
-
-		MouseAxis currentAxis = mEventManager->GetMouseAxis();
-		if (currentAxis.x < 0)
-		{
-			angleX = -10;
-			x = 1;
-		}
-		else if (currentAxis.x > 0)
-		{
-			angleX = 10;
-			x = 1;
-		}
-		
-		if (currentAxis.y < 0)
-		{
-			angleY = -10;
-			y = 1;
-		}
-		else if (currentAxis.y > 0)
-		{
-			angleY = 10;
-			y = 1;
-		}
-		mView = glm::rotate(mView, glm::radians(angleX), glm::vec3(1, 0, 0));
-		mView = glm::rotate(mView, glm::radians(angleY), glm::vec3(0, 1, 0));
-	}*/
 	/*if (mEventManager->GetKeyDown("a"))
 	{
 		mView = glm::translate(mView, glm::vec3(1, 0, 0));
@@ -118,7 +79,7 @@ void Window::Update()
 
 	mCurrentShader->SetActive();
 
-	mCurrentShader->SetUniform("uView", mCamera.GetView());
+	mCurrentShader->SetUniform("uView", GetActiveCamera()->GetView());
 	mCurrentShader->SetUniform("uProjection", mProjection);
 
 	for (int i = 0; i < mObjects.size(); i++)
@@ -135,6 +96,24 @@ void Window::Update()
 void Window::AddObject(std::shared_ptr<GameObject> _obj)
 {
 	mObjects.push_back(_obj);
+}
+
+std::shared_ptr<Camera> Window::GetActiveCamera()
+{
+	std::shared_ptr<Camera> topCam = mCameras[0];
+	for (int i = 0; i < mCameras.size(); i++)
+	{
+		if (topCam->GetPriority() < mCameras[i]->GetPriority())
+		{
+			topCam = mCameras[i];
+		}
+	}
+	return topCam;
+}
+
+void Window::AddCamera(std::shared_ptr<Camera> _cam)
+{
+	mCameras.push_back(_cam);
 }
 
 bool Window::GetQuitState()

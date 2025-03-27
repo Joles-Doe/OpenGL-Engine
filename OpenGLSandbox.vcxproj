@@ -136,10 +136,12 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="LookAroundCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainOLD.cpp" />
     <ClCompile Include="mainOLD2.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -148,7 +150,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="LookAroundCamera.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />

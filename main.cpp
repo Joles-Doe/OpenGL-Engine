@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "Window.h"
+#include "Camera.h"
 #include "GameObject.h"
 
 #undef main
@@ -13,6 +14,10 @@
 int main()
 {
 	Window window(WINDOW_WIDTH, WINDOW_HEIGHT, "test");
+
+	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::ORBIT);
+	cam->AttachEventManager(window.GetEventManager());
+	window.AddCamera(cam);
 
 	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj", 
 		"./data/models/curuthers/Whiskers_diffuse.png");

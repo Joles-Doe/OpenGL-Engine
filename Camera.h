@@ -9,15 +9,27 @@
 class Camera
 {
 public:
-	Camera();
+	enum Preset
+	{
+		STATIC,
+		ORBIT,
+		CUSTOM
+	};
 
-	void Update();
+	Camera(Preset _preset);
+
+	virtual void Update();
 
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
 
+	int GetPriority() { return mPriority; };
 	glm::mat4 GetView() { return mView; };
-private:
+protected:
 	std::shared_ptr<EventManager> mEventManager;
+
+	Preset mPreset;
+
+	int mPriority;
 
 	glm::mat4 mView;
 	glm::vec3 mPosition;
