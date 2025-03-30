@@ -5,6 +5,7 @@
 #include <glm/ext.hpp>
 
 #include "EventManager.h"
+#include "TimeManager.h"
 
 class Camera
 {
@@ -21,11 +22,13 @@ public:
 	virtual void Update();
 
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
+	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
 
 	int GetPriority() { return mPriority; };
 	glm::mat4 GetView() { return mView; };
 protected:
 	std::shared_ptr<EventManager> mEventManager;
+	std::shared_ptr<TimeManager> mTimeManager;
 
 	Preset mPreset;
 

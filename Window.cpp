@@ -20,6 +20,8 @@ Window::Window(int _w, int _h, const std::string& _name) :
 		throw std::runtime_error("GLEW initialisation error");
 	}
 
+	mTimeManager = std::make_shared<TimeManager>();
+
 	mEventManager = std::make_shared<EventManager>();
 
 	mCurrentShader = std::make_shared<ShaderProgram>();
@@ -39,23 +41,19 @@ Window::~Window()
 
 void Window::Update()
 {
-	int windowWidth;
-	int windowHeight;
-	SDL_GetWindowSize(mWindow, &windowWidth, &windowHeight);
-	glViewport(0, 0, windowWidth, windowHeight);
+	//Calculate DeltaTime
+	mTimeManager->Update();
 
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//Inputs
+	//Handle inputs
 	mEventManager->PollEvents();
 
+	//Update cameras
 	for (int i = 0; i < mCameras.size(); i++)
 	{
 		mCameras[i]->Update();
 	};
 
-	if (mEventManager->GetKeyDown("right"))
+	/*if (mEventManager->GetKeyDown("right"))
 	{
 		if (mMouseLocked == SDL_TRUE)
 		{
@@ -66,31 +64,43 @@ void Window::Update()
 			mMouseLocked = SDL_TRUE;
 		}
 		SDL_SetRelativeMouseMode(mMouseLocked);
-	}
-
-	/*if (mEventManager->GetKeyDown("a"))
-	{
-		mView = glm::translate(mView, glm::vec3(1, 0, 0));
-	}
-	if (mEventManager->GetKeyDown("d"))
-	{
-		mView = glm::translate(mView, glm::vec3(-1, 0, 0));
 	}*/
 
-	mCurrentShader->SetActive();
-
-	mCurrentShader->SetUniform("uView", GetActiveCamera()->GetView());
-	mCurrentShader->SetUniform("uProjection", mProjection);
-
+	//Update objects
 	for (int i = 0; i < mObjects.size(); i++)
 	{
 		mObjects[i]->Update();
+	}
+
+	//Calculate window size in case of resize
+	int windowWidth;
+	int windowHeight;
+	SDL_GetWindowSize(mWindow, &windowWidth, &windowHeight);
+	glViewport(0, 0, windowWidth, windowHeight);
+
+	//Clear buffers before rendering
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//Set active shader
+	mCurrentShader->SetActive();
+
+	//Upload matrices
+	mCurrentShader->SetUniform("uView", GetActiveCamera()->GetView());
+	mCurrentShader->SetUniform("uProjection", mProjection);
+
+	//Render objects
+	for (int i = 0; i < mObjects.size(); i++)
+	{
 		mObjects[i]->Draw(mCurrentShader);
 	}
 
+	//Reset program
 	glUseProgram(0);
 
+	//Swap buffers and wait until next frame
 	SDL_GL_SwapWindow(mWindow);
+	mTimeManager->Wait();
 }
 
 void Window::AddObject(std::shared_ptr<GameObject> _obj)

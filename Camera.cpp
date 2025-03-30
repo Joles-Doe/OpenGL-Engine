@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include <iostream>
 Camera::Camera(Preset _preset) : mPriority(0)
 {
     mPreset = _preset;
@@ -33,19 +33,19 @@ void Camera::Update()
 
         if (mEventManager->GetKeyDown("w"))
         {
-            mPosition += mDirection;
+            mPosition += mDirection * mTimeManager->DeltaTime() * 5.0f;
         }
         if (mEventManager->GetKeyDown("a"))
         {
-            mPosition -= rightVector;
+            mPosition -= rightVector * mTimeManager->DeltaTime() * 5.0f;
         }
         if (mEventManager->GetKeyDown("s"))
         {
-            mPosition -= mDirection;
+            mPosition -= mDirection * mTimeManager->DeltaTime() * 5.0f;
         }
         if (mEventManager->GetKeyDown("d"))
         {
-            mPosition += rightVector;
+            mPosition += rightVector * mTimeManager->DeltaTime() * 5.0f;
         }
 
         mView = glm::lookAt(mPosition, mPosition + mDirection, glm::vec3(0.0f, 1.0f, 0.0f));

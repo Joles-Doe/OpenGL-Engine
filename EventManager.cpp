@@ -122,8 +122,6 @@ void EventManager::PollEvents()
 			mMouseMove = true;
 			mMouseMovement.x = mCurrentEvent.motion.xrel;
 			mMouseMovement.y = mCurrentEvent.motion.yrel;
-
-			std::cout << mMouseMovement.x << std::endl;
 			break;
 		}
 	}

@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 
+#include "TimeManager.h"
 #include "EventManager.h"
 #include "GameObject.h"
 #include "ShaderProgram.h"
@@ -26,10 +27,12 @@ public:
 	std::shared_ptr<Camera> GetActiveCamera();
 	void AddCamera(std::shared_ptr<Camera> _cam);
 
+	std::shared_ptr<TimeManager> GetTimeManager() { return mTimeManager; }
 	std::shared_ptr<EventManager> GetEventManager() { return mEventManager; }
 	bool GetQuitState();
 private:
 	SDL_Window* mWindow;
+	std::shared_ptr<TimeManager> mTimeManager;
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<ShaderProgram> mCurrentShader;
 
