@@ -41,6 +41,12 @@ void EventManager::PollEvents()
 			case SDLK_d:
 				mDDown = true;
 				break;
+			case SDLK_q:
+				mQDown = true;
+				break;
+			case SDLK_e:
+				mEDown = true;
+				break;
 			case SDLK_SPACE:
 				mSpaceDown = true;
 				break;
@@ -73,6 +79,12 @@ void EventManager::PollEvents()
 				break;
 			case SDLK_d:
 				mDDown = false;
+				break;
+			case SDLK_q:
+				mQDown = false;
+				break;
+			case SDLK_e:
+				mEDown = false;
 				break;
 			case SDLK_SPACE:
 				mSpaceDown = false;
@@ -145,6 +157,14 @@ bool EventManager::GetKeyDown(const std::string& _key)
 	if (_key == "D" || _key == "d")
 	{
 		isDown = mDDown;
+	}
+	if (_key == "Q" || _key == "q")
+	{
+		isDown = mQDown;
+	}
+	if (_key == "E" || _key == "e")
+	{
+		isDown = mEDown;
 	}
 	if (_key == "SPACEBAR" || _key == "spacebar" || _key == "SPACE" || _key == "space")
 	{

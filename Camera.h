@@ -3,6 +3,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+#include <SDL2/SDL.h>
 
 #include "EventManager.h"
 #include "TimeManager.h"
@@ -40,5 +41,8 @@ protected:
 
 	float mPitch;
 	float mYaw;
+
+private:
+	SDL_bool mOrbitMouseLocked;
 };
 

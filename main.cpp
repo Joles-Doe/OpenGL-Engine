@@ -20,13 +20,13 @@ int main()
 	cam->AttachEventManager(window.GetEventManager());
 	window.AddCamera(cam);
 
-	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj", 
-		"./data/models/curuthers/Whiskers_diffuse.png");
-	testModel->AttachEventManager(window.GetEventManager());
+	//std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj", 
+	//	"./data/models/curuthers/Whiskers_diffuse.png");
+	//testModel->AttachEventManager(window.GetEventManager());
 
-	testModel->Move(glm::vec3(0.0f, 0.0f, -15.0f));
+	//testModel->Move(glm::vec3(0.0f, 0.0f, -15.0f));
 
-	window.AddObject(testModel);
+	//window.AddObject(testModel);
 
 	//==============================
 
@@ -39,6 +39,10 @@ int main()
 	window.AddObject(testModel2);
 
 	//==============================
+
+	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>(GameObject::CUBE);
+	testModel->Move(glm::vec3(0.0f, 0.0f, -5.0f));
+	window.AddObject(testModel);
 
 	bool quit = false;
 	while (!quit)

@@ -1,4 +1,2 @@
-﻿  Camera.cpp
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Camera.cpp(19,33): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Camera.cpp(20,35): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\x64\Debug\OpenGLSandbox.exe
+﻿  main.cpp
+  OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

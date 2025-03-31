@@ -12,6 +12,25 @@
 class GameObject
 {
 public:
+	enum SHAPE
+	{
+		CUBE,
+		SPHERE
+	};
+	enum COLOR
+	{
+		RED,
+		BLUE,
+		GREEN,
+		ORANGE,
+		PURPLE,
+		YELLOW,
+		BLACK,
+		WHITE
+	};
+
+	GameObject();
+	GameObject(SHAPE _modelShape, COLOR _color = RED);
 	GameObject(const char* _modelPath, const char* _texturePath);
 	~GameObject();
 

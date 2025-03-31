@@ -28,6 +28,8 @@ private:
 	bool mADown{ false };
 	bool mSDown{ false };
 	bool mDDown{ false };
+	bool mEDown{ false };
+	bool mQDown{ false };
 	bool mUpArrowDown{ false };
 	bool mLeftArrowDown{ false };
 	bool mDownArrowDown{ false };

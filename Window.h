@@ -42,4 +42,7 @@ private:
 
 	std::vector<std::shared_ptr<Camera>> mCameras;
 	std::vector<std::shared_ptr<GameObject>> mObjects;
+
+	int mPrevWidth;
+	int mPrevHeight;
 };

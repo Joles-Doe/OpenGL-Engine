@@ -3,7 +3,9 @@
 Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow(nullptr),
 	mCurrentShader(nullptr),
-	mMouseLocked(SDL_FALSE)
+	mMouseLocked(SDL_FALSE),
+	mPrevWidth(_w),
+	mPrevHeight(_h)
 {
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -29,7 +31,7 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
-	mProjection = glm::perspective(45.0f, 1.0f, 0.1f, 100.0f);
+	mProjection = glm::perspective(45.0f, ((float)_w / (float)_h), 0.1f, 100.0f);
 }
 
 Window::~Window()
@@ -53,19 +55,6 @@ void Window::Update()
 		mCameras[i]->Update();
 	};
 
-	/*if (mEventManager->GetKeyDown("right"))
-	{
-		if (mMouseLocked == SDL_TRUE)
-		{
-			mMouseLocked = SDL_FALSE;
-		}
-		else
-		{
-			mMouseLocked = SDL_TRUE;
-		}
-		SDL_SetRelativeMouseMode(mMouseLocked);
-	}*/
-
 	//Update objects
 	for (int i = 0; i < mObjects.size(); i++)
 	{
@@ -76,7 +65,15 @@ void Window::Update()
 	int windowWidth;
 	int windowHeight;
 	SDL_GetWindowSize(mWindow, &windowWidth, &windowHeight);
-	glViewport(0, 0, windowWidth, windowHeight);
+
+	if (windowWidth != mPrevWidth || windowHeight != mPrevHeight)
+	{
+		glViewport(0, 0, windowWidth, windowHeight);
+		mProjection = glm::perspective(45.0f, ((float)windowWidth / (float)windowHeight), 0.1f, 100.0f);
+
+		mPrevWidth = windowWidth;
+		mPrevHeight = windowHeight;
+	}
 
 	//Clear buffers before rendering
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
