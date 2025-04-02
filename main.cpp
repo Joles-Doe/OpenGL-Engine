@@ -33,15 +33,22 @@ int main()
 	std::shared_ptr<GameObject> testModel2 = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj",
 		"./data/models/curuthers/Whiskers_diffuse.png");
 	testModel2->AttachEventManager(window.GetEventManager());
+	testModel2->AttachTimeManager(window.GetTimeManager());
 
 	testModel2->Move(glm::vec3(5.0f, 0.0f, -15.0f));
+	testModel2->Rotate(glm::vec3(0.0f, 0.0f, 45.0f));
 
 	window.AddObject(testModel2);
 
 	//==============================
 
-	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>(GameObject::CUBE);
+	glDisable(GL_CULL_FACE);
+	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/primitives/sphere/Primitive_SPHERE.obj",
+		"./data/models/primitives/colors/skybox.png");
+	testModel->AttachTimeManager(window.GetTimeManager());
 	testModel->Move(glm::vec3(0.0f, 0.0f, -5.0f));
+	testModel->SetScale(glm::vec3(50.0f, 50.0f, 50.0f));
+
 	window.AddObject(testModel);
 
 	bool quit = false;

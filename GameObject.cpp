@@ -3,7 +3,8 @@
 GameObject::GameObject()
 {
 	mPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-	mMatrixCoords = glm::mat4(1.0f);
+	mRotation = glm::vec3(0.0f);
+	mScale = glm::vec3(1.0f);
 }
 
 GameObject::GameObject(SHAPE _modelShape, COLOR _color)
@@ -51,7 +52,8 @@ GameObject::GameObject(SHAPE _modelShape, COLOR _color)
 	}
 
 	mPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-	mMatrixCoords = glm::mat4(1.0f);
+	mRotation = glm::vec3(0.0f);
+	mScale = glm::vec3(1.0f);
 }
 
 GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEventManager(nullptr)
@@ -60,7 +62,8 @@ GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEven
 	mTexture = std::make_shared<Texture>(_texturePath);
 
 	mPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-	mMatrixCoords = glm::mat4(1.0f);
+	mRotation = glm::vec3(0.0f);
+	mScale = glm::vec3(1.0f);
 }
 
 GameObject::~GameObject()
@@ -82,7 +85,17 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 
 	// Sets position of model
 	glm::mat4 model = glm::mat4(1.0f);
+
+	// Order of operation goes Scale, Translation, and Rotation
+	
+
 	model = glm::translate(model, mPosition);
+	model = glm::scale(model, mScale);
+
+	model = glm::rotate(model, mRotation.x, glm::vec3(1, 0, 0));
+	model = glm::rotate(model, mRotation.y, glm::vec3(0, 1, 0));
+	model = glm::rotate(model, mRotation.z, glm::vec3(0, 0, 1));
+
 
 	_shader->SetUniform("uModel", model);
 
@@ -97,6 +110,24 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 void GameObject::Move(glm::vec3 _movement)
 {
 	mPosition += _movement;
+}
 
-	mMatrixCoords = glm::translate(mMatrixCoords, _movement);
+void GameObject::Rotate(glm::vec3 _rot)
+{
+	mRotation += _rot;
+}
+
+void GameObject::SetPosition(glm::vec3 _pos)
+{
+	mPosition = _pos;
+}
+
+void GameObject::SetRotation(glm::vec3 _rot)
+{
+	mRotation = _rot;
+}
+
+void GameObject::SetScale(glm::vec3 _scale)
+{
+	mScale = _scale;
 }

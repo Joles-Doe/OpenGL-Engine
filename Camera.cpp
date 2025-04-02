@@ -64,11 +64,11 @@ void Camera::Update()
         }
         if (mEventManager->GetKeyDown("q"))
         {
-            mPosition += glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 5.0f;
+            mPosition -= glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 5.0f;
         }
         if (mEventManager->GetKeyDown("e"))
         {
-            mPosition -= glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 5.0f;
+            mPosition += glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 5.0f;
         }
 
         mView = glm::lookAt(mPosition, mPosition + mDirection, glm::vec3(0.0f, 1.0f, 0.0f));
