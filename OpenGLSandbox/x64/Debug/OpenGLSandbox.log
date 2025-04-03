@@ -1,2 +1,30 @@
-﻿  Window.cpp
+﻿  Camera.cpp
+D:\s5623772\OpenGL-Engine\Camera.cpp(28,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\Camera.cpp(29,39): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  EventManager.cpp
+  GameObject.cpp
+  LookAroundCamera.cpp
+D:\s5623772\OpenGL-Engine\LookAroundCamera.cpp(10,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\LookAroundCamera.cpp(11,31): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  Model.cpp
+  RenderTexture.cpp
+  ShaderProgram.cpp
+  Texture.cpp
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244: '=': conversion from 'const T' to '_Ty', possible loss of data
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:         with
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:         [
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:             T=float
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:         ]
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:         and
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:         [
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:             _Ty=unsigned char
+D:\s5623772\OpenGL-Engine\Texture.cpp(52,30): warning C4244:         ]
+  TimeManager.cpp
+D:\s5623772\OpenGL-Engine\TimeManager.cpp(14,14): warning C4018: '<': signed/unsigned mismatch
+  Window.cpp
+  main.cpp
+  mainOLD.cpp
+  mainOLD2.cpp
+  Generating Code...
+  LINK : D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe not found or not built by the last incremental link; performing full link
   OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

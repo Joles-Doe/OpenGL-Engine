@@ -7,6 +7,7 @@
 #include "EventManager.h"
 #include "TimeManager.h"
 #include "Model.h"
+#include "Collider.h"
 #include "Texture.h"
 #include "ShaderProgram.h"
 
@@ -45,6 +46,8 @@ public:
 	void SetRotation(glm::vec3 _rot);
 	void SetScale(glm::vec3 _scale);
 
+	void CreateCollider(SHAPE _type);
+
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
 private:
@@ -53,6 +56,7 @@ private:
 
 	std::shared_ptr<Model> mModel;
 	std::shared_ptr<Texture> mTexture;
+	std::shared_ptr<Collider> mCollider;
 
 	glm::vec3 mPosition;
 	glm::vec3 mRotation;
