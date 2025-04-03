@@ -135,3 +135,8 @@ void GameObject::SetScale(glm::vec3 _scale)
 {
 	mScale = _scale;
 }
+
+void GameObject::CreateCollider(SHAPE _type)
+{
+	mCollider = std::make_shared<Collider>(_type, mModel->GetFaceVector());
+}
