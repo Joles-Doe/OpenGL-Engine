@@ -31,7 +31,7 @@ public:
 	Model& operator=(const Model& _assign);
 	virtual ~Model();
 
-	std::vector<Face>* GetFaceVector() { return &mFaces; }
+	std::vector<Model::Face>* GetFaceVector() { return &mFaces; }
 
 	GLsizei VertexCount() const;
 	GLuint ID();

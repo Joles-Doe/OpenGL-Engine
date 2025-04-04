@@ -1,0 +1,25 @@
+#pragma once
+
+enum SHAPE
+{
+	CUBE,
+	SPHERE
+};
+
+enum COLOR
+{
+	RED,
+	BLUE,
+	GREEN,
+	ORANGE,
+	PURPLE,
+	YELLOW,
+	BLACK,
+	WHITE
+};
+
+enum RBTYPE
+{
+	DYNAMIC,
+	KINEMATIC
+};

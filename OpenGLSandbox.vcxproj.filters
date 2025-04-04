@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{3614c6db-95ba-4a27-b0d4-f7d9ca5c553e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{18474697-1ce3-4bf7-8b52-6ab13892e95a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{32b46b91-e9f7-4ca0-a795-1e866e93db32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,8 +96,26 @@
     <ClCompile Include="TimeManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="SharedStructs&amp;Enums.h">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
     <ClCompile Include="Collider.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="KinematicBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +150,22 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicBody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="KinematicBody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

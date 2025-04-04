@@ -135,30 +135,41 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="LookAroundCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainOLD.cpp" />
     <ClCompile Include="mainOLD2.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
+    <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="SharedStructs&amp;Enums.h" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="LookAroundCamera.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="RenderTexture.h" />
+    <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TimeManager.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

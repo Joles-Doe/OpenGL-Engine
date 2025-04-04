@@ -24,6 +24,8 @@ Window::Window(int _w, int _h, const std::string& _name) :
 
 	mTimeManager = std::make_shared<TimeManager>();
 
+	mPhysicsManager = std::make_shared<PhysicsManager>(mTimeManager);
+
 	mEventManager = std::make_shared<EventManager>();
 
 	mCurrentShader = std::make_shared<ShaderProgram>();
@@ -48,6 +50,9 @@ void Window::Update()
 
 	//Handle inputs
 	mEventManager->PollEvents();
+	
+	//Handle physics
+	mPhysicsManager->Update();
 
 	//Update cameras
 	for (int i = 0; i < mCameras.size(); i++)

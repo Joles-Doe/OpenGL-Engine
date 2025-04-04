@@ -1,12 +1,13 @@
 #include "Collider.h"
 
-Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces)
+Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_ptr<Transform> _transform) :
+	mCenter(0), mHeight(0), mRadius(0), mWidth(0), mDepth(0)
 {
 	mType = _type;
 
-	mBottomLeft = glm::vec3(0.0f);
-	mTopRight = glm::vec3(0.0f);
-
+	glm::vec3 mBottomLeft;
+	glm::vec3 mTopRight;
+	
 	switch (_type)
 	{
 	case CUBE:
@@ -22,8 +23,10 @@ Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces)
 			mTopRight = glm::max(mTopRight, _faces->at(x).c.mPosition);
 		}
 
+		mCenter = (mTopRight + mBottomLeft) * 0.5f;
 		mWidth = mTopRight.x - mBottomLeft.x;
 		mHeight = mTopRight.y - mBottomLeft.y;
+		mDepth = mTopRight.z - mBottomLeft.z;
 		break;
 	case SPHERE:
 		// Calculate center by averaging the position of all points
@@ -46,4 +49,83 @@ Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces)
 		}
 		break;
 	}
+	mTransform = _transform;
+	mCenterOffset = mTransform->Position() - mCenter;
+}
+
+SHAPE Collider::GetShape()
+{
+	//Center re-calculation is done here to ensure collider positions aren't out of sync
+	mCenter = mTransform->Position() + mCenterOffset;
+	return mType;
+}
+
+bool Collider::IsColliding(Collider& _other)
+{
+	bool collided = false;
+	mCenter = mTransform->Position() + mCenterOffset;
+
+	switch (mType)
+	{
+	case CUBE:
+		switch (_other.GetShape())
+		{
+		case CUBE:
+			collided = CubeToCube(_other);
+			break;
+		case SPHERE:
+			collided = CubeToSphere(*this, _other);
+			break;
+		}
+		break;
+	case SPHERE:
+		switch (_other.GetShape())
+		{
+		case CUBE:
+			collided = CubeToSphere(_other, *this);
+			break;
+		case SPHERE:
+			collided = SphereToSphere(_other);
+			break;
+		}
+		break;
+	}
+	return collided;
+}
+
+// Check if every axis overlaps
+bool Collider::CubeToCube(Collider& _other)
+{
+	return (glm::abs(mCenter.x - _other.mCenter.x) <= (mWidth / 2 + _other.mWidth / 2)) &&
+		(glm::abs(mCenter.y - _other.mCenter.y) <= (mHeight / 2 + _other.mHeight / 2)) &&
+		(glm::abs(mCenter.z - _other.mCenter.z) <= (mDepth / 2 + _other.mDepth / 2));
+}
+
+// Calculate the cube's closest point to the sphere and check if the distance is less or equal to the sphere radius
+bool Collider::CubeToSphere(Collider& _cube, Collider& _sphere)
+{
+	float closeX = glm::max(_cube.mCenter.x - _cube.mWidth / 2, glm::min(_sphere.mCenter.x, _cube.mCenter.x + _cube.mWidth / 2));
+	float closeY = glm::max(_cube.mCenter.y - _cube.mHeight / 2, glm::min(_sphere.mCenter.y, _cube.mCenter.y + _cube.mHeight / 2));
+	float closeZ = glm::max(_cube.mCenter.z - _cube.mDepth / 2, glm::min(_sphere.mCenter.z, _cube.mCenter.z + _cube.mDepth / 2));
+
+	float dx = _sphere.mCenter.x - closeX;
+	float dy = _sphere.mCenter.y - closeY;
+	float dz = _sphere.mCenter.z - closeZ;
+
+	float distanceSquared = (dx * dx) + (dy * dy) + (dz * dz);
+
+	return distanceSquared <= (_sphere.mRadius * _sphere.mRadius);
+}
+
+// Check if the distance between both spheres is less or equal to the sum of their radiuses	
+bool Collider::SphereToSphere(Collider& _other)
+{
+	float dx = mCenter.x - _other.mCenter.x;
+	float dy = mCenter.y - _other.mCenter.y;
+	float dz = mCenter.z - _other.mCenter.z;
+
+	float distanceSquared = (dx * dx) + (dy * dy) + (dz * dz);
+	float radiusSum = mRadius + _other.mRadius;
+
+	return distanceSquared <= (mRadius * mRadius);
 }

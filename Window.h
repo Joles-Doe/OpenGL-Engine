@@ -8,9 +8,11 @@
 #include <vector>
 #include <memory>
 
+#include "PhysicsManager.h"
 #include "TimeManager.h"
 #include "EventManager.h"
 #include "GameObject.h"
+#include "Rigidbody.h"
 #include "ShaderProgram.h"
 #include "Camera.h"
 
@@ -29,10 +31,14 @@ public:
 
 	std::shared_ptr<TimeManager> GetTimeManager() { return mTimeManager; }
 	std::shared_ptr<EventManager> GetEventManager() { return mEventManager; }
+
+	void EnableRigidbody(std::shared_ptr<Rigidbody> _rb) { mPhysicsManager->Add(_rb); }
+
 	bool GetQuitState();
 private:
 	SDL_Window* mWindow;
 	std::shared_ptr<TimeManager> mTimeManager;
+	std::shared_ptr<PhysicsManager> mPhysicsManager;
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<ShaderProgram> mCurrentShader;
 

@@ -4,33 +4,20 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 
+#include "SharedStructs&Enums.h"
+
 #include "EventManager.h"
 #include "TimeManager.h"
 #include "Model.h"
-#include "Collider.h"
+#include "Transform.h"
 #include "Texture.h"
+#include "Collider.h"
+#include "Rigidbody.h"
 #include "ShaderProgram.h"
 
 class GameObject
 {
 public:
-	enum SHAPE
-	{
-		CUBE,
-		SPHERE
-	};
-	enum COLOR
-	{
-		RED,
-		BLUE,
-		GREEN,
-		ORANGE,
-		PURPLE,
-		YELLOW,
-		BLACK,
-		WHITE
-	};
-
 	GameObject();
 	GameObject(SHAPE _modelShape, COLOR _color = RED);
 	GameObject(const char* _modelPath, const char* _texturePath);
@@ -38,15 +25,12 @@ public:
 
 	virtual void Update();
 	void Draw(std::shared_ptr<ShaderProgram> _shader);
-	
-	void Move(glm::vec3 _movement);
-	void Rotate(glm::vec3 _rot);
-
-	void SetPosition(glm::vec3 _pos);
-	void SetRotation(glm::vec3 _rot);
-	void SetScale(glm::vec3 _scale);
 
 	void CreateCollider(SHAPE _type);
+	void CreateRigidbody(RBTYPE _type);
+
+	std::shared_ptr<Transform> GetTransform() { return mTransform; }
+	std::shared_ptr<Rigidbody> GetRigidbody() { return mRigidbody; }
 
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
@@ -54,12 +38,10 @@ private:
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<TimeManager> mTimeManager;
 
+	std::shared_ptr<Transform> mTransform;
 	std::shared_ptr<Model> mModel;
 	std::shared_ptr<Texture> mTexture;
 	std::shared_ptr<Collider> mCollider;
-
-	glm::vec3 mPosition;
-	glm::vec3 mRotation;
-	glm::vec3 mScale;
+	std::shared_ptr<Rigidbody> mRigidbody;
 };
 
