@@ -16,7 +16,7 @@ void PhysicsManager::Update()
 	{
 		for (int i = 0; i < mRigidbodies.size() - 1; i++)
 		{
-			for (int x = ++i; x < mRigidbodies.size(); x++)
+			for (int x = i + 1; x < mRigidbodies.size(); x++)
 			{
 				// If pair is colliding
 				if (mRigidbodies[i]->GetCollider()->IsColliding(mRigidbodies[x]->GetCollider()))

@@ -65,10 +65,6 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
-	if (mCollider)
-	{
-		mCollider->Update();
-	}
 }
 
 void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
@@ -122,15 +118,15 @@ void GameObject::CreateRigidbody(RBTYPE _type)
 
 void GameObject::OnCollisionEnter(std::shared_ptr<Rigidbody> _other)
 {
-
+	std::cout << "COLLISION ENTER" << std::endl;
 }
 
 void GameObject::OnCollisionStay(std::shared_ptr<Rigidbody> _other)
 {
-
+	std::cout << "COLLISION STAY" << std::endl;
 }
 
 void GameObject::OnCollisionExit(std::shared_ptr<Rigidbody> _other)
 {
-
+	std::cout << "COLLISION EXIT" << std::endl;
 }

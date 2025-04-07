@@ -10,55 +10,62 @@ Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_pt
 	glm::vec3 mBottomLeft(FLT_MAX);
 	glm::vec3 mTopRight(-FLT_MAX);
 	
-	switch (_type)
+	if (!_faces->empty())
 	{
-	case CUBE:
-		// Calculate bounds by grabbing the minimum and maximum of all points
-		for (int x = 0; x < _faces->size(); x++)
+		switch (_type)
 		{
-			mBottomLeft = glm::min(mBottomLeft, _faces->at(x).a.mPosition);
-			mBottomLeft = glm::min(mBottomLeft, _faces->at(x).b.mPosition);
-			mBottomLeft = glm::min(mBottomLeft, _faces->at(x).c.mPosition);
+		case CUBE:
+			// Calculate bounds by grabbing the minimum and maximum of all points
+			for (int x = 0; x < _faces->size(); x++)
+			{
+				mBottomLeft = glm::min(mBottomLeft, _faces->at(x).a.mPosition);
+				mBottomLeft = glm::min(mBottomLeft, _faces->at(x).b.mPosition);
+				mBottomLeft = glm::min(mBottomLeft, _faces->at(x).c.mPosition);
 
-			mTopRight = glm::max(mTopRight, _faces->at(x).a.mPosition);
-			mTopRight = glm::max(mTopRight, _faces->at(x).b.mPosition);
-			mTopRight = glm::max(mTopRight, _faces->at(x).c.mPosition);
-		}
+				mTopRight = glm::max(mTopRight, _faces->at(x).a.mPosition);
+				mTopRight = glm::max(mTopRight, _faces->at(x).b.mPosition);
+				mTopRight = glm::max(mTopRight, _faces->at(x).c.mPosition);
+			}
 
-		mCenter = (mTopRight + mBottomLeft) * 0.5f;
-		mWidth = mTopRight.x - mBottomLeft.x;
-		mHeight = mTopRight.y - mBottomLeft.y;
-		mDepth = mTopRight.z - mBottomLeft.z;
-		break;
-	case SPHERE:
-		// Calculate center by averaging the position of all points
-		int vertexCount = 0;
-		for (int x = 0; x < _faces->size(); x++)
-		{
-			mCenter += _faces->at(x).a.mPosition;
-			mCenter += _faces->at(x).b.mPosition;
-			mCenter += _faces->at(x).c.mPosition;
-			vertexCount += 3;
-		}
-		mCenter /= (float)vertexCount;
+			mCenter = (mTopRight + mBottomLeft) * 0.5f;
+			mWidth = mTopRight.x - mBottomLeft.x;
+			mHeight = mTopRight.y - mBottomLeft.y;
+			mDepth = mTopRight.z - mBottomLeft.z;
+			break;
+		case SPHERE:
+			// Calculate center by averaging the position of all points
+			int vertexCount = 0;
+			for (int x = 0; x < _faces->size(); x++)
+			{
+				mCenter += _faces->at(x).a.mPosition;
+				mCenter += _faces->at(x).b.mPosition;
+				mCenter += _faces->at(x).c.mPosition;
+				vertexCount += 3;
+			}
+			mCenter /= (float)vertexCount;
 
-		// Calculate radius by checking the maxiumum distance of each point
-		for (int x = 0; x < _faces->size(); x++)
-		{
-			mRadius = glm::max(mRadius, glm::distance(mCenter, _faces->at(x).a.mPosition));
-			mRadius = glm::max(mRadius, glm::distance(mCenter, _faces->at(x).b.mPosition));
-			mRadius = glm::max(mRadius, glm::distance(mCenter, _faces->at(x).c.mPosition));
+			// Calculate radius by checking the maxiumum distance of each point
+			for (int x = 0; x < _faces->size(); x++)
+			{
+				mRadius = glm::max(mRadius, glm::distance(mCenter, _faces->at(x).a.mPosition));
+				mRadius = glm::max(mRadius, glm::distance(mCenter, _faces->at(x).b.mPosition));
+				mRadius = glm::max(mRadius, glm::distance(mCenter, _faces->at(x).c.mPosition));
+			}
+			break;
 		}
-		break;
 	}
+	else
+	{
+		std::cout << "MODEL VECTOR IS EMPTY!!" << std::endl;
+	}
+	
 	mTransform = _transform;
-	mCenterOffset = mTransform->Position() - mCenter;
+	mCenterOffset = mCenter;
 }
 
 void Collider::Update()
 {
 	mCenter = mTransform->Position() + mCenterOffset;
-	std::cout << mCenter.x << ", " << mCenter.y << ", " << mCenter.z << std::endl;
 }
 
 SHAPE Collider::GetShape()
@@ -69,7 +76,6 @@ SHAPE Collider::GetShape()
 bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 {
 	bool collided = false;
-
 	switch (mType)
 	{
 	case CUBE:
@@ -95,11 +101,6 @@ bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 		}
 		break;
 	}
-
-	std::cout << "Center A: " << mCenter.x << ", " << mCenter.y << ", " << mCenter.z << std::endl;
-	std::cout << "Center B: " << _other->mCenter.x << ", " << _other->mCenter.y << ", " << _other->mCenter.z << std::endl;
-	std::cout << "===============================================" << std::endl;
-
 	return collided;
 }
 
