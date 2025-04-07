@@ -1,8 +1,2 @@
-﻿  GameObject.cpp
-  KinematicBody.cpp
-  PhysicsManager.cpp
-  Rigidbody.cpp
-  Window.cpp
-  main.cpp
-  Generating Code...
-  OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe
+﻿  main.cpp
+  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\x64\Debug\OpenGLSandbox.exe

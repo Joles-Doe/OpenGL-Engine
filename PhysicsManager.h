@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "TimeManager.h"
+#include "GameObject.h"
 #include "Rigidbody.h"
 
 class PhysicsManager
@@ -13,7 +14,6 @@ public:
 	void Update();
 
 	void Add(std::shared_ptr<Rigidbody> _rb);
-
 private:
 	std::shared_ptr<TimeManager> mTimeManager;
 

@@ -65,6 +65,10 @@ GameObject::~GameObject()
 
 void GameObject::Update()
 {
+	if (mCollider)
+	{
+		mCollider->Update();
+	}
 }
 
 void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
@@ -108,10 +112,25 @@ void GameObject::CreateRigidbody(RBTYPE _type)
 {
 	if (mCollider)
 	{
-		mRigidbody = std::make_shared<Rigidbody>(mCollider, _type, mTransform);
+		mRigidbody = std::make_shared<Rigidbody>(shared_from_this(), mCollider, _type, mTransform);
 	}
 	else
 	{
-		printf("WARNING! Rigidbody cannot initialize without a collider");
+		printf("WARNING! Rigidbody cannot initialize without a collider\n");
 	}
+}
+
+void GameObject::OnCollisionEnter(std::shared_ptr<Rigidbody> _other)
+{
+
+}
+
+void GameObject::OnCollisionStay(std::shared_ptr<Rigidbody> _other)
+{
+
+}
+
+void GameObject::OnCollisionExit(std::shared_ptr<Rigidbody> _other)
+{
+
 }

@@ -1,26 +1,29 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <float.h>
 
 #include "SharedStructs&Enums.h"
 
 #include "Model.h"
 #include "Transform.h"
 
-class Collider
+class Collider : public std::enable_shared_from_this<Collider>
 {
 public:
 	Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_ptr<Transform> _transform);
 
+	void Update();
+
 	SHAPE GetShape();
 
-	bool IsColliding(Collider &_other);
+	bool IsColliding(std::shared_ptr<Collider> _other);
 private:
 	std::shared_ptr<Transform> mTransform;
 
-	bool CubeToCube(Collider& _other);
-	bool CubeToSphere(Collider& _cube, Collider& _sphere);
-	bool SphereToSphere(Collider& _other);
+	bool CubeToCube(std::shared_ptr<Collider> _other);
+	bool CubeToSphere(std::shared_ptr<Collider> _cube, std::shared_ptr<Collider> _sphere);
+	bool SphereToSphere(std::shared_ptr<Collider> _other);
 
 	SHAPE mType;
 

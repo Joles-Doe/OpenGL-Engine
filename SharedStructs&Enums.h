@@ -23,3 +23,11 @@ enum RBTYPE
 	DYNAMIC,
 	KINEMATIC
 };
+
+enum RBINTEGRATION
+{
+	EULER,
+	RK2,
+	RK4,
+	VERLET
+};

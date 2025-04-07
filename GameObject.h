@@ -15,7 +15,7 @@
 #include "Rigidbody.h"
 #include "ShaderProgram.h"
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 	GameObject();
@@ -28,6 +28,10 @@ public:
 
 	void CreateCollider(SHAPE _type);
 	void CreateRigidbody(RBTYPE _type);
+
+	virtual void OnCollisionEnter(std::shared_ptr<Rigidbody> _other);
+	virtual void OnCollisionStay(std::shared_ptr<Rigidbody> _other);
+	virtual void OnCollisionExit(std::shared_ptr<Rigidbody> _other);
 
 	std::shared_ptr<Transform> GetTransform() { return mTransform; }
 	std::shared_ptr<Rigidbody> GetRigidbody() { return mRigidbody; }

@@ -56,13 +56,24 @@ int main()
 	//==============================
 
 	std::shared_ptr<GameObject> testModel3 = std::make_shared<GameObject>(SPHERE, ORANGE);
-	testModel3->GetTransform()->Move(glm::vec3(0.0f, 0.0f, -5.0f));
+	testModel3->GetTransform()->Move(glm::vec3(0.0f, 50.0f, -5.0f));
 	testModel3->AttachTimeManager(window.GetTimeManager());
 	testModel3->CreateCollider(SPHERE);
-	testModel3->CreateRigidbody(DYNAMIC);
+	//testModel3->CreateRigidbody(DYNAMIC);
 
 	window.AddObject(testModel3);
-	window.EnableRigidbody(testModel3->GetRigidbody());
+	//window.EnableRigidbody(testModel3->GetRigidbody());
+
+	//==============================
+
+	std::shared_ptr<GameObject> testModel4 = std::make_shared<GameObject>(SPHERE, ORANGE);
+	testModel4->GetTransform()->Move(glm::vec3(0.0f, 0.0f, -5.0f));
+	testModel4->AttachTimeManager(window.GetTimeManager());
+	//testModel4->CreateCollider(CUBE);
+	//testModel4->CreateRigidbody(KINEMATIC);
+
+	window.AddObject(testModel4);
+	//window.EnableRigidbody(testModel4->GetRigidbody());
 
 	bool quit = false;
 	while (!quit)
