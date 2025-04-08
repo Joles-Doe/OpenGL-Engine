@@ -51,4 +51,7 @@ private:
 
 	int mPrevWidth;
 	int mPrevHeight;
+
+	bool mFirstFrameRendered;
+	bool mEnablePhysics;
 };

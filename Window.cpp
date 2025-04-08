@@ -5,7 +5,9 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	mCurrentShader(nullptr),
 	mMouseLocked(SDL_FALSE),
 	mPrevWidth(_w),
-	mPrevHeight(_h)
+	mPrevHeight(_h),
+	mFirstFrameRendered(false),
+	mEnablePhysics(false)
 {
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -52,7 +54,10 @@ void Window::Update()
 	mEventManager->PollEvents();
 	
 	//Handle physics
-	mPhysicsManager->Update();
+	if (mEnablePhysics)
+	{
+		mPhysicsManager->Update();
+	}
 
 	//Update cameras
 	for (int i = 0; i < mCameras.size(); i++)
@@ -99,6 +104,12 @@ void Window::Update()
 
 	//Reset program
 	glUseProgram(0);
+
+	if (!mFirstFrameRendered)
+	{
+		mFirstFrameRendered = true;
+		mEnablePhysics = true;
+	}
 
 	//Swap buffers and wait until next frame
 	SDL_GL_SwapWindow(mWindow);

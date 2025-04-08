@@ -11,6 +11,11 @@ void PhysicsManager::Update()
 {
 	//implement spatial partitioning, eventually
 
+	for (int i = 0; i < mRigidbodies.size(); i++)
+	{
+		mRigidbodies[i]->Update(mTimeManager->DeltaTime());
+	}
+
 	//Iterate through every pair to check for collision
 	if (mRigidbodies.size() > 1)
 	{
@@ -21,8 +26,32 @@ void PhysicsManager::Update()
 				// If pair is colliding
 				if (mRigidbodies[i]->GetCollider()->IsColliding(mRigidbodies[x]->GetCollider()))
 				{
-					// implement collision physics here
-
+					// call the appropriate collision response dependent on collider shape
+					switch (mRigidbodies[i]->GetCollider()->GetShape())
+					{
+					case CUBE:
+						switch (mRigidbodies[x]->GetCollider()->GetShape())
+						{
+						case CUBE:
+							ResponseCubeToCube(mRigidbodies[i], mRigidbodies[x]);
+							break;
+						case SPHERE:
+							ResponseCubeToSphere(mRigidbodies[i], mRigidbodies[x]);
+							break;
+						}
+						break;
+					case SPHERE:
+						switch (mRigidbodies[x]->GetCollider()->GetShape())
+						{
+						case CUBE:
+							ResponseCubeToSphere(mRigidbodies[x], mRigidbodies[i]);
+							break;
+						case SPHERE:
+							ResponseSphereToSphere(mRigidbodies[i], mRigidbodies[x]);
+							break;
+						}
+						break;
+					}
 
 					// For each rigidbody, check if they've already collided, and call the appropriate Gameobject Collision function if they have
 					if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
@@ -62,14 +91,212 @@ void PhysicsManager::Update()
 			}
 		}
 	}
-
-	for (int i = 0; i < mRigidbodies.size(); i++)
-	{
-		mRigidbodies[i]->Update(mTimeManager->DeltaTime());
-	}
 }
 
 void PhysicsManager::Add(std::shared_ptr<Rigidbody> _rb)
 {
 	mRigidbodies.push_back(_rb);
+}
+
+void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _c2)
+{
+	// Check if either objects are kinematic (physics immovable)
+	bool c1Dynamic = _c1->IsDynamic();
+	bool c2Dynamic = _c2->IsDynamic();
+
+	glm::vec3 delta = _c1->GetCollider()->GetCenter() - _c2->GetCollider()->GetCenter();
+
+	// Get overlap in each axis
+	float overlapX = (_c1->GetCollider()->GetWidth() / 2.0f + _c2->GetCollider()->GetWidth() / 2.0f) - glm::abs(delta.x);
+	float overlapY = (_c1->GetCollider()->GetHeight() / 2.0f + _c2->GetCollider()->GetHeight() / 2.0f) - glm::abs(delta.y);
+	float overlapZ = (_c1->GetCollider()->GetDepth() / 2.0f + _c2->GetCollider()->GetDepth() / 2.0f) - glm::abs(delta.z);
+
+	// Find smallest overlap axis
+	glm::vec3 separation(0.0f);
+	if (overlapX < overlapY && overlapX < overlapZ)
+	{
+		float direction = (delta.x < 0) ? -1.0f : 1.0f;
+		separation.x = direction * overlapX;
+	}
+	else if (overlapY < overlapZ)
+	{
+		float direction = (delta.y < 0) ? -1.0f : 1.0f;
+		separation.y = direction * overlapY;
+	}
+	else
+	{
+		float direction = (delta.z < 0) ? -1.0f : 1.0f;
+		separation.z = direction * overlapZ;
+	}
+
+	// If both objects are dynamic
+	if (c1Dynamic && c2Dynamic)
+	{
+		// Split separation equally
+		_c1->GetTransform()->Move(separation * 0.5f);
+		_c2->GetTransform()->Move(separation * 0.5f);
+	}
+	// If only c1 is dynamic
+	else if (c1Dynamic)
+	{
+		_c1->GetTransform()->Move(separation);
+	}
+	// If only c2 is dynamic
+	else if (c2Dynamic)
+	{
+		_c2->GetTransform()->Move(-separation);
+	}
+	
+	glm::vec3 normal = glm::normalize(delta);
+	glm::vec3 relativeVel = _c1->Velocity() - _c2->Velocity();
+	float velNormal = glm::dot(relativeVel, normal);
+
+	// Impulse only if necessary
+	if (velNormal < 0)
+	{
+		// implement elasticity here
+		// glm::min(_c1.getelasticityt, _c2.getelasticity);
+		float e = 1.0f;
+
+		float invMass1 = c1Dynamic ? 1.0f / _c1->Mass() : 0.0f;
+		float invMass2 = c2Dynamic ? 1.0f / _c2->Mass() : 0.0f;
+
+		float j = (-(1.0f + e) * velNormal) / (invMass1 + invMass2);
+		glm::vec3 impulse = j * normal;
+
+		if (c1Dynamic)
+		{
+			_c1->Velocity(_c1->Velocity() - impulse * -invMass1);
+		}
+		if (c2Dynamic)
+		{
+			_c2->Velocity(_c2->Velocity() + impulse * -invMass2);
+		}
+	}
+}
+
+void PhysicsManager::ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _s1)
+{
+	glm::vec3 cubeCenter = _c1->GetCollider()->GetCenter();
+	glm::vec3 sphereCenter = _s1->GetCollider()->GetCenter();
+	glm::vec3 halfExtents(
+		_c1->GetCollider()->GetWidth() / 2.0f,
+		_c1->GetCollider()->GetHeight() / 2.0f,
+		_c1->GetCollider()->GetDepth() / 2.0f
+	);
+
+	// Find the closest point on the cube to the sphere center
+	glm::vec3 closestPoint = glm::clamp(
+		sphereCenter,
+		cubeCenter - halfExtents,
+		cubeCenter + halfExtents
+	);
+
+	// Vector from closest point to sphere center
+	glm::vec3 delta = sphereCenter - closestPoint;
+	float dist = glm::length(delta);
+	if (dist == 0.0f) dist = 0.0001f; // prevent divide-by-zero
+	glm::vec3 normal = delta / dist;
+
+	// Penetration depth
+	float penetration = _s1->GetCollider()->GetRadius() - dist;
+
+	// Dynamic check
+	bool c1Dynamic = _c1->IsDynamic();
+	bool s1Dynamic = _s1->IsDynamic();
+
+	// Positional correction
+	if (penetration > 0.0f)
+	{
+		glm::vec3 separation = normal * penetration;
+
+		if (c1Dynamic && s1Dynamic)
+		{
+			_c1->GetTransform()->Move(-separation * 0.5f);
+			_s1->GetTransform()->Move(separation * 0.5f);
+		}
+		else if (c1Dynamic)
+		{
+			_c1->GetTransform()->Move(-separation);
+		}
+		else if (s1Dynamic)
+		{
+			_s1->GetTransform()->Move(separation);
+		}
+
+		// Relative velocity
+		glm::vec3 relativeVel = _c1->Velocity() - _s1->Velocity();
+		float velAlongNormal = glm::dot(relativeVel, normal);
+
+		if (velAlongNormal < 0)
+		{
+			// ELASTICITY CHECK!!!!
+			float e = 1.0f; // elasticity
+			float invMass1 = c1Dynamic ? 1.0f / _c1->Mass() : 0.0f;
+			float invMass2 = s1Dynamic ? 1.0f / _s1->Mass() : 0.0f;
+
+			float j = (-(1.0f + e) * velAlongNormal) / (invMass1 + invMass2);
+			glm::vec3 impulse = j * normal;
+
+			if (c1Dynamic)
+				_c1->Velocity(_c1->Velocity() + impulse * -invMass1);
+			if (s1Dynamic)
+				_s1->Velocity(_s1->Velocity() + impulse * invMass2);
+		}
+	}
+}
+
+void PhysicsManager::ResponseSphereToSphere(std::shared_ptr<Rigidbody> _s1, std::shared_ptr<Rigidbody> _s2)
+{
+	// Check if either objects are kinematic (physics immovable)
+	bool s1Dynamic = _s1->IsDynamic();
+	bool s2Dynamic = _s2->IsDynamic();
+
+	glm::vec3 delta = _s1->GetCollider()->GetCenter() - _s2->GetCollider()->GetCenter();
+	float dist = glm::length(delta);
+	float radiusSum = _s1->GetCollider()->GetRadius() + _s2->GetCollider()->GetRadius();
+
+	if (dist == 0.0f) dist = 0.0001f; // prevent division by zero
+
+	float penetration = radiusSum - dist;
+	glm::vec3 normal = delta / dist; // normalized
+
+	// Positional correction
+	if (penetration > 0.0f)
+	{
+		glm::vec3 separation = normal * penetration;
+
+		if (s1Dynamic && s2Dynamic)
+		{
+			_s1->GetTransform()->Move(separation * 0.5f);
+			_s2->GetTransform()->Move(-separation * 0.5f);
+		}
+		else if (s1Dynamic)
+		{
+			_s1->GetTransform()->Move(separation);
+		}
+		else if (s2Dynamic)
+		{
+			_s2->GetTransform()->Move(-separation);
+		}
+
+		// Impulse resolution
+		glm::vec3 relativeVel = _s1->Velocity() - _s2->Velocity();
+		float velNormal = glm::dot(relativeVel, normal);
+
+		if (velNormal < 0)
+		{
+			// ELASTICITY CHECK!!!!
+			float e = 1.0f; // elasticity
+			float invMass1 = s1Dynamic ? 1.0f / _s1->Mass() : 0.0f;
+			float invMass2 = s2Dynamic ? 1.0f / _s2->Mass() : 0.0f;
+			float j = (-(1.0f + e) * velNormal) / (invMass1 + invMass2);
+			glm::vec3 impulse = j * normal;
+
+			if (s1Dynamic)
+				_s1->Velocity(_s1->Velocity() + impulse * -invMass1);
+			if (s2Dynamic)
+				_s2->Velocity(_s2->Velocity() + impulse * invMass2);
+		}
+	}
 }

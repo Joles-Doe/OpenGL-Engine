@@ -14,8 +14,6 @@ DynamicBody::DynamicBody(std::shared_ptr<Transform> _transform)
 
 void DynamicBody::Update(float _deltaTime)
 {
-	mForce = mMass * mAcceleration;
-
 	switch (mIntegration)
 	{
 	case EULER:
@@ -31,6 +29,7 @@ void DynamicBody::Update(float _deltaTime)
 		IntegrationVerlet(_deltaTime);
 		break;
 	}
+	mForce = mMass * mAcceleration;
 }
 
 void DynamicBody::ChangeIntegration(RBINTEGRATION _mode)
