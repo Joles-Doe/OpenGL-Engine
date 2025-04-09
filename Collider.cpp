@@ -178,5 +178,5 @@ bool Collider::SphereToSphere(std::shared_ptr<Collider> _other)
 	float distanceSquared = (dx * dx) + (dy * dy) + (dz * dz);
 	float radiusSum = mRadius + _other->mRadius;
 
-	return distanceSquared <= (mRadius * mRadius);
+	return distanceSquared <= (radiusSum * radiusSum);
 }

@@ -117,10 +117,10 @@ int main()
 	std::shared_ptr<GameObject> obj1 = std::make_shared<GameObject>(SPHERE, ORANGE);
 	obj1->GetTransform()->Move(glm::vec3(-2.0f, 0.0f, -15.0f));
 	obj1->AttachTimeManager(window.GetTimeManager());
-	obj1->CreateCollider(CUBE);
+	obj1->CreateCollider(SPHERE);
 	obj1->CreateRigidbody(DYNAMIC);
 
-	obj1->GetRigidbody()->AddForce(glm::vec3(20.0f, 0.0f, 0.0f));
+	obj1->GetRigidbody()->AddForce(glm::vec3(-100.0f, 0.0f, 0.0f));
 
 	window.AddObject(obj1);
 	window.EnableRigidbody(obj1->GetRigidbody());
@@ -130,10 +130,10 @@ int main()
 	std::shared_ptr<GameObject> obj2 = std::make_shared<GameObject>(SPHERE, BLUE);
 	obj2->GetTransform()->Move(glm::vec3(2.0f, 0.0f, -15.0f));
 	obj2->AttachTimeManager(window.GetTimeManager());
-	obj2->CreateCollider(CUBE);
+	obj2->CreateCollider(SPHERE);
 	obj2->CreateRigidbody(DYNAMIC);
 
-	obj2->GetRigidbody()->AddForce(glm::vec3(-2.0f, 0.0f, 0.0f));
+	obj2->GetRigidbody()->AddForce(glm::vec3(100.0f, 0.0f, 0.0f));
 
 	window.AddObject(obj2);
 	window.EnableRigidbody(obj2->GetRigidbody());

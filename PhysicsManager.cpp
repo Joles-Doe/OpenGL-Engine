@@ -17,76 +17,74 @@ void PhysicsManager::Update()
 	}
 
 	//Iterate through every pair to check for collision
-	if (mRigidbodies.size() > 1)
+	for (int i = 0; i < mRigidbodies.size() - 1; i++)
 	{
-		for (int i = 0; i < mRigidbodies.size() - 1; i++)
+		for (int x = i + 1; x < mRigidbodies.size(); x++)
 		{
-			for (int x = i + 1; x < mRigidbodies.size(); x++)
+			// If pair is colliding
+			if (mRigidbodies[i]->GetCollider()->IsColliding(mRigidbodies[x]->GetCollider()))
 			{
-				// If pair is colliding
-				if (mRigidbodies[i]->GetCollider()->IsColliding(mRigidbodies[x]->GetCollider()))
+				// call the appropriate collision response dependent on collider shape
+				switch (mRigidbodies[i]->GetCollider()->GetShape())
 				{
-					// call the appropriate collision response dependent on collider shape
-					switch (mRigidbodies[i]->GetCollider()->GetShape())
+				case CUBE:
+					switch (mRigidbodies[x]->GetCollider()->GetShape())
 					{
 					case CUBE:
-						switch (mRigidbodies[x]->GetCollider()->GetShape())
-						{
-						case CUBE:
-							ResponseCubeToCube(mRigidbodies[i], mRigidbodies[x]);
-							break;
-						case SPHERE:
-							ResponseCubeToSphere(mRigidbodies[i], mRigidbodies[x]);
-							break;
-						}
+						ResponseCubeToCube(mRigidbodies[i], mRigidbodies[x]);
 						break;
 					case SPHERE:
-						switch (mRigidbodies[x]->GetCollider()->GetShape())
-						{
-						case CUBE:
-							ResponseCubeToSphere(mRigidbodies[x], mRigidbodies[i]);
-							break;
-						case SPHERE:
-							ResponseSphereToSphere(mRigidbodies[i], mRigidbodies[x]);
-							break;
-						}
+						ResponseCubeToSphere(mRigidbodies[i], mRigidbodies[x]);
 						break;
 					}
+					break;
+				case SPHERE:
+					switch (mRigidbodies[x]->GetCollider()->GetShape())
+					{
+					case CUBE:
+						ResponseCubeToSphere(mRigidbodies[x], mRigidbodies[i]);
+						break;
+					case SPHERE:
+						ResponseSphereToSphere(mRigidbodies[i], mRigidbodies[x]);
+						break;
+					}
+					break;
+				}
 
-					// For each rigidbody, check if they've already collided, and call the appropriate Gameobject Collision function if they have
-					if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
-					{
-						mRigidbodies[i]->GetParent()->OnCollisionStay(mRigidbodies[x]);
-					}
-					else
-					{
-						mRigidbodies[i]->AddCollidedRigidbody(mRigidbodies[x]);
-						mRigidbodies[i]->GetParent()->OnCollisionEnter(mRigidbodies[x]);
-					}
-
-					if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
-					{
-						mRigidbodies[x]->GetParent()->OnCollisionStay(mRigidbodies[i]);
-					}
-					else
-					{
-						mRigidbodies[x]->AddCollidedRigidbody(mRigidbodies[i]);
-						mRigidbodies[x]->GetParent()->OnCollisionEnter(mRigidbodies[i]);
-					}
+				// For each rigidbody, check if they've already collided, and call the appropriate Gameobject Collision function if they have
+				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
+				{
+					mRigidbodies[i]->GetParent()->OnCollisionStay(mRigidbodies[x]);
 				}
 				else
 				{
-					if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
-					{
-						mRigidbodies[i]->RemoveCollidedRigidbody(mRigidbodies[x]);
-						mRigidbodies[i]->GetParent()->OnCollisionExit(mRigidbodies[x]);
-					}
+					mRigidbodies[i]->AddCollidedRigidbody(mRigidbodies[x]);
+					mRigidbodies[i]->GetParent()->OnCollisionEnter(mRigidbodies[x]);
+				}
 
-					if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
-					{
-						mRigidbodies[x]->RemoveCollidedRigidbody(mRigidbodies[i]);
-						mRigidbodies[x]->GetParent()->OnCollisionExit(mRigidbodies[i]);
-					}
+				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
+				{
+					mRigidbodies[x]->GetParent()->OnCollisionStay(mRigidbodies[i]);
+				}
+				else
+				{
+					mRigidbodies[x]->AddCollidedRigidbody(mRigidbodies[i]);
+					mRigidbodies[x]->GetParent()->OnCollisionEnter(mRigidbodies[i]);
+				}
+			}
+			// If there's been no collision detected, check if the rigidbodies had collided last frame and call the appropritae Gameobject collision function
+			else
+			{
+				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
+				{
+					mRigidbodies[i]->RemoveCollidedRigidbody(mRigidbodies[x]);
+					mRigidbodies[i]->GetParent()->OnCollisionExit(mRigidbodies[x]);
+				}
+
+				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
+				{
+					mRigidbodies[x]->RemoveCollidedRigidbody(mRigidbodies[i]);
+					mRigidbodies[x]->GetParent()->OnCollisionExit(mRigidbodies[i]);
 				}
 			}
 		}
@@ -177,6 +175,11 @@ void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::sha
 
 void PhysicsManager::ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _s1)
 {
+	// Check objects are dynamic
+	bool c1Dynamic = _c1->IsDynamic();
+	bool s1Dynamic = _s1->IsDynamic();
+
+	// Get centers and half extents
 	glm::vec3 cubeCenter = _c1->GetCollider()->GetCenter();
 	glm::vec3 sphereCenter = _s1->GetCollider()->GetCenter();
 	glm::vec3 halfExtents(
@@ -195,20 +198,24 @@ void PhysicsManager::ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::s
 	// Vector from closest point to sphere center
 	glm::vec3 delta = sphereCenter - closestPoint;
 	float dist = glm::length(delta);
-	if (dist == 0.0f) dist = 0.0001f; // prevent divide-by-zero
-	glm::vec3 normal = delta / dist;
+	if (dist == 0.0f) dist = 0.0001f; // avoid divide-by-zero
 
-	// Penetration depth
+	// Calculate normal, and penetration between the two shapes
+	glm::vec3 normal = delta / dist;
 	float penetration = _s1->GetCollider()->GetRadius() - dist;
 
-	// Dynamic check
-	bool c1Dynamic = _c1->IsDynamic();
-	bool s1Dynamic = _s1->IsDynamic();
+	// Calculate inverse mass
+	float invMass1 = c1Dynamic ? 1.0f / _c1->Mass() : 0.0f;
+	float invMass2 = s1Dynamic ? 1.0f / _s1->Mass() : 0.0f;
+	float totalInvMass = invMass1 + invMass2;
 
-	// Positional correction
-	if (penetration > 0.0f)
+	// Positional correction variables
+	float percent = 0.8f;
+	float slop = 0.001f;
+
+	if (penetration >= 0.0f)
 	{
-		glm::vec3 separation = normal * penetration;
+		glm::vec3 separation = normal * ((penetration - slop) / totalInvMass) * percent;
 
 		if (c1Dynamic && s1Dynamic)
 		{
@@ -225,21 +232,18 @@ void PhysicsManager::ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::s
 		}
 
 		// Relative velocity
-		glm::vec3 relativeVel = _c1->Velocity() - _s1->Velocity();
+		glm::vec3 relativeVel = _s1->Velocity() - _c1->Velocity();
 		float velAlongNormal = glm::dot(relativeVel, normal);
 
 		if (velAlongNormal < 0)
 		{
 			// ELASTICITY CHECK!!!!
-			float e = 1.0f; // elasticity
-			float invMass1 = c1Dynamic ? 1.0f / _c1->Mass() : 0.0f;
-			float invMass2 = s1Dynamic ? 1.0f / _s1->Mass() : 0.0f;
-
-			float j = (-(1.0f + e) * velAlongNormal) / (invMass1 + invMass2);
+			float e = 1.0f;
+			float j = glm::max((-(1.0f + e) * velAlongNormal) / totalInvMass, 0.001f);
 			glm::vec3 impulse = j * normal;
 
 			if (c1Dynamic)
-				_c1->Velocity(_c1->Velocity() + impulse * -invMass1);
+				_c1->Velocity(_c1->Velocity() - impulse * invMass1);
 			if (s1Dynamic)
 				_s1->Velocity(_s1->Velocity() + impulse * invMass2);
 		}
@@ -248,55 +252,63 @@ void PhysicsManager::ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::s
 
 void PhysicsManager::ResponseSphereToSphere(std::shared_ptr<Rigidbody> _s1, std::shared_ptr<Rigidbody> _s2)
 {
-	// Check if either objects are kinematic (physics immovable)
+	// Check if spheres are dynamic
 	bool s1Dynamic = _s1->IsDynamic();
 	bool s2Dynamic = _s2->IsDynamic();
 
+	// Find the distance between the sphere's radii
 	glm::vec3 delta = _s1->GetCollider()->GetCenter() - _s2->GetCollider()->GetCenter();
 	float dist = glm::length(delta);
+	if (dist == 0.0f) dist = 0.0001f; // avoid divide-by-zero
+
+	// Calculate normal, and penetration between the two spheres
+	glm::vec3 normal = delta / dist;
 	float radiusSum = _s1->GetCollider()->GetRadius() + _s2->GetCollider()->GetRadius();
-
-	if (dist == 0.0f) dist = 0.0001f; // prevent division by zero
-
 	float penetration = radiusSum - dist;
-	glm::vec3 normal = delta / dist; // normalized
 
-	// Positional correction
-	if (penetration > 0.0f)
+	// Calculate inverse mass
+	float invMass1 = s1Dynamic ? 1.0f / _s1->Mass() : 0.0f;
+	float invMass2 = s2Dynamic ? 1.0f / _s2->Mass() : 0.0f;
+	float totalInvMass = invMass1 + invMass2;
+
+	// Positional correction variables
+	const float slop = 0.001f;
+	const float percent = 0.8f; // push out 80% to reduce jitter
+
+	if (penetration >= 0.0f)
 	{
-		glm::vec3 separation = normal * penetration;
+		// Calculate the amount of movement needed to move the spheres out of each other
+		glm::vec3 correction = normal * (penetration - slop) * percent;
 
+		// Only move the spheres if they're dynamic
 		if (s1Dynamic && s2Dynamic)
 		{
-			_s1->GetTransform()->Move(separation * 0.5f);
-			_s2->GetTransform()->Move(-separation * 0.5f);
+			_s1->GetTransform()->Move(correction * 0.5f);
+			_s2->GetTransform()->Move(-correction * 0.5f);
 		}
 		else if (s1Dynamic)
 		{
-			_s1->GetTransform()->Move(separation);
+			_s1->GetTransform()->Move(correction);
 		}
 		else if (s2Dynamic)
 		{
-			_s2->GetTransform()->Move(-separation);
-		}
+			_s2->GetTransform()->Move(-correction);
+		}	
+	}
 
-		// Impulse resolution
-		glm::vec3 relativeVel = _s1->Velocity() - _s2->Velocity();
-		float velNormal = glm::dot(relativeVel, normal);
+	// Relative velocity
+	glm::vec3 relativeVel = _s1->Velocity() - _s2->Velocity();
+	float velAlongNormal = glm::dot(relativeVel, normal);
 
-		if (velNormal < 0)
-		{
-			// ELASTICITY CHECK!!!!
-			float e = 1.0f; // elasticity
-			float invMass1 = s1Dynamic ? 1.0f / _s1->Mass() : 0.0f;
-			float invMass2 = s2Dynamic ? 1.0f / _s2->Mass() : 0.0f;
-			float j = (-(1.0f + e) * velNormal) / (invMass1 + invMass2);
-			glm::vec3 impulse = j * normal;
+	if (velAlongNormal < 0)
+	{
+		float e = 1.0f;
+		float j = glm::max((-(1.0f + e) * velAlongNormal) / totalInvMass, 0.001f);
+		glm::vec3 impulse = j * normal;
 
-			if (s1Dynamic)
-				_s1->Velocity(_s1->Velocity() + impulse * -invMass1);
-			if (s2Dynamic)
-				_s2->Velocity(_s2->Velocity() + impulse * invMass2);
-		}
+		if (s1Dynamic)
+			_s1->Velocity(_s1->Velocity() + (impulse * invMass1));
+		if (s2Dynamic)
+			_s2->Velocity(_s2->Velocity() - (impulse * invMass2));
 	}
 }

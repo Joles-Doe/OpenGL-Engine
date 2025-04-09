@@ -118,15 +118,15 @@ void GameObject::CreateRigidbody(RBTYPE _type)
 
 void GameObject::OnCollisionEnter(std::shared_ptr<Rigidbody> _other)
 {
-	std::cout << "COLLISION ENTER" << std::endl;
+	//std::cout << "COLLISION ENTER" << std::endl;
 }
 
 void GameObject::OnCollisionStay(std::shared_ptr<Rigidbody> _other)
 {
-	std::cout << "COLLISION STAY" << std::endl;
+	//std::cout << "COLLISION STAY" << std::endl;
 }
 
 void GameObject::OnCollisionExit(std::shared_ptr<Rigidbody> _other)
 {
-	std::cout << "COLLISION EXIT" << std::endl;
+	//std::cout << "COLLISION EXIT" << std::endl;
 }
