@@ -1,6 +1,6 @@
 #include "KinematicBody.h"
 
-KinematicBody::KinematicBody(std::shared_ptr<Transform> _transform)
+KinematicBody::KinematicBody(std::shared_ptr<Transform> _transform) : mElasticity(1.0f)
 {
 	mTransform = _transform;
 
@@ -34,4 +34,14 @@ void KinematicBody::Acceleration(glm::vec3 _accel)
 glm::vec3 KinematicBody::Acceleration()
 {
 	return mAcceleration;
+}
+
+void KinematicBody::Elasticity(float _e)
+{
+	mElasticity = _e;
+}
+
+float KinematicBody::Elasticity()
+{
+	return mElasticity;
 }

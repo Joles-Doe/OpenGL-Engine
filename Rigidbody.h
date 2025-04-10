@@ -43,6 +43,9 @@ public:
 
 	void Mass(float _mass);
 	float Mass();
+
+	void Elasticity(float _e);
+	float Elasticity();
 private:
 	std::shared_ptr<GameObject> mParent;
 	std::shared_ptr<Collider> mCollider;

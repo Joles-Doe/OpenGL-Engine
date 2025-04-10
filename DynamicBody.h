@@ -30,6 +30,9 @@ public:
 
 	void Mass(float _mass);
 	float Mass();
+
+	void Elasticity(float _e);
+	float Elasticity();
 private:
 	std::shared_ptr<Transform> mTransform;
 
@@ -44,4 +47,5 @@ private:
 	glm::vec3 mAcceleration;
 	glm::vec3 mPreviousPosition;
 	float mMass;
+	float mElasticity;
 };

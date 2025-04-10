@@ -19,10 +19,14 @@ public:
 	void Acceleration(glm::vec3 _accel);
 	glm::vec3 Acceleration();
 
+	void Elasticity(float _e);
+	float Elasticity();
+
 private:
 	std::shared_ptr<Transform> mTransform;
 
 	glm::vec3 mVelocity;
 	glm::vec3 mAcceleration;
+	float mElasticity;
 };
 

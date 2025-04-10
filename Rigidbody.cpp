@@ -180,3 +180,30 @@ float Rigidbody::Mass()
 	}
 	return mass;
 }
+
+void Rigidbody::Elasticity(float _e)
+{
+	_e = glm::fclamp(_e, 0.0f, 1.0f);
+	if (mUseDynamicBody)
+	{
+		mDynamicBody->Elasticity(_e);
+	}
+	else
+	{
+		mKinematicBody->Elasticity(_e);
+	}
+}
+
+float Rigidbody::Elasticity()
+{
+	float elasticity = 0.0f;
+	if (mUseDynamicBody)
+	{
+		elasticity = mDynamicBody->Elasticity();
+	}
+	else
+	{
+		elasticity = mKinematicBody->Elasticity();
+	}
+	return elasticity;
+}

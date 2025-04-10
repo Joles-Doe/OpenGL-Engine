@@ -114,13 +114,15 @@ int main()
 	//==============================
 	//==============================
 	// OBJ 1
-	std::shared_ptr<GameObject> obj1 = std::make_shared<GameObject>(SPHERE, ORANGE);
+	std::shared_ptr<GameObject> obj1 = std::make_shared<GameObject>(CUBE, ORANGE);
 	obj1->GetTransform()->Move(glm::vec3(-2.0f, 0.0f, -15.0f));
 	obj1->AttachTimeManager(window.GetTimeManager());
-	obj1->CreateCollider(SPHERE);
+	obj1->CreateCollider(CUBE);
 	obj1->CreateRigidbody(DYNAMIC);
 
 	obj1->GetRigidbody()->AddForce(glm::vec3(-100.0f, 0.0f, 0.0f));
+
+	obj1->GetRigidbody()->Elasticity(0.85f);
 
 	window.AddObject(obj1);
 	window.EnableRigidbody(obj1->GetRigidbody());
@@ -139,8 +141,11 @@ int main()
 	window.EnableRigidbody(obj2->GetRigidbody());
 
 
-
-
+	// TODO:
+	// ANGULAR MOMENTUM
+	// FRICTION
+	// SIMULATION READER
+	// ROTATION INCLUSION ON AABB COLLISION CHECKS (AND POTENTIALLY RESPONSES)
 
 	bool quit = false;
 	while (!quit)

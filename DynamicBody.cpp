@@ -10,6 +10,7 @@ DynamicBody::DynamicBody(std::shared_ptr<Transform> _transform)
 	mAcceleration = glm::vec3(0.0f, -9.8f, 0.0f);
 	mPreviousPosition = mTransform->Position();
 	mMass = 1.0f;
+	mElasticity = 1.0f;
 }
 
 void DynamicBody::Update(float _deltaTime)
@@ -80,6 +81,16 @@ void DynamicBody::Mass(float _mass)
 float DynamicBody::Mass()
 {
 	return mMass;
+}
+
+void DynamicBody::Elasticity(float _e)
+{
+	mElasticity = _e;
+}
+
+float DynamicBody::Elasticity()
+{
+	return mElasticity;
 }
 
 void DynamicBody::IntegrationEuler(float _deltaTime)

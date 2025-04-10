@@ -24,7 +24,7 @@ void PhysicsManager::Update()
 			// If pair is colliding
 			if (mRigidbodies[i]->GetCollider()->IsColliding(mRigidbodies[x]->GetCollider()))
 			{
-				// call the appropriate collision response dependent on collider shape
+				// Call the appropriate collision response dependent on collider shape
 				switch (mRigidbodies[i]->GetCollider()->GetShape())
 				{
 				case CUBE:
@@ -98,7 +98,7 @@ void PhysicsManager::Add(std::shared_ptr<Rigidbody> _rb)
 
 void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _c2)
 {
-	// Check if either objects are kinematic (physics immovable)
+	// Check if either object is dynamic
 	bool c1Dynamic = _c1->IsDynamic();
 	bool c2Dynamic = _c2->IsDynamic();
 
@@ -109,66 +109,70 @@ void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::sha
 	float overlapY = (_c1->GetCollider()->GetHeight() / 2.0f + _c2->GetCollider()->GetHeight() / 2.0f) - glm::abs(delta.y);
 	float overlapZ = (_c1->GetCollider()->GetDepth() / 2.0f + _c2->GetCollider()->GetDepth() / 2.0f) - glm::abs(delta.z);
 
-	// Find smallest overlap axis
-	glm::vec3 separation(0.0f);
+	// Find the normal based on the smallest overlap
+	glm::vec3 normal(0.0f);
+	float minOverlap;
 	if (overlapX < overlapY && overlapX < overlapZ)
 	{
-		float direction = (delta.x < 0) ? -1.0f : 1.0f;
-		separation.x = direction * overlapX;
+		normal.x = (delta.x < 0) ? -1.0f : 1.0f;
+		minOverlap = overlapX;
 	}
 	else if (overlapY < overlapZ)
 	{
-		float direction = (delta.y < 0) ? -1.0f : 1.0f;
-		separation.y = direction * overlapY;
+		normal.y = (delta.y < 0) ? -1.0f : 1.0f;
+		minOverlap = overlapY;
 	}
 	else
 	{
-		float direction = (delta.z < 0) ? -1.0f : 1.0f;
-		separation.z = direction * overlapZ;
+		normal.z = (delta.z < 0) ? -1.0f : 1.0f;
+		minOverlap = overlapZ;
 	}
 
-	// If both objects are dynamic
+	// Calculate inverse mass
+	float invMass1 = c1Dynamic ? 1.0f / _c1->Mass() : 0.0f;
+	float invMass2 = c2Dynamic ? 1.0f / _c2->Mass() : 0.0f;
+	float totalInvMass = invMass1 + invMass2;
+
+	// Positional correction variables
+	const float slop = 0.01f;
+	const float percent = 0.8f;
+	
+	// Calculate the amount of movement needed to move the cubes out of each other
+	float correctionMagnitude = glm::max(minOverlap - slop, 0.0f);
+	glm::vec3 correction = normal * correctionMagnitude * percent;
+
 	if (c1Dynamic && c2Dynamic)
 	{
-		// Split separation equally
-		_c1->GetTransform()->Move(separation * 0.5f);
-		_c2->GetTransform()->Move(separation * 0.5f);
+		_c1->GetTransform()->Move(correction * 0.5f);
+		_c2->GetTransform()->Move(-correction * 0.5f);
 	}
-	// If only c1 is dynamic
 	else if (c1Dynamic)
 	{
-		_c1->GetTransform()->Move(separation);
+		_c1->GetTransform()->Move(correction);
 	}
-	// If only c2 is dynamic
 	else if (c2Dynamic)
 	{
-		_c2->GetTransform()->Move(-separation);
+		_c2->GetTransform()->Move(-correction);
 	}
-	
-	glm::vec3 normal = glm::normalize(delta);
+
+	// Relative velocity
 	glm::vec3 relativeVel = _c1->Velocity() - _c2->Velocity();
-	float velNormal = glm::dot(relativeVel, normal);
+	float velAlongNormal = glm::dot(relativeVel, normal);
 
-	// Impulse only if necessary
-	if (velNormal < 0)
+	if (velAlongNormal < 0.0f)
 	{
-		// implement elasticity here
-		// glm::min(_c1.getelasticityt, _c2.getelasticity);
-		float e = 1.0f;
-
-		float invMass1 = c1Dynamic ? 1.0f / _c1->Mass() : 0.0f;
-		float invMass2 = c2Dynamic ? 1.0f / _c2->Mass() : 0.0f;
-
-		float j = (-(1.0f + e) * velNormal) / (invMass1 + invMass2);
+		// Use the minimum restitution (elasticity)
+		float e = glm::min(_c1->Elasticity(), _c2->Elasticity());
+		float j = (-(1.0f + e) * velAlongNormal) / totalInvMass;
 		glm::vec3 impulse = j * normal;
 
 		if (c1Dynamic)
 		{
-			_c1->Velocity(_c1->Velocity() - impulse * -invMass1);
+			_c1->Velocity(_c1->Velocity() + (impulse * invMass1));
 		}
 		if (c2Dynamic)
 		{
-			_c2->Velocity(_c2->Velocity() + impulse * -invMass2);
+			_c2->Velocity(_c2->Velocity() - (impulse * invMass2));
 		}
 	}
 }
@@ -237,8 +241,8 @@ void PhysicsManager::ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::s
 
 		if (velAlongNormal < 0)
 		{
-			// ELASTICITY CHECK!!!!
-			float e = 1.0f;
+			// Use the minimum restitution (elasticity)
+			float e = glm::min(_c1->Elasticity(), _s1->Elasticity());
 			float j = glm::max((-(1.0f + e) * velAlongNormal) / totalInvMass, 0.001f);
 			glm::vec3 impulse = j * normal;
 
@@ -302,7 +306,8 @@ void PhysicsManager::ResponseSphereToSphere(std::shared_ptr<Rigidbody> _s1, std:
 
 	if (velAlongNormal < 0)
 	{
-		float e = 1.0f;
+		// Use the minimum restitution (elasticity)
+		float e = glm::min(_s1->Elasticity(), _s2->Elasticity());
 		float j = glm::max((-(1.0f + e) * velAlongNormal) / totalInvMass, 0.001f);
 		glm::vec3 impulse = j * normal;
 
