@@ -25,6 +25,9 @@ public:
 	float GetRadius();
 
 	bool IsColliding(std::shared_ptr<Collider> _other);
+
+	bool BoundsChanged();
+	void BoundsChangedReset();
 private:
 	std::shared_ptr<Transform> mTransform;
 
@@ -42,5 +45,7 @@ private:
 	float mDepth;
 
 	float mRadius;
+
+	bool mBoundsChanged;
 };
 

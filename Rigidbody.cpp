@@ -76,7 +76,12 @@ void Rigidbody::Update(float _deltaTime)
 	switch (mUseDynamicBody)
 	{
 	case true:
-		mDynamicBody->Update(_deltaTime);
+		if (mCollider->BoundsChanged())
+		{
+			mCollider->BoundsChangedReset();
+			CalculateInertiaTensor();
+		}
+		mTransform->Rotation(mDynamicBody->Update(_deltaTime, mTransform->Rotation()));
 		break;
 	case false:
 		mKinematicBody->Update(_deltaTime);
@@ -137,6 +142,24 @@ glm::vec3 Rigidbody::Velocity()
 	return vel;
 }
 
+void Rigidbody::AngularVelocity(glm::vec3 _vel)
+{
+	if (mUseDynamicBody)
+	{
+		mDynamicBody->AngularVelocity(_vel);
+	}
+}
+
+glm::vec3 Rigidbody::AngularVelocity()
+{
+	glm::vec3 vel;
+	if (mUseDynamicBody)
+	{
+		vel = mDynamicBody->AngularVelocity();
+	}
+	return vel;
+}
+
 void Rigidbody::Acceleration(glm::vec3 _accel)
 {
 	if (mUseDynamicBody)
@@ -168,6 +191,7 @@ void Rigidbody::Mass(float _mass)
 	if (mUseDynamicBody)
 	{
 		mDynamicBody->Mass(_mass);
+		CalculateInertiaTensor();
 	}
 }
 
@@ -206,4 +230,62 @@ float Rigidbody::Elasticity()
 		elasticity = mKinematicBody->Elasticity();
 	}
 	return elasticity;
+}
+
+void Rigidbody::InertiaTensorLocal(glm::mat3 _tensor)
+{
+	if (mUseDynamicBody)
+	{
+		mDynamicBody->InertiaTensorLocal(_tensor);
+	}
+}
+
+glm::mat3 Rigidbody::InertiaTensorLocal()
+{
+	glm::mat3 tensor = glm::mat3(1.0f);
+	if (mUseDynamicBody)
+	{
+		tensor = mDynamicBody->InertiaTensorLocal();
+	}
+	return tensor;
+}
+
+glm::mat3 Rigidbody::InertiaTensorWorld()
+{
+	glm::mat3 tensor = glm::mat3(1.0f);
+	if (mUseDynamicBody)
+	{
+		tensor = mDynamicBody->InertiaTensorWorld();
+	}
+	return tensor;
+}
+
+void Rigidbody::CalculateInertiaTensor()
+{
+	if (mUseDynamicBody)
+	{
+		glm::mat3 inertia = glm::mat3(0.0f);
+		float m = Mass();
+
+		SHAPE colliderShape = mCollider->GetShape();
+		if (colliderShape == CUBE)
+		{
+			float w = mCollider->GetWidth();
+			float h = mCollider->GetHeight();
+			float d = mCollider->GetDepth();
+
+			inertia[0][0] = (1.0f / 12.0f) * m * ((h * h) + (d * d)); //Ixx
+			inertia[1][1] = (1.0f / 12.0f) * m * ((w * w) + (d * d)); //Iyy
+			inertia[2][2] = (1.0f / 12.0f) * m * ((w * w) + (h * h)); //Izz
+		}
+		else if (colliderShape == SPHERE)
+		{
+			float r = mCollider->GetRadius();
+			float i = (2.0f / 5.0f) * m * (r * r);
+
+			inertia = glm::mat3(i);
+		}
+
+		mDynamicBody->InertiaTensorLocal(inertia);
+	}
 }

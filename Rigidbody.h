@@ -38,6 +38,9 @@ public:
 	void Velocity(glm::vec3 _vel);
 	glm::vec3 Velocity();
 
+	void AngularVelocity(glm::vec3 _vel);
+	glm::vec3 AngularVelocity();
+
 	void Acceleration(glm::vec3 _accel);
 	glm::vec3 Acceleration();
 
@@ -46,6 +49,11 @@ public:
 
 	void Elasticity(float _e);
 	float Elasticity();
+
+	void InertiaTensorLocal(glm::mat3 _tensor);
+	glm::mat3 InertiaTensorLocal();
+
+	glm::mat3 InertiaTensorWorld();
 private:
 	std::shared_ptr<GameObject> mParent;
 	std::shared_ptr<Collider> mCollider;
@@ -56,5 +64,7 @@ private:
 	bool mUseDynamicBody;
 
 	std::vector<std::shared_ptr<Rigidbody>> mCurrentlyCollidingRigidbodies;
+
+	void CalculateInertiaTensor();
 };
 

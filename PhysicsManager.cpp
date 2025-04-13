@@ -156,23 +156,55 @@ void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::sha
 	}
 
 	// Relative velocity
-	glm::vec3 relativeVel = _c1->Velocity() - _c2->Velocity();
+	glm::vec3 r1 = _c1->GetCollider()->GetCenter() - _c1->GetTransform()->Position();
+	glm::vec3 r2 = _c2->GetCollider()->GetCenter() - _c2->GetTransform()->Position();
+
+	glm::vec3 v1 = _c1->Velocity() + glm::cross(_c1->AngularVelocity(), r1);
+	glm::vec3 v2 = _c2->Velocity() + glm::cross(_c2->AngularVelocity(), r2);
+
+	glm::vec3 relativeVel = v1 - v2;
+
+	// Calculate velocity along the normal
 	float velAlongNormal = glm::dot(relativeVel, normal);
 
 	if (velAlongNormal < 0.0f)
 	{
 		// Use the minimum restitution (elasticity)
 		float e = glm::min(_c1->Elasticity(), _c2->Elasticity());
-		float j = (-(1.0f + e) * velAlongNormal) / totalInvMass;
+
+		// ============================================================
+		// Compute cross products
+		glm::vec3 crossR1 = glm::cross(r1, normal);
+		glm::vec3 crossR2 = glm::cross(r2, normal);
+
+		// Compute inverse tensors
+		glm::mat3 invInertia1 = glm::inverse(_c1->InertiaTensorWorld());
+		glm::mat3 invInertia2 = glm::inverse(_c2->InertiaTensorWorld());
+
+		// Compute the terms involving the inverse inertia tensors and cross products
+		glm::vec3 temp1 = invInertia1 * crossR1;
+		glm::vec3 temp2 = invInertia2 * crossR2;
+
+		// Compute the final dot products
+		float dot1 = glm::dot(normal, temp1);
+		float dot2 = glm::dot(normal, temp2);
+
+		float denominator = totalInvMass + dot1 + dot2;
+
+		float j = (-(1.0f + e) * velAlongNormal) / denominator;
+		// ============================================================
+		
 		glm::vec3 impulse = j * normal;
 
 		if (c1Dynamic)
 		{
 			_c1->Velocity(_c1->Velocity() + (impulse * invMass1));
+			_c1->AngularVelocity(_c1->AngularVelocity() + glm::inverse(_c1->InertiaTensorWorld()) * glm::cross(r1, impulse));
 		}
 		if (c2Dynamic)
 		{
 			_c2->Velocity(_c2->Velocity() - (impulse * invMass2));
+			_c2->AngularVelocity(_c2->AngularVelocity() - glm::inverse(_c2->InertiaTensorWorld()) * glm::cross(r2, impulse));
 		}
 	}
 }

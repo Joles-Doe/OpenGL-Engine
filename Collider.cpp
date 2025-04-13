@@ -3,7 +3,7 @@
 #include <iostream>
 
 Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_ptr<Transform> _transform) :
-	mCenter(0), mHeight(0), mRadius(0), mWidth(0), mDepth(0)
+	mCenter(0), mHeight(0), mRadius(0), mWidth(0), mDepth(0), mBoundsChanged(true)
 {
 	mType = _type;
 	mTransform = _transform;
@@ -76,6 +76,7 @@ void Collider::CalculateBounds(std::vector<Model::Face>* _faces)
 		std::cout << "MODEL VECTOR IS EMPTY!!" << std::endl;
 	}
 	mCenterOffset = mCenter;
+	mBoundsChanged = true;
 }
 
 void Collider::Update()
@@ -142,6 +143,16 @@ bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 		break;
 	}
 	return collided;
+}
+
+bool Collider::BoundsChanged()
+{
+	return mBoundsChanged;
+}
+
+void Collider::BoundsChangedReset()
+{
+	mBoundsChanged = false;
 }
 
 // Check if every axis overlaps

@@ -129,7 +129,7 @@ int main()
 
 	//==============================
 	// OBJ 2
-	std::shared_ptr<GameObject> obj2 = std::make_shared<GameObject>(SPHERE, BLUE);
+	std::shared_ptr<GameObject> obj2 = std::make_shared<GameObject>(CUBE, BLUE);
 	obj2->GetTransform()->Move(glm::vec3(2.0f, 0.0f, -15.0f));
 	obj2->AttachTimeManager(window.GetTimeManager());
 	obj2->CreateCollider(SPHERE);

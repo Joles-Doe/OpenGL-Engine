@@ -3,18 +3,28 @@
 DynamicBody::DynamicBody(std::shared_ptr<Transform> _transform)
 {
 	mTransform = _transform;
+	mOrientation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 
 	mIntegration = EULER;
 	mForce = glm::vec3(0.0f);
 	mVelocity = glm::vec3(0.0f);
+	mAngularVelocity = glm::vec3(0.0f);
 	mAcceleration = glm::vec3(0.0f, -9.8f, 0.0f);
 	mPreviousPosition = mTransform->Position();
 	mMass = 1.0f;
 	mElasticity = 1.0f;
+
+	mInertiaTensorLocal = glm::mat3(1.0f);
+	mInertiaTensorWorld = glm::mat3(1.0f);
 }
 
-void DynamicBody::Update(float _deltaTime)
+glm::vec3 DynamicBody::Update(float _deltaTime, glm::vec3 _rot)
 {
+	// Sync rotation
+	mOrientation = glm::quat(glm::radians(_rot));
+
+	mInertiaTensorWorld = glm::mat3_cast(mOrientation) * glm::inverse(mInertiaTensorLocal) * glm::transpose(glm::mat3_cast(mOrientation));
+
 	switch (mIntegration)
 	{
 	case EULER:
@@ -30,7 +40,15 @@ void DynamicBody::Update(float _deltaTime)
 		IntegrationVerlet(_deltaTime);
 		break;
 	}
+
+	//general template, will probably have to change for each integration
+	glm::quat deltaRotation = glm::quat(0, mAngularVelocity.x, mAngularVelocity.y, mAngularVelocity.z) * mOrientation * 0.5f;
+	mOrientation += deltaRotation * _deltaTime;
+	mOrientation = glm::normalize(mOrientation);
+
 	mForce = mMass * mAcceleration;
+
+	return glm::degrees(glm::eulerAngles(mOrientation));
 }
 
 void DynamicBody::ChangeIntegration(RBINTEGRATION _mode)
@@ -63,6 +81,16 @@ glm::vec3 DynamicBody::Velocity()
 	return mVelocity;
 }
 
+void DynamicBody::AngularVelocity(glm::vec3 _vel)
+{
+	mAngularVelocity = _vel;
+}
+
+glm::vec3 DynamicBody::AngularVelocity()
+{
+	return mAngularVelocity;
+}
+
 void DynamicBody::Acceleration(glm::vec3 _accel)
 {
 	mAcceleration = _accel;
@@ -91,6 +119,21 @@ void DynamicBody::Elasticity(float _e)
 float DynamicBody::Elasticity()
 {
 	return mElasticity;
+}
+
+void DynamicBody::InertiaTensorLocal(glm::mat3 _tensor)
+{
+	mInertiaTensorLocal = _tensor;
+}
+
+glm::mat3 DynamicBody::InertiaTensorLocal()
+{
+	return mInertiaTensorLocal;
+}
+
+glm::mat3 DynamicBody::InertiaTensorWorld()
+{
+	return mInertiaTensorWorld;
 }
 
 void DynamicBody::IntegrationEuler(float _deltaTime)
