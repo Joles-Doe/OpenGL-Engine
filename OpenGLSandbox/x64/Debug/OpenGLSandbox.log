@@ -1,4 +1,9 @@
-﻿  DynamicBody.cpp
+﻿  Camera.cpp
+C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Camera.cpp(29,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Camera.cpp(30,39): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  LookAroundCamera.cpp
+C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\LookAroundCamera.cpp(10,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\LookAroundCamera.cpp(11,31): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
   main.cpp
   Generating Code...
   OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\x64\Debug\OpenGLSandbox.exe

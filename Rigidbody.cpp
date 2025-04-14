@@ -90,6 +90,14 @@ void Rigidbody::Update(float _deltaTime)
 	mCollider->Update();
 }
 
+void Rigidbody::ChangePhysicsIntegration(RBINTEGRATION _mode)
+{
+	if (mUseDynamicBody)
+	{
+		mDynamicBody->ChangeIntegration(_mode);
+	}
+}
+
 void Rigidbody::AddForce(glm::vec3 _force)
 {
 	if (mUseDynamicBody)

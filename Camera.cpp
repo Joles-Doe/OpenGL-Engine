@@ -7,6 +7,7 @@ Camera::Camera(Preset _preset) : mPriority(0), mOrbitMouseLocked(SDL_FALSE)
 	mView = glm::mat4(1.0f);
     mPosition = glm::vec3(0.0f);
     mDirection = glm::vec3(0.0f);
+
 	mPitch = 0.0f;
 	mYaw = -90.0f;
 }
@@ -48,27 +49,27 @@ void Camera::Update()
 
         if (mEventManager->GetKeyDown("w"))
         {
-            mPosition += mDirection * mTimeManager->DeltaTime() * 5.0f;
+            mPosition += mDirection * mTimeManager->DeltaTime() * 10.0f;
         }
         if (mEventManager->GetKeyDown("a"))
         {
-            mPosition -= rightVector * mTimeManager->DeltaTime() * 5.0f;
+            mPosition -= rightVector * mTimeManager->DeltaTime() * 10.0f;
         }
         if (mEventManager->GetKeyDown("s"))
         {
-            mPosition -= mDirection * mTimeManager->DeltaTime() * 5.0f;
+            mPosition -= mDirection * mTimeManager->DeltaTime() * 10.0f;
         }
         if (mEventManager->GetKeyDown("d"))
         {
-            mPosition += rightVector * mTimeManager->DeltaTime() * 5.0f;
+            mPosition += rightVector * mTimeManager->DeltaTime() * 10.0f;
         }
         if (mEventManager->GetKeyDown("q"))
         {
-            mPosition -= glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 5.0f;
+            mPosition -= glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 10.0f;
         }
         if (mEventManager->GetKeyDown("e"))
         {
-            mPosition += glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 5.0f;
+            mPosition += glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 10.0f;
         }
 
         mView = glm::lookAt(mPosition, mPosition + mDirection, glm::vec3(0.0f, 1.0f, 0.0f));

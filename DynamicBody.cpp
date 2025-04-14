@@ -41,7 +41,6 @@ glm::vec3 DynamicBody::Update(float _deltaTime, glm::vec3 _rot)
 		break;
 	}
 
-	//general template, will probably have to change for each integration
 	glm::quat deltaRotation = glm::quat(0, mAngularVelocity.x, mAngularVelocity.y, mAngularVelocity.z) * mOrientation * 0.5f;
 	mOrientation += deltaRotation * _deltaTime;
 	mOrientation = glm::normalize(mOrientation);

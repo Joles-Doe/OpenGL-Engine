@@ -199,12 +199,12 @@ void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::sha
 		if (c1Dynamic)
 		{
 			_c1->Velocity(_c1->Velocity() + (impulse * invMass1));
-			_c1->AngularVelocity(_c1->AngularVelocity() + glm::inverse(_c1->InertiaTensorWorld()) * glm::cross(r1, impulse));
+			_c1->AngularVelocity(_c1->AngularVelocity() - glm::inverse(_c1->InertiaTensorWorld()) * glm::cross(r1, impulse));
 		}
 		if (c2Dynamic)
 		{
 			_c2->Velocity(_c2->Velocity() - (impulse * invMass2));
-			_c2->AngularVelocity(_c2->AngularVelocity() - glm::inverse(_c2->InertiaTensorWorld()) * glm::cross(r2, impulse));
+			_c2->AngularVelocity(_c2->AngularVelocity() + glm::inverse(_c2->InertiaTensorWorld()) * glm::cross(r2, impulse));
 		}
 	}
 }

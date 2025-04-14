@@ -5,6 +5,7 @@
 #include <glm/ext.hpp>
 #include <SDL2/SDL.h>
 
+#include "Transform.h"
 #include "EventManager.h"
 #include "TimeManager.h"
 
@@ -24,6 +25,8 @@ public:
 
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
+
+	void Position(glm::vec3 _pos) { mPosition = _pos; }
 
 	int GetPriority() { return mPriority; };
 	glm::mat4 GetView() { return mView; };

@@ -79,14 +79,15 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 	// Sets position of model
 	glm::mat4 model = glm::mat4(1.0f);
 
-	// Order of operation goes Scale, Translation, and Rotation
-	
 	model = glm::translate(model, mTransform->Position());
+	
+	model = glm::rotate(model, glm::radians(mTransform->Rotation().x), glm::vec3(1, 0, 0));
+	model = glm::rotate(model, glm::radians(mTransform->Rotation().y), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, glm::radians(mTransform->Rotation().z), glm::vec3(0, 0, 1));
+
 	model = glm::scale(model, mTransform->Scale());
 
-	model = glm::rotate(model, mTransform->Rotation().x, glm::vec3(1, 0, 0));
-	model = glm::rotate(model, mTransform->Rotation().y, glm::vec3(0, 1, 0));
-	model = glm::rotate(model, mTransform->Rotation().z, glm::vec3(0, 0, 1));
+	
 
 	_shader->SetUniform("uModel", model);
 

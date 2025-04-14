@@ -30,8 +30,9 @@ public:
 	void BoundsChangedReset();
 private:
 	std::shared_ptr<Transform> mTransform;
+	std::shared_ptr<Transform> GetTransform();
 
-	bool CubeToCube(std::shared_ptr<Collider> _other);
+	bool AABBCubeToCube(std::shared_ptr<Collider> _other);
 	bool CubeToSphere(std::shared_ptr<Collider> _cube, std::shared_ptr<Collider> _sphere);
 	bool SphereToSphere(std::shared_ptr<Collider> _other);
 

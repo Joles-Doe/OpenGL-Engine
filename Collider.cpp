@@ -123,7 +123,7 @@ bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 		switch (_other->GetShape())
 		{
 		case CUBE:
-			collided = CubeToCube(_other);
+			collided = AABBCubeToCube(_other);
 			break;
 		case SPHERE:
 			collided = CubeToSphere(shared_from_this(), _other);
@@ -155,8 +155,13 @@ void Collider::BoundsChangedReset()
 	mBoundsChanged = false;
 }
 
+std::shared_ptr<Transform> Collider::GetTransform()
+{
+	return mTransform;
+}
+
 // Check if every axis overlaps
-bool Collider::CubeToCube(std::shared_ptr<Collider> _other)
+bool Collider::AABBCubeToCube(std::shared_ptr<Collider> _other)
 {
 	return (glm::abs(mCenter.x - _other->mCenter.x) <= (mWidth / 2 + _other->mWidth / 2)) &&
 		(glm::abs(mCenter.y - _other->mCenter.y) <= (mHeight / 2 + _other->mHeight / 2)) &&

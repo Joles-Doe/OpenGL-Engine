@@ -20,66 +20,16 @@ int main()
 	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::ORBIT);
 	cam->AttachTimeManager(window.GetTimeManager());
 	cam->AttachEventManager(window.GetEventManager());
+
+	cam->Position(glm::vec3(0.0f, 0.0f, 5.0f));
 	window.AddCamera(cam);
-
-	//std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj", 
-	//	"./data/models/curuthers/Whiskers_diffuse.png");
-	//testModel->AttachEventManager(window.GetEventManager());
-
-	//testModel->Move(glm::vec3(0.0f, 0.0f, -15.0f));
-
-	//window.AddObject(testModel);
-
-	//==============================
-
-	glDisable(GL_CULL_FACE);
-	std::shared_ptr<GameObject> testModel = std::make_shared<GameObject>("./data/models/primitives/sphere/Primitive_SPHERE.obj",
-		"./data/models/primitives/colors/skybox.png");
-	testModel->AttachTimeManager(window.GetTimeManager());
-	testModel->GetTransform()->Move(glm::vec3(0.0f, 0.0f, -5.0f));
-	testModel->GetTransform()->Scale(glm::vec3(50.0f, 50.0f, 50.0f));
-
-	window.AddObject(testModel);
-
-	//==============================
-
-	std::shared_ptr<GameObject> testModel2 = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj",
-		"./data/models/curuthers/Whiskers_diffuse.png");
-	testModel2->AttachEventManager(window.GetEventManager());
-	testModel2->AttachTimeManager(window.GetTimeManager());
-
-	testModel2->GetTransform()->Move(glm::vec3(5.0f, 0.0f, -15.0f));
-	testModel2->GetTransform()->Rotate(glm::vec3(0.0f, 0.0f, 45.0f));
-
-	//window.AddObject(testModel2);
-
-	////==============================
-
-	//std::shared_ptr<GameObject> testModel3 = std::make_shared<GameObject>(CUBE, ORANGE);
-	//testModel3->GetTransform()->Move(glm::vec3(0.0f, 50.0f, -5.0f));
-	//testModel3->AttachTimeManager(window.GetTimeManager());
-	//testModel3->CreateCollider(CUBE);
-	//testModel3->CreateRigidbody(DYNAMIC);
-
-	//window.AddObject(testModel3);
-	//window.EnableRigidbody(testModel3->GetRigidbody());
-
-	////==============================
-
-	//std::shared_ptr<GameObject> testModel4 = std::make_shared<GameObject>(CUBE, RED);
-	//testModel4->GetTransform()->Move(glm::vec3(0.5f, 0.0f, -5.0f));
-	//testModel4->AttachTimeManager(window.GetTimeManager());
-	//testModel4->CreateCollider(CUBE);
-	//testModel4->CreateRigidbody(KINEMATIC);
-
-	//window.AddObject(testModel4);
-	//window.EnableRigidbody(testModel4->GetRigidbody());
 
 	//==============================
 	// BOUNDS RIGHT
-	std::shared_ptr<GameObject> rightBounds = std::make_shared<GameObject>(CUBE, PURPLE);
-	rightBounds->GetTransform()->Move(glm::vec3(5.0f, 0.0f, -15.0f));
-	rightBounds->GetTransform()->Scale(glm::vec3(1.0f, 10.0f, 10.0f));
+	std::shared_ptr<GameObject> rightBounds = std::make_shared<GameObject>(CUBE, RED);
+	rightBounds->GetTransform()->Move(glm::vec3(10.0f, 0.0f, -15.0f));
+	rightBounds->GetTransform()->Scale(glm::vec3(20.0f, 1.0f, 11.0f));
+	rightBounds->GetTransform()->Rotation(glm::vec3(0.0f, 0.0f, 90.0f));
 	rightBounds->AttachTimeManager(window.GetTimeManager());
 	rightBounds->CreateCollider(CUBE);
 	rightBounds->CreateRigidbody(KINEMATIC);
@@ -89,9 +39,9 @@ int main()
 
 	//==============================
 	// BOUNDS BOTTOM
-	std::shared_ptr<GameObject> bottomBounds = std::make_shared<GameObject>(CUBE, PURPLE);
-	bottomBounds->GetTransform()->Move(glm::vec3(0.0f, -6.0f, -15.0f));
-	bottomBounds->GetTransform()->Scale(glm::vec3(10.0f, 1.0f, 10.0f));
+	std::shared_ptr<GameObject> bottomBounds = std::make_shared<GameObject>(CUBE, WHITE);
+	bottomBounds->GetTransform()->Move(glm::vec3(0.0f, -10.0f, -15.0f));
+	bottomBounds->GetTransform()->Scale(glm::vec3(21.0f, 1.0f, 11.0f));
 	bottomBounds->AttachTimeManager(window.GetTimeManager());
 	bottomBounds->CreateCollider(CUBE);
 	bottomBounds->CreateRigidbody(KINEMATIC);
@@ -101,9 +51,10 @@ int main()
 
 	//==============================
 	// BOUNDS LEFT
-	std::shared_ptr<GameObject> leftBounds = std::make_shared<GameObject>(CUBE, PURPLE);
-	leftBounds->GetTransform()->Move(glm::vec3(-5.0f, 0.0f, -15.0f));
-	leftBounds->GetTransform()->Scale(glm::vec3(1.0f, 10.0f, 10.0f));
+	std::shared_ptr<GameObject> leftBounds = std::make_shared<GameObject>(CUBE, RED);
+	leftBounds->GetTransform()->Move(glm::vec3(-10.0f, 0.0f, -15.0f));
+	leftBounds->GetTransform()->Scale(glm::vec3(20.0f, 1.0f, 11.0f));
+	leftBounds->GetTransform()->Rotation(glm::vec3(0.0f, 0.0f, 90.0f));
 	leftBounds->AttachTimeManager(window.GetTimeManager());
 	leftBounds->CreateCollider(CUBE);
 	leftBounds->CreateRigidbody(KINEMATIC);
@@ -112,40 +63,31 @@ int main()
 	window.EnableRigidbody(leftBounds->GetRigidbody());
 
 	//==============================
-	//==============================
-	// OBJ 1
-	std::shared_ptr<GameObject> obj1 = std::make_shared<GameObject>(CUBE, ORANGE);
-	obj1->GetTransform()->Move(glm::vec3(-2.0f, 0.0f, -15.0f));
-	obj1->AttachTimeManager(window.GetTimeManager());
-	obj1->CreateCollider(CUBE);
-	obj1->CreateRigidbody(DYNAMIC);
+	// BOUNDS TOP
+	std::shared_ptr<GameObject> topBounds = std::make_shared<GameObject>(CUBE, WHITE);
+	topBounds->GetTransform()->Move(glm::vec3(0.0f, 10.0f, -15.0f));
+	topBounds->GetTransform()->Scale(glm::vec3(21.0f, 1.0f, 11.0f));
+	topBounds->AttachTimeManager(window.GetTimeManager());
+	topBounds->CreateCollider(CUBE);
+	topBounds->CreateRigidbody(KINEMATIC);
 
-	obj1->GetRigidbody()->AddForce(glm::vec3(-100.0f, 0.0f, 0.0f));
-
-	obj1->GetRigidbody()->Elasticity(0.85f);
-
-	window.AddObject(obj1);
-	window.EnableRigidbody(obj1->GetRigidbody());
+	window.AddObject(topBounds);
+	window.EnableRigidbody(topBounds->GetRigidbody());
 
 	//==============================
-	// OBJ 2
-	std::shared_ptr<GameObject> obj2 = std::make_shared<GameObject>(CUBE, BLUE);
-	obj2->GetTransform()->Move(glm::vec3(2.0f, 0.0f, -15.0f));
-	obj2->AttachTimeManager(window.GetTimeManager());
-	obj2->CreateCollider(SPHERE);
-	obj2->CreateRigidbody(DYNAMIC);
+	// BOUNDS BACK
+	std::shared_ptr<GameObject> backBounds = std::make_shared<GameObject>(CUBE, BLUE);
+	backBounds->GetTransform()->Move(glm::vec3(0.0f, 0.0f, -20.0f));
+	backBounds->GetTransform()->Scale(glm::vec3(20.0f, 1.0f, 21.0f));
+	backBounds->GetTransform()->Rotation(glm::vec3(90.0f, 0.0f, 0.0f));
+	backBounds->AttachTimeManager(window.GetTimeManager());
+	backBounds->CreateCollider(CUBE);
+	backBounds->CreateRigidbody(KINEMATIC);
 
-	obj2->GetRigidbody()->AddForce(glm::vec3(100.0f, 0.0f, 0.0f));
+	window.AddObject(backBounds);
+	window.EnableRigidbody(backBounds->GetRigidbody());
 
-	window.AddObject(obj2);
-	window.EnableRigidbody(obj2->GetRigidbody());
-
-
-	// TODO:
-	// ANGULAR MOMENTUM
-	// FRICTION
-	// SIMULATION READER
-	// ROTATION INCLUSION ON AABB COLLISION CHECKS (AND POTENTIALLY RESPONSES)
+	//==============================
 
 	bool quit = false;
 	while (!quit)

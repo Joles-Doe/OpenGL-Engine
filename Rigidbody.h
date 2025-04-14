@@ -30,6 +30,8 @@ public:
 
 	void Update(float _deltaTime);
 
+	void ChangePhysicsIntegration(RBINTEGRATION _mode);
+
 	void AddForce(glm::vec3 _force);
 
 	void Force(glm::vec3 _force);
