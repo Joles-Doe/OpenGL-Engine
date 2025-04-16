@@ -27,6 +27,9 @@ public:
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
 
 	void Position(glm::vec3 _pos) { mPosition = _pos; }
+	
+	float Pitch() { return mPitch; }
+	void Pitch(float _pitch) { mPitch = _pitch; }
 
 	int GetPriority() { return mPriority; };
 	glm::mat4 GetView() { return mView; };

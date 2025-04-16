@@ -17,8 +17,8 @@ class GameObject;
 class Rigidbody
 {
 public:
-	Rigidbody(std::shared_ptr<GameObject> _parent, std::shared_ptr<Collider> _collider, RBTYPE _bodyType, std::shared_ptr<Transform> _transform);
-	std::shared_ptr<GameObject> GetParent();
+	Rigidbody(std::weak_ptr<GameObject> _parent, std::shared_ptr<Collider> _collider, RBTYPE _bodyType, std::shared_ptr<Transform> _transform);
+	std::weak_ptr<GameObject> GetParent();
 	std::shared_ptr<Transform> GetTransform();
 	std::shared_ptr<Collider> GetCollider();
 
@@ -57,7 +57,7 @@ public:
 
 	glm::mat3 InertiaTensorWorld();
 private:
-	std::shared_ptr<GameObject> mParent;
+	std::weak_ptr<GameObject> mParent;
 	std::shared_ptr<Collider> mCollider;
 	std::shared_ptr<Transform> mTransform;
 

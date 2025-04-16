@@ -1,7 +1,7 @@
 #include "Rigidbody.h"
 #include "GameObject.h"
 
-Rigidbody::Rigidbody(std::shared_ptr<GameObject> _parent, std::shared_ptr<Collider> _collider, RBTYPE _bodyType, std::shared_ptr<Transform> _transform)
+Rigidbody::Rigidbody(std::weak_ptr<GameObject> _parent, std::shared_ptr<Collider> _collider, RBTYPE _bodyType, std::shared_ptr<Transform> _transform)
 {
 	mParent = _parent;
 	mCollider = _collider;
@@ -20,7 +20,7 @@ Rigidbody::Rigidbody(std::shared_ptr<GameObject> _parent, std::shared_ptr<Collid
 	mTransform = _transform;
 }
 
-std::shared_ptr<GameObject> Rigidbody::GetParent()
+std::weak_ptr<GameObject> Rigidbody::GetParent()
 {
 	return mParent;
 }

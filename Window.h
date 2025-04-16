@@ -49,6 +49,8 @@ private:
 	std::vector<std::shared_ptr<Camera>> mCameras;
 	std::vector<std::shared_ptr<GameObject>> mObjects;
 
+	void CullDeletedObjects();
+
 	int mPrevWidth;
 	int mPrevHeight;
 

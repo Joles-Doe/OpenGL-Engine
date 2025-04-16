@@ -1,11 +1,11 @@
 #include "GameObject.h"
 
-GameObject::GameObject()
+GameObject::GameObject() : mKILL(false)
 {
 	mTransform = std::make_shared<Transform>();
 }
 
-GameObject::GameObject(SHAPE _modelShape, COLOR _color)
+GameObject::GameObject(SHAPE _modelShape, COLOR _color) : mKILL(false)
 {
 	switch (_modelShape)
 	{
@@ -52,7 +52,7 @@ GameObject::GameObject(SHAPE _modelShape, COLOR _color)
 	mTransform = std::make_shared<Transform>();
 }
 
-GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEventManager(nullptr)
+GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEventManager(nullptr), mKILL(false)
 {
 	mModel = std::make_shared<Model>(_modelPath);
 	mTexture = std::make_shared<Texture>(_texturePath);
@@ -60,6 +60,10 @@ GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEven
 }
 
 GameObject::~GameObject()
+{
+}
+
+void GameObject::Start()
 {
 }
 
@@ -87,8 +91,6 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 
 	model = glm::scale(model, mTransform->Scale());
 
-	
-
 	_shader->SetUniform("uModel", model);
 
 	// Draw shape
@@ -97,6 +99,11 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 	// Reset the state
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+bool GameObject::IsKill()
+{
+	return mKILL;
 }
 
 
@@ -109,7 +116,9 @@ void GameObject::CreateRigidbody(RBTYPE _type)
 {
 	if (mCollider)
 	{
-		mRigidbody = std::make_shared<Rigidbody>(shared_from_this(), mCollider, _type, mTransform);
+		std::weak_ptr<GameObject> weak = shared_from_this();
+		std::cout << "Passing type: " << typeid(*weak.lock()).name() << std::endl;
+		mRigidbody = std::make_shared<Rigidbody>(weak, mCollider, _type, mTransform);
 	}
 	else
 	{

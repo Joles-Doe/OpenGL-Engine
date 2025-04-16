@@ -82,6 +82,10 @@ void Collider::CalculateBounds(std::vector<Model::Face>* _faces)
 void Collider::Update()
 {
 	mCenter = mTransform->Position() + mCenterOffset;
+
+	/*std::cout << "==================" << std::endl;
+	std::cout << "POSITION: " << mTransform->Position().x << ", " << mTransform->Position().y << ", " << mTransform->Position().z << std::endl;
+	std::cout << "COLLIDER CENTER: " << mCenter.x << ", " << mCenter.y << ", " << mCenter.z << std::endl;*/
 }
 
 SHAPE Collider::GetShape()
@@ -123,7 +127,7 @@ bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 		switch (_other->GetShape())
 		{
 		case CUBE:
-			collided = AABBCubeToCube(_other);
+			collided = OBBCubeToCube(_other);
 			break;
 		case SPHERE:
 			collided = CubeToSphere(shared_from_this(), _other);
@@ -166,6 +170,93 @@ bool Collider::AABBCubeToCube(std::shared_ptr<Collider> _other)
 	return (glm::abs(mCenter.x - _other->mCenter.x) <= (mWidth / 2 + _other->mWidth / 2)) &&
 		(glm::abs(mCenter.y - _other->mCenter.y) <= (mHeight / 2 + _other->mHeight / 2)) &&
 		(glm::abs(mCenter.z - _other->mCenter.z) <= (mDepth / 2 + _other->mDepth / 2));
+}
+
+bool Collider::OBBCubeToCube(std::shared_ptr<Collider> _other)
+{
+	glm::mat4 modelMatrix(1.0f);
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(mTransform->Rotation().x), glm::vec3(1, 0, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(mTransform->Rotation().y), glm::vec3(0, 1, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(mTransform->Rotation().z), glm::vec3(0, 0, 1));
+
+	glm::mat3 rotA = glm::mat3(modelMatrix);
+	rotA[0] *= mTransform->Scale().x;
+	rotA[1] *= mTransform->Scale().y;
+	rotA[2] *= mTransform->Scale().z;
+
+	modelMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->GetTransform()->Rotation().x), glm::vec3(1, 0, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->GetTransform()->Rotation().y), glm::vec3(0, 1, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->GetTransform()->Rotation().z), glm::vec3(0, 0, 1));
+
+	glm::mat3 rotB = glm::mat3(modelMatrix);
+	rotB[0] *= _other->GetTransform()->Scale().x;
+	rotB[1] *= _other->GetTransform()->Scale().y;
+	rotB[2] *= _other->GetTransform()->Scale().z;
+
+	// Get half-extents
+	glm::vec3 extentsA = glm::vec3(mWidth, mHeight, mDepth) * 0.5f;
+	glm::vec3 extentsB = glm::vec3(_other->mWidth, _other->mHeight, _other->mDepth) * 0.5f;
+
+	// Axes of A and B
+	glm::vec3 axesA[3] = { rotA[0], rotA[1], rotA[2] };
+	glm::vec3 axesB[3] = { rotB[0], rotB[1], rotB[2] };
+
+	// Vector between centers
+	glm::vec3 t = _other->mCenter - mCenter;
+
+	// Loop through 15 axes
+	for (int i = 0; i < 3; ++i)
+	{
+		if (!OBBTestAxis(axesA[i], t, rotA, rotB, extentsA, extentsB))
+		{
+			return false;
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (!OBBTestAxis(axesB[i], t, rotA, rotB, extentsA, extentsB))
+		{
+			return false;
+		}
+	}
+
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			glm::vec3 axis = glm::cross(axesA[i], axesB[j]);
+			if (glm::dot(axis, axis) < 1e-6f) continue; // skip degenerate axis
+
+			if (!OBBTestAxis(glm::normalize(axis), t, rotA, rotB, extentsA, extentsB))
+			{
+				return false;
+			}
+		}
+	}
+
+	// No separating axis found — they are colliding
+	return true;
+}
+
+bool Collider::OBBTestAxis(glm::vec3 axis, glm::vec3 t, glm::mat3 rotA, glm::mat3 rotB, glm::vec3 extentsA, glm::vec3 extentsB)
+{
+	axis = glm::normalize(axis);
+
+	float projA =
+		glm::abs(glm::dot(axis, rotA[0])) * extentsA.x +
+		glm::abs(glm::dot(axis, rotA[1])) * extentsA.y +
+		glm::abs(glm::dot(axis, rotA[2])) * extentsA.z;
+
+	float projB =
+		glm::abs(glm::dot(axis, rotB[0])) * extentsB.x +
+		glm::abs(glm::dot(axis, rotB[1])) * extentsB.y +
+		glm::abs(glm::dot(axis, rotB[2])) * extentsB.z;
+
+	float dist = glm::abs(glm::dot(t, axis));
+
+	return dist <= projA + projB;
 }
 
 // Calculate the cube's closest point to the sphere and check if the distance is less or equal to the sphere radius

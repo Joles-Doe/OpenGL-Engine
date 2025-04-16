@@ -8,8 +8,8 @@ enum SHAPE
 
 enum COLOR
 {
-	RED,
 	BLUE,
+	RED,
 	GREEN,
 	ORANGE,
 	PURPLE,

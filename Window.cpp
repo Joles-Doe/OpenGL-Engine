@@ -53,6 +53,9 @@ void Window::Update()
 	//Handle inputs
 	mEventManager->PollEvents();
 	
+	//Remove dead objects
+	CullDeletedObjects();
+
 	//Handle physics
 	if (mEnablePhysics)
 	{
@@ -119,6 +122,7 @@ void Window::Update()
 void Window::AddObject(std::shared_ptr<GameObject> _obj)
 {
 	mObjects.push_back(_obj);
+	_obj->Start();
 }
 
 std::shared_ptr<Camera> Window::GetActiveCamera()
@@ -142,4 +146,14 @@ void Window::AddCamera(std::shared_ptr<Camera> _cam)
 bool Window::GetQuitState()
 {
 	return mEventManager->GetQuitState();
+}
+
+void Window::CullDeletedObjects()
+{
+	mObjects.erase(
+		std::remove_if(mObjects.begin(), mObjects.end(),
+			[](const std::shared_ptr<GameObject>& obj) {
+				return obj->IsKill(); // true = remove it
+			}),
+		mObjects.end());
 }

@@ -33,6 +33,10 @@ private:
 	std::shared_ptr<Transform> GetTransform();
 
 	bool AABBCubeToCube(std::shared_ptr<Collider> _other);
+
+	bool OBBCubeToCube(std::shared_ptr<Collider> _other);
+	bool OBBTestAxis(glm::vec3 axis, glm::vec3 t, glm::mat3 rotA, glm::mat3 rotB, glm::vec3 extentsA, glm::vec3 extentsB);
+	
 	bool CubeToSphere(std::shared_ptr<Collider> _cube, std::shared_ptr<Collider> _sphere);
 	bool SphereToSphere(std::shared_ptr<Collider> _other);
 

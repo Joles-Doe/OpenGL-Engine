@@ -23,8 +23,11 @@ public:
 	GameObject(const char* _modelPath, const char* _texturePath);
 	~GameObject();
 
+	virtual void Start();
 	virtual void Update();
 	void Draw(std::shared_ptr<ShaderProgram> _shader);
+
+	bool IsKill();
 
 	void CreateCollider(SHAPE _type);
 	void CreateRigidbody(RBTYPE _type);
@@ -38,7 +41,9 @@ public:
 
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
-private:
+protected:
+	bool mKILL;
+
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<TimeManager> mTimeManager;
 

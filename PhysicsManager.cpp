@@ -9,6 +9,7 @@ PhysicsManager::PhysicsManager(std::shared_ptr<TimeManager> _time)
 
 void PhysicsManager::Update()
 {
+	CullDeletedRigidbodies();
 	//implement spatial partitioning, eventually
 
 	for (int i = 0; i < mRigidbodies.size(); i++)
@@ -54,22 +55,26 @@ void PhysicsManager::Update()
 				// For each rigidbody, check if they've already collided, and call the appropriate Gameobject Collision function if they have
 				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
 				{
-					mRigidbodies[i]->GetParent()->OnCollisionStay(mRigidbodies[x]);
+					mRigidbodies[i]->GetParent().lock()->OnCollisionStay(mRigidbodies[x]);
 				}
 				else
 				{
 					mRigidbodies[i]->AddCollidedRigidbody(mRigidbodies[x]);
-					mRigidbodies[i]->GetParent()->OnCollisionEnter(mRigidbodies[x]);
+					mRigidbodies[i]->GetParent().lock()->OnCollisionEnter(mRigidbodies[x]);
+
+					std::cout << "Calling Function from Type: " << typeid(*mRigidbodies[i]->GetParent().lock()).name() << std::endl;
 				}
 
 				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
 				{
-					mRigidbodies[x]->GetParent()->OnCollisionStay(mRigidbodies[i]);
+					mRigidbodies[x]->GetParent().lock()->OnCollisionStay(mRigidbodies[i]);
 				}
 				else
 				{
 					mRigidbodies[x]->AddCollidedRigidbody(mRigidbodies[i]);
-					mRigidbodies[x]->GetParent()->OnCollisionEnter(mRigidbodies[i]);
+					mRigidbodies[x]->GetParent().lock()->OnCollisionEnter(mRigidbodies[i]);
+
+					std::cout << "Calling Function from Type: " << typeid(*mRigidbodies[x]->GetParent().lock()).name() << std::endl;
 				}
 			}
 			// If there's been no collision detected, check if the rigidbodies had collided last frame and call the appropritae Gameobject collision function
@@ -78,13 +83,13 @@ void PhysicsManager::Update()
 				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
 				{
 					mRigidbodies[i]->RemoveCollidedRigidbody(mRigidbodies[x]);
-					mRigidbodies[i]->GetParent()->OnCollisionExit(mRigidbodies[x]);
+					mRigidbodies[i]->GetParent().lock()->OnCollisionExit(mRigidbodies[x]);
 				}
 
 				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
 				{
 					mRigidbodies[x]->RemoveCollidedRigidbody(mRigidbodies[i]);
-					mRigidbodies[x]->GetParent()->OnCollisionExit(mRigidbodies[i]);
+					mRigidbodies[x]->GetParent().lock()->OnCollisionExit(mRigidbodies[i]);
 				}
 			}
 		}
@@ -94,6 +99,17 @@ void PhysicsManager::Update()
 void PhysicsManager::Add(std::shared_ptr<Rigidbody> _rb)
 {
 	mRigidbodies.push_back(_rb);
+}
+
+void PhysicsManager::CullDeletedRigidbodies()
+{
+	mRigidbodies.erase(
+		std::remove_if(mRigidbodies.begin(), mRigidbodies.end(),
+			[](const std::shared_ptr<Rigidbody>& rb) 
+			{
+				return rb->GetParent().expired();
+			}),
+		mRigidbodies.end());
 }
 
 void PhysicsManager::ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _c2)

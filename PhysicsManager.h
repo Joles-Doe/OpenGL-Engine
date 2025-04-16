@@ -15,6 +15,8 @@ public:
 
 	void Add(std::shared_ptr<Rigidbody> _rb);
 private:
+	void CullDeletedRigidbodies();
+
 	void ResponseCubeToCube(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _c2);
 	void ResponseCubeToSphere(std::shared_ptr<Rigidbody> _c1, std::shared_ptr<Rigidbody> _s1);
 	void ResponseSphereToSphere(std::shared_ptr<Rigidbody> _s1, std::shared_ptr<Rigidbody> _s2);
