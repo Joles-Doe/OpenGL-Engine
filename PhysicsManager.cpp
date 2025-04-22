@@ -61,8 +61,6 @@ void PhysicsManager::Update()
 				{
 					mRigidbodies[i]->AddCollidedRigidbody(mRigidbodies[x]);
 					mRigidbodies[i]->GetParent().lock()->OnCollisionEnter(mRigidbodies[x]);
-
-					std::cout << "Calling Function from Type: " << typeid(*mRigidbodies[i]->GetParent().lock()).name() << std::endl;
 				}
 
 				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
@@ -73,8 +71,6 @@ void PhysicsManager::Update()
 				{
 					mRigidbodies[x]->AddCollidedRigidbody(mRigidbodies[i]);
 					mRigidbodies[x]->GetParent().lock()->OnCollisionEnter(mRigidbodies[i]);
-
-					std::cout << "Calling Function from Type: " << typeid(*mRigidbodies[x]->GetParent().lock()).name() << std::endl;
 				}
 			}
 			// If there's been no collision detected, check if the rigidbodies had collided last frame and call the appropritae Gameobject collision function

@@ -117,7 +117,6 @@ void GameObject::CreateRigidbody(RBTYPE _type)
 	if (mCollider)
 	{
 		std::weak_ptr<GameObject> weak = shared_from_this();
-		std::cout << "Passing type: " << typeid(*weak.lock()).name() << std::endl;
 		mRigidbody = std::make_shared<Rigidbody>(weak, mCollider, _type, mTransform);
 	}
 	else

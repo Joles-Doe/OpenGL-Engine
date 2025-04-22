@@ -12,10 +12,13 @@
 #include "Camera.h"
 #include "GameObject.h"
 
+#include "ParameterLoader.h"
 #include "BallSpawner.h"
 #include "Ball.h"
 
 #undef main
+
+RBINTEGRATION StringToRBIntegration(const std::string& _str);
 
 int main()
 {
@@ -30,6 +33,10 @@ int main()
 	cam->Pitch(-10.0f);
 
 	window.AddCamera(cam);
+
+	//==============================
+	// LOAD SIM PARAMETERS
+	std::unique_ptr<ParameterLoader> simParams = std::make_unique<ParameterLoader>("./SIMULATION_PARAMETERS.txt");
 
 	//==============================
 	// BOUNDS RIGHT
@@ -91,19 +98,6 @@ int main()
 	window.AddObject(backBounds);
 	window.EnableRigidbody(backBounds->GetRigidbody());
 
-	////==============================
-	//// OBJ 1
-	//std::shared_ptr<GameObject> back1 = std::make_shared<GameObject>(CUBE, PURPLE);
-	//back1->GetTransform()->Move(glm::vec3(0.0f, 5.0f, -15.0f));
-	//back1->AttachTimeManager(window.GetTimeManager());
-	//back1->CreateCollider(CUBE);
-	//back1->CreateRigidbody(DYNAMIC);
-
-	//back1->GetRigidbody()->AddForce(glm::vec3(-80.0f, 0.0f, 0.0f));
-
-	//window.AddObject(back1);
-	//window.EnableRigidbody(back1->GetRigidbody());
-
 	//==============================
 	//BALL SPAWNER
 	std::shared_ptr<BallSpawner> spawner = std::make_shared<BallSpawner>(CUBE, PURPLE);
@@ -139,6 +133,13 @@ int main()
 	}
 	std::shared_ptr<Ball> ball;
 
+	// Sim values
+	std::cout << "LOADING SIMULATION PARAMETERS:" << std::endl;
+	std::cout << "DefaultMass: " << simParams->GetFloat("DefaultMass") << std::endl;
+	std::cout << "DefaultElasticity: " << simParams->GetFloat("DefaultElasticity") << std::endl;
+	std::cout << "PhysicsIntegration: " << simParams->GetString("PhysicsIntegration") << std::endl;
+	
+
 	bool quit = false;
 	while (!quit)
 	{
@@ -159,7 +160,10 @@ int main()
 			ball->CreateCollider(SPHERE);
 			ball->CreateRigidbody(DYNAMIC);
 
-			ball->GetRigidbody()->Elasticity(0.5f);
+			// Load Parameters
+			ball->GetRigidbody()->Mass(simParams->GetFloat("DefaultMass"));
+			ball->GetRigidbody()->Elasticity(simParams->GetFloat("DefaultElasticity"));
+			ball->GetRigidbody()->ChangePhysicsIntegration(StringToRBIntegration(simParams->GetString("PhysicsIntegration")));
 
 			window.AddObject(ball);
 			window.EnableRigidbody(ball->GetRigidbody());
@@ -168,4 +172,17 @@ int main()
 	}
 
 	return 0;
+}
+
+// Converts string to integration enum. Defaults to EULER if value is invalid
+RBINTEGRATION StringToRBIntegration(const std::string& _str)
+{
+	RBINTEGRATION integration = EULER;
+	
+	if (_str == "EULER") integration = EULER;
+	if (_str == "RK2") integration = RK2;
+	if (_str == "RK4") integration = RK4;
+	if (_str == "VERLET") integration = VERLET;
+
+	return integration;
 }

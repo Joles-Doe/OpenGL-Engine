@@ -129,6 +129,9 @@
     <ClCompile Include="Ball.cpp">
       <Filter>Source Files\Custom GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="ParameterLoader.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="Ball.h">
       <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ParameterLoader.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
