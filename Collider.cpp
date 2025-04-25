@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_ptr<Transform> _transform) :
+Collider::Collider(SHAPE _type, const std::vector<Model::Face>& _faces, std::shared_ptr<Transform> _transform) :
 	mCenter(0), mHeight(0), mRadius(0), mWidth(0), mDepth(0), mBoundsChanged(true)
 {
 	mType = _type;
@@ -10,22 +10,22 @@ Collider::Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_pt
 	CalculateBounds(_faces);
 }
 
-void Collider::CalculateBounds(std::vector<Model::Face>* _faces)
+void Collider::CalculateBounds(const std::vector<Model::Face>& _faces)
 {
 	glm::vec3 mBottomLeft(FLT_MAX);
 	glm::vec3 mTopRight(-FLT_MAX);
 
-	if (!_faces->empty())
+	if (!_faces.empty())
 	{
 		switch (mType)
 		{
 		case CUBE:
 			// Calculate bounds by grabbing the minimum and maximum of all points
-			for (int x = 0; x < _faces->size(); x++)
+			for (int x = 0; x < _faces.size(); x++)
 			{
-				glm::vec3 a = _faces->at(x).a.mPosition * mTransform->Scale();
-				glm::vec3 b = _faces->at(x).b.mPosition * mTransform->Scale();
-				glm::vec3 c = _faces->at(x).c.mPosition * mTransform->Scale();
+				glm::vec3 a = _faces.at(x).a.mPosition * mTransform->Scale();
+				glm::vec3 b = _faces.at(x).b.mPosition * mTransform->Scale();
+				glm::vec3 c = _faces.at(x).c.mPosition * mTransform->Scale();
 
 				mBottomLeft = glm::min(mBottomLeft, a);
 				mBottomLeft = glm::min(mBottomLeft, b);
@@ -44,11 +44,11 @@ void Collider::CalculateBounds(std::vector<Model::Face>* _faces)
 		case SPHERE:
 			// Calculate center by averaging the position of all points
 			int vertexCount = 0;
-			for (int x = 0; x < _faces->size(); x++)
+			for (int x = 0; x < _faces.size(); x++)
 			{
-				glm::vec3 a = _faces->at(x).a.mPosition * mTransform->Scale();
-				glm::vec3 b = _faces->at(x).b.mPosition * mTransform->Scale();
-				glm::vec3 c = _faces->at(x).c.mPosition * mTransform->Scale();
+				glm::vec3 a = _faces.at(x).a.mPosition * mTransform->Scale();
+				glm::vec3 b = _faces.at(x).b.mPosition * mTransform->Scale();
+				glm::vec3 c = _faces.at(x).c.mPosition * mTransform->Scale();
 
 				mCenter += a;
 				mCenter += b;
@@ -58,11 +58,11 @@ void Collider::CalculateBounds(std::vector<Model::Face>* _faces)
 			mCenter /= (float)vertexCount;
 
 			// Calculate radius by checking the maxiumum distance of each point
-			for (int x = 0; x < _faces->size(); x++)
+			for (int x = 0; x < _faces.size(); x++)
 			{
-				glm::vec3 a = _faces->at(x).a.mPosition * mTransform->Scale();
-				glm::vec3 b = _faces->at(x).b.mPosition * mTransform->Scale();
-				glm::vec3 c = _faces->at(x).c.mPosition * mTransform->Scale();
+				glm::vec3 a = _faces.at(x).a.mPosition * mTransform->Scale();
+				glm::vec3 b = _faces.at(x).b.mPosition * mTransform->Scale();
+				glm::vec3 c = _faces.at(x).c.mPosition * mTransform->Scale();
 
 				mRadius = glm::max(mRadius, glm::distance(mCenter, a));
 				mRadius = glm::max(mRadius, glm::distance(mCenter, b));
@@ -70,10 +70,6 @@ void Collider::CalculateBounds(std::vector<Model::Face>* _faces)
 			}
 			break;
 		}
-	}
-	else
-	{
-		std::cout << "MODEL VECTOR IS EMPTY!!" << std::endl;
 	}
 	mCenterOffset = mCenter;
 	mBoundsChanged = true;

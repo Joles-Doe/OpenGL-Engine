@@ -16,8 +16,3 @@ void TimeManager::Wait()
 		SDL_Delay(static_cast<Uint32>((1000 / mFrameRate) - endTime));
 	}
 }
-
-float TimeManager::DeltaTime() const
-{
-	return mDeltaTime;
-}

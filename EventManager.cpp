@@ -139,7 +139,7 @@ void EventManager::PollEvents()
 	}
 }
 
-bool EventManager::GetKeyDown(const std::string& _key)
+bool EventManager::GetKeyDown(const std::string& _key) const
 {
 	bool isDown{ false };
 	if (_key == "W" || _key == "w")
@@ -189,7 +189,7 @@ bool EventManager::GetKeyDown(const std::string& _key)
 	return isDown;
 }
 
-bool EventManager::GetMouseDown(const std::string& _button)
+bool EventManager::GetMouseDown(const std::string& _button) const
 {
 	bool isDown{ false };
 	if (_button == "1" || _button == "left" || _button == "LEFT" || _button == "l" || _button == "L")

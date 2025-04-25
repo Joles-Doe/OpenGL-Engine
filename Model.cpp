@@ -9,6 +9,7 @@ Model::Model(const std::string& _path) : mVaoID(0), mVboID(0), mDirty(false)
 
     std::ifstream file(_path.c_str());
 
+    // Checks if the file location is valid
     if (!file.is_open())
     {
         throw std::runtime_error("Failed to open model [" + _path + "]");
@@ -19,10 +20,12 @@ Model::Model(const std::string& _path) : mVaoID(0), mVboID(0), mDirty(false)
         std::getline(file, currentline);
         if (currentline.length() < 1) continue;
 
+        // Take the given line and split it into usable substrings
         std::vector<std::string> tokens;
         SplitStringWhitespace(currentline, tokens);
         if (tokens.size() < 1) continue;
 
+        // Read the .OBJ file
         if (tokens.at(0) == "v" && tokens.size() >= 4)
         {
             glm::vec3 p(atof(tokens.at(1).c_str()),
@@ -93,11 +96,6 @@ Model::~Model()
     {
         glDeleteBuffers(1, &mVboID);
     }
-}
-
-GLsizei Model::VertexCount() const
-{
-    return (GLsizei)mFaces.size() * 3;
 }
 
 GLuint Model::ID()

@@ -109,7 +109,7 @@ bool GameObject::IsKill()
 
 void GameObject::CreateCollider(SHAPE _type)
 {
-	mCollider = std::make_shared<Collider>(_type, mModel->GetFaceVector(), mTransform);
+	mCollider = std::make_shared<Collider>(_type, mModel->GetFaces(), mTransform);
 }
 
 void GameObject::CreateRigidbody(RBTYPE _type)

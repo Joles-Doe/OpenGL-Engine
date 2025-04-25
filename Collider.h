@@ -11,8 +11,8 @@
 class Collider : public std::enable_shared_from_this<Collider>
 {
 public:
-	Collider(SHAPE _type, std::vector<Model::Face>* _faces, std::shared_ptr<Transform> _transform);
-	void CalculateBounds(std::vector<Model::Face>* _faces);
+	Collider(SHAPE _type, const std::vector<Model::Face>& _faces, std::shared_ptr<Transform> _transform);
+	void CalculateBounds(const std::vector<Model::Face>& _faces);
 
 	void Update();
 

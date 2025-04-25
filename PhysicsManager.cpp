@@ -9,15 +9,16 @@ PhysicsManager::PhysicsManager(std::shared_ptr<TimeManager> _time)
 
 void PhysicsManager::Update()
 {
+	// Removes invalid Rigidbodies
 	CullDeletedRigidbodies();
-	//implement spatial partitioning, eventually
 
+	// Updates every stored Rigidbody
 	for (int i = 0; i < mRigidbodies.size(); i++)
 	{
 		mRigidbodies[i]->Update(mTimeManager->DeltaTime());
 	}
 
-	//Iterate through every pair to check for collision
+	// Iterate through every pair to check for collision
 	for (int i = 0; i < mRigidbodies.size() - 1; i++)
 	{
 		for (int x = i + 1; x < mRigidbodies.size(); x++)
@@ -52,7 +53,7 @@ void PhysicsManager::Update()
 					break;
 				}
 
-				// For each rigidbody, check if they've already collided, and call the appropriate Gameobject Collision function if they have
+				// For each rigidbody, check if they've already collided, and call the appropriate Gameobject collision function
 				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
 				{
 					mRigidbodies[i]->GetParent().lock()->OnCollisionStay(mRigidbodies[x]);
@@ -73,7 +74,7 @@ void PhysicsManager::Update()
 					mRigidbodies[x]->GetParent().lock()->OnCollisionEnter(mRigidbodies[i]);
 				}
 			}
-			// If there's been no collision detected, check if the rigidbodies had collided last frame and call the appropritae Gameobject collision function
+			// If there's been no collision detected, check if the Rigidbodies had previously collided last frame and call the appropriate Gameobject collision function
 			else
 			{
 				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
@@ -328,7 +329,6 @@ void PhysicsManager::ResponseSphereToSphere(std::shared_ptr<Rigidbody> _s1, std:
 		// Calculate the amount of movement needed to move the spheres out of each other
 		glm::vec3 correction = normal * (penetration - slop) * percent;
 
-		// Only move the spheres if they're dynamic
 		if (s1Dynamic && s2Dynamic)
 		{
 			_s1->GetTransform()->Move(correction * 0.5f);
