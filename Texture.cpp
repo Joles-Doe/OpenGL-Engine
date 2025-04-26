@@ -18,16 +18,6 @@ Texture::~Texture()
 	}
 }
 
-void Texture::SetSize(glm::ivec2 _size)
-{
-	mSize = _size;
-}
-
-glm::ivec2 Texture::GetSize() const
-{
-	return mSize;
-}
-
 void Texture::Load(const std::string& _path)
 {
 	unsigned char* textureData = stbi_load(_path.c_str(), &mSize.x, &mSize.y, NULL, 4);
@@ -53,18 +43,6 @@ void Texture::SetPixel(glm::ivec2 _position, const glm::vec4& _color)
 	}
 }
 
-glm::vec4 Texture::GetPixel(glm::ivec2 _position) const
-{
-	glm::vec4 pixel;
-	int index = _position.x * _position.y * 4;
-	for (int x = 0; x < 4; x++)
-	{
-		pixel[x] = mData[index + x];
-	}
-
-	return glm::vec4();
-}
-
 GLuint Texture::ID()
 {
 	if (mID == 0)
@@ -76,7 +54,7 @@ GLuint Texture::ID()
 			throw std::runtime_error("Failed to Initialize Texture");
 		}
 	}
-	
+
 	if (mDirty == true)
 	{
 		glBindTexture(GL_TEXTURE_2D, mID);
@@ -91,4 +69,16 @@ GLuint Texture::ID()
 	}
 
 	return mID;
+}
+
+glm::vec4 Texture::GetPixel(glm::ivec2 _position) const
+{
+	glm::vec4 pixel;
+	int index = _position.x * _position.y * 4;
+	for (int x = 0; x < 4; x++)
+	{
+		pixel[x] = mData[index + x];
+	}
+
+	return glm::vec4();
 }

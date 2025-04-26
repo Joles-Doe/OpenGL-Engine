@@ -101,12 +101,6 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-bool GameObject::IsKill()
-{
-	return mKILL;
-}
-
-
 void GameObject::CreateCollider(SHAPE _type)
 {
 	mCollider = std::make_shared<Collider>(_type, mModel->GetFaces(), mTransform);

@@ -84,36 +84,6 @@ void Collider::Update()
 	std::cout << "COLLIDER CENTER: " << mCenter.x << ", " << mCenter.y << ", " << mCenter.z << std::endl;*/
 }
 
-SHAPE Collider::GetShape()
-{
-	return mType;
-}
-
-glm::vec3 Collider::GetCenter()
-{
-	return mCenter;
-}
-
-float Collider::GetWidth()
-{
-	return mWidth;
-}
-
-float Collider::GetHeight()
-{
-	return mHeight;
-}
-
-float Collider::GetDepth()
-{
-	return mDepth;
-}
-
-float Collider::GetRadius()
-{
-	return mRadius;
-}
-
 bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 {
 	bool collided = false;
@@ -145,24 +115,9 @@ bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 	return collided;
 }
 
-bool Collider::BoundsChanged()
-{
-	return mBoundsChanged;
-}
-
-void Collider::BoundsChangedReset()
-{
-	mBoundsChanged = false;
-}
-
-std::shared_ptr<Transform> Collider::GetTransform()
-{
-	return mTransform;
-}
-
-// Check if every axis overlaps
 bool Collider::AABBCubeToCube(std::shared_ptr<Collider> _other)
 {
+	// Check if every axis overlaps
 	return (glm::abs(mCenter.x - _other->mCenter.x) <= (mWidth / 2 + _other->mWidth / 2)) &&
 		(glm::abs(mCenter.y - _other->mCenter.y) <= (mHeight / 2 + _other->mHeight / 2)) &&
 		(glm::abs(mCenter.z - _other->mCenter.z) <= (mDepth / 2 + _other->mDepth / 2));
@@ -181,14 +136,14 @@ bool Collider::OBBCubeToCube(std::shared_ptr<Collider> _other)
 	rotA[2] *= mTransform->Scale().z;
 
 	modelMatrix = glm::mat4(1.0f);
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->GetTransform()->Rotation().x), glm::vec3(1, 0, 0));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->GetTransform()->Rotation().y), glm::vec3(0, 1, 0));
-	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->GetTransform()->Rotation().z), glm::vec3(0, 0, 1));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->mTransform->Rotation().x), glm::vec3(1, 0, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->mTransform->Rotation().y), glm::vec3(0, 1, 0));
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(_other->mTransform->Rotation().z), glm::vec3(0, 0, 1));
 
 	glm::mat3 rotB = glm::mat3(modelMatrix);
-	rotB[0] *= _other->GetTransform()->Scale().x;
-	rotB[1] *= _other->GetTransform()->Scale().y;
-	rotB[2] *= _other->GetTransform()->Scale().z;
+	rotB[0] *= _other->mTransform->Scale().x;
+	rotB[1] *= _other->mTransform->Scale().y;
+	rotB[2] *= _other->mTransform->Scale().z;
 
 	// Get half-extents
 	glm::vec3 extentsA = glm::vec3(mWidth, mHeight, mDepth) * 0.5f;
@@ -255,9 +210,9 @@ bool Collider::OBBTestAxis(glm::vec3 axis, glm::vec3 t, glm::mat3 rotA, glm::mat
 	return dist <= projA + projB;
 }
 
-// Calculate the cube's closest point to the sphere and check if the distance is less or equal to the sphere radius
 bool Collider::CubeToSphere(std::shared_ptr<Collider> _cube, std::shared_ptr<Collider> _sphere)
 {
+	// Calculate the cube's closest point to the sphere and check if the distance is less or equal to the sphere radius
 	float closeX = glm::max(_cube->mCenter.x - _cube->mWidth / 2, glm::min(_sphere->mCenter.x, _cube->mCenter.x + _cube->mWidth / 2));
 	float closeY = glm::max(_cube->mCenter.y - _cube->mHeight / 2, glm::min(_sphere->mCenter.y, _cube->mCenter.y + _cube->mHeight / 2));
 	float closeZ = glm::max(_cube->mCenter.z - _cube->mDepth / 2, glm::min(_sphere->mCenter.z, _cube->mCenter.z + _cube->mDepth / 2));
@@ -271,9 +226,9 @@ bool Collider::CubeToSphere(std::shared_ptr<Collider> _cube, std::shared_ptr<Col
 	return distanceSquared <= (_sphere->mRadius * _sphere->mRadius);
 }
 
-// Check if the distance between both spheres is less or equal to the sum of their radiuses	
 bool Collider::SphereToSphere(std::shared_ptr<Collider> _other)
 {
+	// Check if the distance between both spheres is less or equal to the sum of their radii
 	float dx = mCenter.x - _other->mCenter.x;
 	float dy = mCenter.y - _other->mCenter.y;
 	float dz = mCenter.z - _other->mCenter.z;

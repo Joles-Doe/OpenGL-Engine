@@ -15,6 +15,9 @@
 #include "Rigidbody.h"
 #include "ShaderProgram.h"
 
+/// <summary>
+/// GameObject - Base class for every object drawn and updated by the Window.
+/// </summary>
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -23,23 +26,80 @@ public:
 	GameObject(const char* _modelPath, const char* _texturePath);
 	~GameObject();
 
+	/// <summary>
+	/// Start function - called once by the Window when the GameObject gets initialized. Use this as your constructor to initialize all of your variables.
+	/// </summary>
 	virtual void Start();
+
+	/// <summary>
+	/// Update function - called once a frame by the Window.
+	/// </summary>
 	virtual void Update();
+
+	/// <summary>
+	/// Draw function - called by the Window to draw the Model.
+	/// </summary>
+	/// <param name="_shader"> Shader used for the drawing process </param>
 	void Draw(std::shared_ptr<ShaderProgram> _shader);
 
-	bool IsKill();
+	/// <summary>
+	/// Returns true or false dependent on if the GameObject is dead and will be culled.
+	/// </summary>
+	/// <returns> Returns true or false dependent on if the GameObject needs culling </returns>
+	bool IsKill() const noexcept { return mKILL; }
 
+	/// <summary>
+	/// Factory function that initializes a Collider object.
+	/// </summary>
+	/// <param name="_type"> Collider shape </param>
 	void CreateCollider(SHAPE _type);
+
+	/// <summary>
+	/// Factory function that initializes a Rigidbody. Requires a Collider before allowing Rigidbody creation.
+	/// </summary>
+	/// <param name="_type"> Rigidbody type </param>
 	void CreateRigidbody(RBTYPE _type);
 
+	/// <summary>
+	/// Virtual collision function. Called when two Rigidbodies collide for the first time.
+	/// </summary>
+	/// <param name="_other"> Collided Rigidbody </param>
 	virtual void OnCollisionEnter(std::shared_ptr<Rigidbody> _other);
+
+	/// <summary>
+	/// Virtual collision function. Called when two Rigidbodies have collided last frame and are colliding in the current frame.
+	/// </summary>
+	/// <param name="_other"> Collided Rigidbody </param>
 	virtual void OnCollisionStay(std::shared_ptr<Rigidbody> _other);
+
+	/// <summary>
+	/// Virtual collision function. Called when two Rigidbodies have collided last frame and are no longer colliding.
+	/// </summary>
+	/// <param name="_other"> Collided Rigidbody </param>
 	virtual void OnCollisionExit(std::shared_ptr<Rigidbody> _other);
 
+	/// <summary>
+	/// Returns the GameObject's Transform component.
+	/// </summary>
+	/// <returns> GameObject Transform </returns>
 	std::shared_ptr<Transform> GetTransform() { return mTransform; }
+
+	/// <summary>
+	/// Returns the GameObject's Rigidbody component.
+	/// </summary>
+	/// <returns> GameObject Rigidbody </returns>
 	std::shared_ptr<Rigidbody> GetRigidbody() { return mRigidbody; }
 
+	/// <summary>
+	/// Attaches the Event Manager component to the GameObject.
+	/// </summary>
+	/// <param name="_manager"> Event Manager </param>
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
+
+	/// <summary>
+	/// Attaches the Time Manager component to the GameObject.
+	/// </summary>
+	/// <param name="_manager"> Time Manager </param>
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
 protected:
 	bool mKILL;
