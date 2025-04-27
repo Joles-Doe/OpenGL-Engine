@@ -20,21 +20,6 @@ Rigidbody::Rigidbody(std::weak_ptr<GameObject> _parent, std::shared_ptr<Collider
 	mTransform = _transform;
 }
 
-std::weak_ptr<GameObject> Rigidbody::GetParent()
-{
-	return mParent;
-}
-
-std::shared_ptr<Transform> Rigidbody::GetTransform()
-{
-	return mTransform;
-}
-
-std::shared_ptr<Collider> Rigidbody::GetCollider()
-{
-	return mCollider;
-}
-
 bool Rigidbody::RigidbodyAlreadyCollided(std::shared_ptr<Rigidbody> _other)
 {
 	bool alreadyCollided = false;
@@ -66,11 +51,6 @@ void Rigidbody::RemoveCollidedRigidbody(std::shared_ptr<Rigidbody> _other)
 	}
 }
 
-bool Rigidbody::IsDynamic()
-{
-	return mUseDynamicBody;
-}
-
 void Rigidbody::Update(float _deltaTime)
 {
 	switch (mUseDynamicBody)
@@ -98,7 +78,7 @@ void Rigidbody::ChangePhysicsIntegration(RBINTEGRATION _mode)
 	}
 }
 
-void Rigidbody::AddForce(glm::vec3 _force)
+void Rigidbody::AddForce(glm::vec3 _force) noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -106,7 +86,7 @@ void Rigidbody::AddForce(glm::vec3 _force)
 	}
 }
 
-void Rigidbody::Force(glm::vec3 _force)
+void Rigidbody::Force(glm::vec3 _force) noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -114,7 +94,7 @@ void Rigidbody::Force(glm::vec3 _force)
 	}
 }
 
-glm::vec3 Rigidbody::Force()
+glm::vec3 Rigidbody::Force() const noexcept
 {
 	glm::vec3 force(0.0f);
 	if (mUseDynamicBody)
@@ -124,7 +104,7 @@ glm::vec3 Rigidbody::Force()
 	return force;
 }
 
-void Rigidbody::Velocity(glm::vec3 _vel)
+void Rigidbody::Velocity(glm::vec3 _vel) noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -136,7 +116,7 @@ void Rigidbody::Velocity(glm::vec3 _vel)
 	}
 }
 
-glm::vec3 Rigidbody::Velocity()
+glm::vec3 Rigidbody::Velocity() const noexcept
 {
 	glm::vec3 vel;
 	if (mUseDynamicBody)
@@ -150,7 +130,7 @@ glm::vec3 Rigidbody::Velocity()
 	return vel;
 }
 
-void Rigidbody::AngularVelocity(glm::vec3 _vel)
+void Rigidbody::AngularVelocity(glm::vec3 _vel) noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -158,7 +138,7 @@ void Rigidbody::AngularVelocity(glm::vec3 _vel)
 	}
 }
 
-glm::vec3 Rigidbody::AngularVelocity()
+glm::vec3 Rigidbody::AngularVelocity() const noexcept
 {
 	glm::vec3 vel;
 	if (mUseDynamicBody)
@@ -168,7 +148,7 @@ glm::vec3 Rigidbody::AngularVelocity()
 	return vel;
 }
 
-void Rigidbody::Acceleration(glm::vec3 _accel)
+void Rigidbody::Acceleration(glm::vec3 _accel) noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -180,7 +160,7 @@ void Rigidbody::Acceleration(glm::vec3 _accel)
 	}
 }
 
-glm::vec3 Rigidbody::Acceleration()
+glm::vec3 Rigidbody::Acceleration() const noexcept
 {
 	glm::vec3 accel;
 	if (mUseDynamicBody)
@@ -194,7 +174,7 @@ glm::vec3 Rigidbody::Acceleration()
 	return accel;
 }
 
-void Rigidbody::Mass(float _mass)
+void Rigidbody::Mass(float _mass)noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -203,7 +183,7 @@ void Rigidbody::Mass(float _mass)
 	}
 }
 
-float Rigidbody::Mass()
+float Rigidbody::Mass() const noexcept
 {
 	float mass = 0.0f;
 	if (mUseDynamicBody)
@@ -213,7 +193,7 @@ float Rigidbody::Mass()
 	return mass;
 }
 
-void Rigidbody::Elasticity(float _e)
+void Rigidbody::Elasticity(float _e) noexcept
 {
 	_e = glm::fclamp(_e, 0.0f, 1.0f);
 	if (mUseDynamicBody)
@@ -226,7 +206,7 @@ void Rigidbody::Elasticity(float _e)
 	}
 }
 
-float Rigidbody::Elasticity()
+float Rigidbody::Elasticity() const noexcept
 {
 	float elasticity = 0.0f;
 	if (mUseDynamicBody)
@@ -240,7 +220,7 @@ float Rigidbody::Elasticity()
 	return elasticity;
 }
 
-void Rigidbody::InertiaTensorLocal(glm::mat3 _tensor)
+void Rigidbody::InertiaTensorLocal(glm::mat3 _tensor) noexcept
 {
 	if (mUseDynamicBody)
 	{
@@ -248,7 +228,7 @@ void Rigidbody::InertiaTensorLocal(glm::mat3 _tensor)
 	}
 }
 
-glm::mat3 Rigidbody::InertiaTensorLocal()
+glm::mat3 Rigidbody::InertiaTensorLocal() const noexcept
 {
 	glm::mat3 tensor = glm::mat3(1.0f);
 	if (mUseDynamicBody)
@@ -258,7 +238,7 @@ glm::mat3 Rigidbody::InertiaTensorLocal()
 	return tensor;
 }
 
-glm::mat3 Rigidbody::InertiaTensorWorld()
+glm::mat3 Rigidbody::InertiaTensorWorld() const noexcept
 {
 	glm::mat3 tensor = glm::mat3(1.0f);
 	if (mUseDynamicBody)

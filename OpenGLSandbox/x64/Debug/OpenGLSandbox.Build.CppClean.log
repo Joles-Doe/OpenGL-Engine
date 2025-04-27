@@ -13,6 +13,7 @@ c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\mainold.ob
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\main.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\lookaroundcamera.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\kinematicbody.obj
+c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\gameobject.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\eventmanager.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\dynamicbody.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\collider.obj
@@ -22,7 +23,6 @@ c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\ball.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\window.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\transform.obj
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\timemanager.obj
-c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\gameobject.obj
 c:\users\scott\documents\github\3dgp-lab-work\x64\debug\openglsandbox.exe
 c:\users\scott\documents\github\3dgp-lab-work\x64\debug\openglsandbox.pdb
 c:\users\scott\documents\github\3dgp-lab-work\openglsandbox\x64\debug\openglsandbox.ilk

@@ -9,6 +9,9 @@
 #include "EventManager.h"
 #include "TimeManager.h"
 
+/// <summary>
+/// Camera - Virtual representation of what will be drawn to the window.
+/// </summary>
 class Camera
 {
 public:
@@ -21,18 +24,55 @@ public:
 
 	Camera(Preset _preset);
 
+	/// <summary>
+	/// Update function - called once a frame by the Window.
+	/// </summary>
 	virtual void Update();
 
+	/// <summary>
+	/// Attaches the Event Manager component to the Camera.
+	/// </summary>
+	/// <param name="_manager"> Event Manager </param>
 	void AttachEventManager(std::shared_ptr<EventManager> _manager) { mEventManager = _manager; }
+
+	/// <summary>
+	/// Attaches the Time Manager component to the Camera.
+	/// </summary>
+	/// <param name="_manager"> Time Manager </param>
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
 
-	void Position(glm::vec3 _pos) { mPosition = _pos; }
+	/// <summary>
+	/// Sets the position of the Camera.
+	/// </summary>
+	/// <param name="_pos"> Vector position to set </param>
+	void Position(glm::vec3 _pos) noexcept { mPosition = _pos; }
 	
-	float Pitch() { return mPitch; }
-	void Pitch(float _pitch) { mPitch = _pitch; }
+	/// <summary>
+	/// Returns the pitch of the Camera.
+	/// </summary>
+	/// <returns> Float pitch </returns>
+	float Pitch() const noexcept { return mPitch; }
 
-	int GetPriority() { return mPriority; };
-	glm::mat4 GetView() { return mView; };
+	/// <summary>
+	/// Sets the pitch of the Camera.
+	/// </summary>
+	/// <param name="_pitch"> Pitch to set </param>
+	void Pitch(float _pitch) noexcept { mPitch = _pitch; }
+
+	/// <summary>
+	/// Returns the priority of the camera.
+	/// <para>
+	/// The camera with the lowest priority will be set as the active camera.
+	/// </para>
+	/// </summary>
+	/// <returns> Int priority </returns>
+	int GetPriority() const noexcept { return mPriority; }
+
+	/// <summary>
+	/// Returns the view matrix of the Camera.
+	/// </summary>
+	/// <returns> Mat view matrix </returns>
+	glm::mat4 GetView() const noexcept { return mView; }
 protected:
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<TimeManager> mTimeManager;

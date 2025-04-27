@@ -66,9 +66,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainOLD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
@@ -83,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="mainOLD2.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Source Files\Managers</Filter>

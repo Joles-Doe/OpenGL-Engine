@@ -56,22 +56,22 @@ void PhysicsManager::Update()
 				// For each rigidbody, check if they've already collided, and call the appropriate Gameobject collision function
 				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
 				{
-					mRigidbodies[i]->GetParent().lock()->OnCollisionStay(mRigidbodies[x]);
+					mRigidbodies[i]->GetGameObject().lock()->OnCollisionStay(mRigidbodies[x]);
 				}
 				else
 				{
 					mRigidbodies[i]->AddCollidedRigidbody(mRigidbodies[x]);
-					mRigidbodies[i]->GetParent().lock()->OnCollisionEnter(mRigidbodies[x]);
+					mRigidbodies[i]->GetGameObject().lock()->OnCollisionEnter(mRigidbodies[x]);
 				}
 
 				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
 				{
-					mRigidbodies[x]->GetParent().lock()->OnCollisionStay(mRigidbodies[i]);
+					mRigidbodies[x]->GetGameObject().lock()->OnCollisionStay(mRigidbodies[i]);
 				}
 				else
 				{
 					mRigidbodies[x]->AddCollidedRigidbody(mRigidbodies[i]);
-					mRigidbodies[x]->GetParent().lock()->OnCollisionEnter(mRigidbodies[i]);
+					mRigidbodies[x]->GetGameObject().lock()->OnCollisionEnter(mRigidbodies[i]);
 				}
 			}
 			// If there's been no collision detected, check if the Rigidbodies had previously collided last frame and call the appropriate Gameobject collision function
@@ -80,13 +80,13 @@ void PhysicsManager::Update()
 				if (mRigidbodies[i]->RigidbodyAlreadyCollided(mRigidbodies[x]))
 				{
 					mRigidbodies[i]->RemoveCollidedRigidbody(mRigidbodies[x]);
-					mRigidbodies[i]->GetParent().lock()->OnCollisionExit(mRigidbodies[x]);
+					mRigidbodies[i]->GetGameObject().lock()->OnCollisionExit(mRigidbodies[x]);
 				}
 
 				if (mRigidbodies[x]->RigidbodyAlreadyCollided(mRigidbodies[i]))
 				{
 					mRigidbodies[x]->RemoveCollidedRigidbody(mRigidbodies[i]);
-					mRigidbodies[x]->GetParent().lock()->OnCollisionExit(mRigidbodies[i]);
+					mRigidbodies[x]->GetGameObject().lock()->OnCollisionExit(mRigidbodies[i]);
 				}
 			}
 		}
@@ -104,7 +104,7 @@ void PhysicsManager::CullDeletedRigidbodies()
 		std::remove_if(mRigidbodies.begin(), mRigidbodies.end(),
 			[](const std::shared_ptr<Rigidbody>& rb) 
 			{
-				return rb->GetParent().expired();
+				return rb->GetGameObject().expired();
 			}),
 		mRigidbodies.end());
 }

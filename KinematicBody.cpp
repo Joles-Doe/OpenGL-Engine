@@ -15,33 +15,3 @@ void KinematicBody::Update(float _deltaTime)
 	
 	glm::vec3 currentVelocity = glm::vec3(0.0f);
 }
-
-void KinematicBody::Velocity(glm::vec3 _vel)
-{
-	mVelocity = _vel;
-}
-
-glm::vec3 KinematicBody::Velocity()
-{
-	return mVelocity;
-}
-
-void KinematicBody::Acceleration(glm::vec3 _accel)
-{
-	mAcceleration = _accel;
-}
-
-glm::vec3 KinematicBody::Acceleration()
-{
-	return mAcceleration;
-}
-
-void KinematicBody::Elasticity(float _e)
-{
-	mElasticity = _e;
-}
-
-float KinematicBody::Elasticity()
-{
-	return mElasticity;
-}

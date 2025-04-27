@@ -81,13 +81,13 @@ public:
 	/// <summary>
 	/// Returns the GameObject's Transform component.
 	/// </summary>
-	/// <returns> GameObject Transform </returns>
+	/// <returns> Transform component </returns>
 	std::shared_ptr<Transform> GetTransform() { return mTransform; }
 
 	/// <summary>
 	/// Returns the GameObject's Rigidbody component.
 	/// </summary>
-	/// <returns> GameObject Rigidbody </returns>
+	/// <returns> Rigidbody component </returns>
 	std::shared_ptr<Rigidbody> GetRigidbody() { return mRigidbody; }
 
 	/// <summary>

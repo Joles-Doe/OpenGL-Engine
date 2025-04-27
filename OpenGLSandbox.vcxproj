@@ -143,8 +143,6 @@
     <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="LookAroundCamera.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainOLD.cpp" />
-    <ClCompile Include="mainOLD2.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ParameterLoader.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
