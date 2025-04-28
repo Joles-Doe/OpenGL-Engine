@@ -1,20 +1,18 @@
 ﻿  Ball.cpp
   BallSpawner.cpp
   Camera.cpp
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Camera.cpp(29,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Camera.cpp(30,39): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\Camera.cpp(29,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\Camera.cpp(30,39): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
   Collider.cpp
   DynamicBody.cpp
   EventManager.cpp
   GameObject.cpp
   KinematicBody.cpp
   LookAroundCamera.cpp
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\LookAroundCamera.cpp(10,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\LookAroundCamera.cpp(11,31): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\LookAroundCamera.cpp(10,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\LookAroundCamera.cpp(11,31): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
   main.cpp
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\main.cpp(25,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  mainOLD.cpp
-  mainOLD2.cpp
+D:\s5623772\OpenGL-Engine\main.cpp(25,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Model.cpp
   ParameterLoader.cpp
   PhysicsManager.cpp
@@ -23,20 +21,20 @@ C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\main.cpp(25,12): warning C4244: 'a
   ShaderProgram.cpp
   SharedStructs&Enums.h
   Texture.cpp
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244: '=': conversion from 'const T' to '_Ty', possible loss of data
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:         with
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:         [
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:             T=float
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:         ]
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:         and
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:         [
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:             _Ty=unsigned char
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\Texture.cpp(42,30): warning C4244:         ]
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244: '=': conversion from 'const T' to '_Ty', possible loss of data
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         with
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         [
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:             T=float
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         ]
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         and
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         [
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:             _Ty=unsigned char
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         ]
+  TimeManager.cpp
+D:\s5623772\OpenGL-Engine\TimeManager.cpp(14,14): warning C4018: '<': signed/unsigned mismatch
+  Transform.cpp
   Generating Code...
   Compiling...
-  TimeManager.cpp
-C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\TimeManager.cpp(14,14): warning C4018: '<': signed/unsigned mismatch
-  Transform.cpp
   Window.cpp
   Generating Code...
-  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\3DGP-Lab-Work\x64\Debug\OpenGLSandbox.exe
+  OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

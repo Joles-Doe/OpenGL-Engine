@@ -112,7 +112,7 @@ private:
 	/// <summary>
 	/// Sphere to Sphere collision detection.
 	/// </summary>
-	/// <param name="_other"> Sphere coolider to check </param>
+	/// <param name="_other"> Sphere collider to check </param>
 	/// <returns> True or False dependent on if the Colliders are colliding </returns>
 	bool SphereToSphere(std::shared_ptr<Collider> _other);
 
