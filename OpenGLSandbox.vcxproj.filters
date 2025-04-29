@@ -117,15 +117,6 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
-    <ClCompile Include="BallSpawner.cpp">
-      <Filter>Source Files\Custom GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Ball.cpp">
-      <Filter>Source Files\Custom GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="ParameterLoader.cpp">
-      <Filter>Source Files\Physics</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -175,15 +166,6 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Header Files\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="BallSpawner.h">
-      <Filter>Header Files\Custom GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="Ball.h">
-      <Filter>Header Files\Custom GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="ParameterLoader.h">
-      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

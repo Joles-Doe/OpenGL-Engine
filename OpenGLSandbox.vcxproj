@@ -133,8 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="BallSpawner.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
@@ -144,7 +142,6 @@
     <ClCompile Include="LookAroundCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
-    <ClCompile Include="ParameterLoader.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
@@ -156,8 +153,6 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="BallSpawner.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DynamicBody.h" />
@@ -166,7 +161,6 @@
     <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="LookAroundCamera.h" />
     <ClInclude Include="Model.h" />
-    <ClInclude Include="ParameterLoader.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Rigidbody.h" />

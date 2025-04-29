@@ -12,11 +12,18 @@ void PhysicsManager::Update()
 	// Removes invalid Rigidbodies
 	CullDeletedRigidbodies();
 
+	// Early exit if there's no rigidbodies
+	if (mRigidbodies.empty()) return;
+
 	// Updates every stored Rigidbody
 	for (int i = 0; i < mRigidbodies.size(); i++)
 	{
+		std::cout << "Update: " << i << std::endl;
 		mRigidbodies[i]->Update(mTimeManager->DeltaTime());
 	}
+
+	// Early exit if there's no pairs present
+	if (mRigidbodies.size() < 2) return;
 
 	// Iterate through every pair to check for collision
 	for (int i = 0; i < mRigidbodies.size() - 1; i++)

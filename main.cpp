@@ -12,13 +12,7 @@
 #include "Camera.h"
 #include "GameObject.h"
 
-#include "ParameterLoader.h"
-#include "BallSpawner.h"
-#include "Ball.h"
-
 #undef main
-
-RBINTEGRATION StringToRBIntegration(const std::string& _str);
 
 int main()
 {
@@ -35,110 +29,15 @@ int main()
 	window.AddCamera(cam);
 
 	//==============================
-	// LOAD SIM PARAMETERS
-	std::unique_ptr<ParameterLoader> simParams = std::make_unique<ParameterLoader>("./SIMULATION_PARAMETERS.txt");
+	// TEST
+	std::shared_ptr<GameObject> test = std::make_shared<GameObject>(CUBE, ORANGE);
+	test->GetTransform()->Move(glm::vec3(0.0f, 0.0f, -15.0f));
+	test->GetTransform()->Scale(glm::vec3(2.0f, 2.0f, 2.0f));
+	test->AttachTimeManager(window.GetTimeManager());
+
+	window.AddObject(test);
 
 	//==============================
-	// BOUNDS RIGHT
-	std::shared_ptr<GameObject> rightBounds = std::make_shared<GameObject>(CUBE, RED);
-	rightBounds->GetTransform()->Move(glm::vec3(10.0f, 0.0f, -15.0f));
-	rightBounds->GetTransform()->Scale(glm::vec3(1.0f, 20.0f, 11.0f));
-	rightBounds->AttachTimeManager(window.GetTimeManager());
-	rightBounds->CreateCollider(CUBE);
-	rightBounds->CreateRigidbody(KINEMATIC);
-
-	window.AddObject(rightBounds);
-	window.EnableRigidbody(rightBounds->GetRigidbody());
-
-	//==============================
-	// BOUNDS BOTTOM
-	std::shared_ptr<GameObject> bottomBounds = std::make_shared<GameObject>(CUBE, GREEN);
-	bottomBounds->GetTransform()->Move(glm::vec3(0.0f, -10.0f, -15.0f));
-	bottomBounds->GetTransform()->Scale(glm::vec3(21.0f, 1.0f, 11.0f));
-	bottomBounds->AttachTimeManager(window.GetTimeManager());
-	bottomBounds->CreateCollider(CUBE);
-	bottomBounds->CreateRigidbody(KINEMATIC);
-
-	window.AddObject(bottomBounds);
-	window.EnableRigidbody(bottomBounds->GetRigidbody());
-
-	//==============================
-	// BOUNDS LEFT
-	std::shared_ptr<GameObject> leftBounds = std::make_shared<GameObject>(CUBE, RED);
-	leftBounds->GetTransform()->Move(glm::vec3(-10.0f, 0.0f, -15.0f));
-	leftBounds->GetTransform()->Scale(glm::vec3(1.0f, 20.0f, 11.0f));
-	leftBounds->AttachTimeManager(window.GetTimeManager());
-	leftBounds->CreateCollider(CUBE);
-	leftBounds->CreateRigidbody(KINEMATIC);
-
-	window.AddObject(leftBounds);
-	window.EnableRigidbody(leftBounds->GetRigidbody());
-
-	//==============================
-	// BOUNDS TOP
-	std::shared_ptr<GameObject> topBounds = std::make_shared<GameObject>(CUBE, GREEN);
-	topBounds->GetTransform()->Move(glm::vec3(0.0f, 10.0f, -15.0f));
-	topBounds->GetTransform()->Scale(glm::vec3(21.0f, 1.0f, 11.0f));
-	topBounds->AttachTimeManager(window.GetTimeManager());
-	topBounds->CreateCollider(CUBE);
-	topBounds->CreateRigidbody(KINEMATIC);
-
-	window.AddObject(topBounds);
-	window.EnableRigidbody(topBounds->GetRigidbody());
-
-	//==============================
-	// BOUNDS BACK
-	std::shared_ptr<GameObject> backBounds = std::make_shared<GameObject>(CUBE, BLUE);
-	backBounds->GetTransform()->Move(glm::vec3(0.0f, 0.0f, -20.0f));
-	backBounds->GetTransform()->Scale(glm::vec3(20.0f, 21.0f, 1.0f));
-	backBounds->AttachTimeManager(window.GetTimeManager());
-	backBounds->CreateCollider(CUBE);
-	backBounds->CreateRigidbody(KINEMATIC);
-
-	window.AddObject(backBounds);
-	window.EnableRigidbody(backBounds->GetRigidbody());
-
-	//==============================
-	//BALL SPAWNER
-	std::shared_ptr<BallSpawner> spawner = std::make_shared<BallSpawner>(CUBE, PURPLE);
-	spawner->GetTransform()->Move(glm::vec3(0.0f, 9.0f, -15.0f));
-	spawner->GetTransform()->Scale(glm::vec3(3.0f, 1.0f, 1.0f));
-	spawner->AttachTimeManager(window.GetTimeManager());
-	spawner->AttachEventManager(window.GetEventManager());
-	
-	window.AddObject(spawner);
-
-	//==============================
-
-	// Create the pegs
-	std::shared_ptr<GameObject> peg;
-	bool offsetPeg = true;
-	for (float y = -8.0f; y < 8.0f; y += 3.0f)
-	{
-		offsetPeg = !offsetPeg;
-		for (float x = -9.0f; x < 10.0f; x += 2.5f)
-		{
-			x += offsetPeg ? 1.5f : 0;
-			peg = std::make_shared<GameObject>(CUBE, static_cast<COLOR>(3 + rand() % 3));
-			peg->GetTransform()->Position(glm::vec3(x, y, -15.0f));
-			peg->GetTransform()->Scale(glm::vec3(0.5f, 0.5f, 11.0f));
-			peg->AttachTimeManager(window.GetTimeManager());
-			peg->CreateCollider(CUBE);
-			peg->CreateRigidbody(KINEMATIC);
-
-			window.AddObject(peg);
-			window.EnableRigidbody(peg->GetRigidbody());
-			peg.reset();
-		}
-	}
-	std::shared_ptr<Ball> ball;
-
-	// Sim values
-	std::cout << "LOADING SIMULATION PARAMETERS:" << std::endl;
-	std::cout << "DefaultMass: " << simParams->GetFloat("DefaultMass") << std::endl;
-	std::cout << "DefaultElasticity: " << simParams->GetFloat("DefaultElasticity") << std::endl;
-	std::cout << "PhysicsIntegration: " << simParams->GetString("PhysicsIntegration") << std::endl;
-	
 
 	bool quit = false;
 	while (!quit)
@@ -149,40 +48,7 @@ int main()
 			break;
 		}
 		window.Update();
-
-		if (spawner->GetSpawnBall())
-		{
-			spawner->SetSpawnBall(false);
-			ball = std::make_shared<Ball>(SPHERE, static_cast<COLOR>(ORANGE));
-			ball->GetTransform()->Position(spawner->GetTransform()->Position());
-			ball->GetTransform()->Scale(glm::vec3(0.75f));
-			ball->AttachTimeManager(window.GetTimeManager());
-			ball->CreateCollider(SPHERE);
-			ball->CreateRigidbody(DYNAMIC);
-
-			// Load Parameters
-			ball->GetRigidbody()->Mass(simParams->GetFloat("DefaultMass"));
-			ball->GetRigidbody()->Elasticity(simParams->GetFloat("DefaultElasticity"));
-			ball->GetRigidbody()->ChangePhysicsIntegration(StringToRBIntegration(simParams->GetString("PhysicsIntegration")));
-
-			window.AddObject(ball);
-			window.EnableRigidbody(ball->GetRigidbody());
-			ball.reset();
-		}
 	}
 
 	return 0;
-}
-
-// Converts string to integration enum. Defaults to EULER if value is invalid
-RBINTEGRATION StringToRBIntegration(const std::string& _str)
-{
-	RBINTEGRATION integration = EULER;
-	
-	if (_str == "EULER") integration = EULER;
-	if (_str == "RK2") integration = RK2;
-	if (_str == "RK4") integration = RK4;
-	if (_str == "VERLET") integration = VERLET;
-
-	return integration;
 }
