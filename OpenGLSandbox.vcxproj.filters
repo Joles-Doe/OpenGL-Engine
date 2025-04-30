@@ -181,5 +181,11 @@
     <None Include="data\shaders\GenericVS.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="data\shaders\TestFragmentShader.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\TestVertexShader.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

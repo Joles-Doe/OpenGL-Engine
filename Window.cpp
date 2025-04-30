@@ -2,7 +2,6 @@
 
 Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow(nullptr),
-	mCurrentShader(nullptr),
 	mMouseLocked(SDL_FALSE),
 	mPrevWidth(_w),
 	mPrevHeight(_h),
@@ -31,8 +30,7 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	mEventManager = std::make_shared<EventManager>();
 
 	mShaderManager = std::make_shared<ShaderManager>();
-	//remove
-	mCurrentShader = std::make_shared<ShaderProgram>();
+	mDefaultShader = mShaderManager->GetShader("DEFAULT");
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -95,16 +93,26 @@ void Window::Update()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Set active shader
-	mCurrentShader->SetActive();
+	mDefaultShader->SetActive();
 
 	//Upload matrices
-	mCurrentShader->SetUniform("uView", GetActiveCamera()->GetView());
-	mCurrentShader->SetUniform("uProjection", mProjection);
+	mDefaultShader->SetUniform("uView", GetActiveCamera()->GetView());
+	mDefaultShader->SetUniform("uProjection", mProjection);
 
 	//Render objects
 	for (int i = 0; i < mObjects.size(); i++)
 	{
-		mObjects[i]->Draw(mCurrentShader);
+		if (mObjects[i]->HasCustomShader())
+		{
+			//std::cout << i << " custom" << std::endl;
+			mObjects[i]->Draw(GetActiveCamera()->GetView(), mProjection);
+		}
+		else
+		{
+			//std::cout << i << " default" << std::endl;
+			mDefaultShader->SetActive();
+			mObjects[i]->Draw(mDefaultShader);
+		}
 	}
 
 	//Reset program

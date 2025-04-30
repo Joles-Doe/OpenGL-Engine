@@ -175,6 +175,8 @@
   <ItemGroup>
     <None Include="data\shaders\GenericFS.fs" />
     <None Include="data\shaders\GenericVS.vs" />
+    <None Include="data\shaders\TestFragmentShader.fs" />
+    <None Include="data\shaders\TestVertexShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

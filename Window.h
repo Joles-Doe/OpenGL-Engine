@@ -62,6 +62,12 @@ public:
 	std::shared_ptr<EventManager> GetEventManager() { return mEventManager; }
 
 	/// <summary>
+	/// Returns the ShaderManager.
+	/// </summary>
+	/// <returns> Reference to the ShaderManager </returns>
+	std::shared_ptr<ShaderManager> GetShaderManager() { return mShaderManager; }
+
+	/// <summary>
 	/// Enables a Rigidbody, and sends it to the PhysicsManager for physics computation.
 	/// </summary>
 	/// <param name="_rb"> Rigidbody to add </param>
@@ -78,8 +84,7 @@ private:
 	std::shared_ptr<PhysicsManager> mPhysicsManager;
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<ShaderManager> mShaderManager;
-	//remove
-	std::shared_ptr<ShaderProgram> mCurrentShader;
+	std::shared_ptr<ShaderProgram> mDefaultShader;
 
 	SDL_bool mMouseLocked;
 

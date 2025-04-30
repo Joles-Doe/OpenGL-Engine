@@ -38,6 +38,18 @@ int main()
 	window.AddObject(test);
 
 	//==============================
+	// TEST 2 CUSTOM SHADER
+	std::shared_ptr<GameObject> testShader = std::make_shared<GameObject>(CUBE, ORANGE);
+	testShader->GetTransform()->Move(glm::vec3(7.0f, 0.0f, -15.0f));
+	testShader->GetTransform()->Scale(glm::vec3(2.0f, 2.0f, 2.0f));
+	testShader->AttachTimeManager(window.GetTimeManager());
+	testShader->AttachShaderManager(window.GetShaderManager());
+
+	testShader->UseCustomShader("TEST", "./data/shaders/TestVertexShader.vs", "./data/shaders/TestFragmentShader.fs");
+
+	window.AddObject(testShader);
+
+	//==============================
 
 	bool quit = false;
 	while (!quit)

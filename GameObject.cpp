@@ -1,11 +1,11 @@
 #include "GameObject.h"
 
-GameObject::GameObject() : mKILL(false)
+GameObject::GameObject() : mKILL(false), mUsingCustomShader(false)
 {
 	mTransform = std::make_shared<Transform>();
 }
 
-GameObject::GameObject(SHAPE _modelShape, COLOR _color) : mKILL(false)
+GameObject::GameObject(SHAPE _modelShape, COLOR _color) : mKILL(false), mUsingCustomShader(false)
 {
 	switch (_modelShape)
 	{
@@ -52,7 +52,7 @@ GameObject::GameObject(SHAPE _modelShape, COLOR _color) : mKILL(false)
 	mTransform = std::make_shared<Transform>();
 }
 
-GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEventManager(nullptr), mKILL(false)
+GameObject::GameObject(const char* _modelPath, const char* _texturePath) : mEventManager(nullptr), mKILL(false), mUsingCustomShader(false)
 {
 	mModel = std::make_shared<Model>(_modelPath);
 	mTexture = std::make_shared<Texture>(_texturePath);
@@ -71,6 +71,40 @@ void GameObject::Update()
 {
 }
 
+void GameObject::Draw(const glm::mat4& _viewMatrix, const glm::mat4& _projectionMatrix)
+{
+	mCustomShader->SetActive();
+	mCustomShader->SetUniform("uView", _viewMatrix);
+	mCustomShader->SetUniform("uProjection", _projectionMatrix);
+
+	glBindVertexArray(mModel->ID());
+
+	if (mTexture)
+	{
+		//glBindTexture(GL_TEXTURE_2D, mTexture->ID());
+	}
+
+	// Sets position of model
+	glm::mat4 model = glm::mat4(1.0f);
+
+	model = glm::translate(model, mTransform->Position());
+	
+	model = glm::rotate(model, glm::radians(mTransform->Rotation().x), glm::vec3(1, 0, 0));
+	model = glm::rotate(model, glm::radians(mTransform->Rotation().y), glm::vec3(0, 1, 0));
+	model = glm::rotate(model, glm::radians(mTransform->Rotation().z), glm::vec3(0, 0, 1));
+
+	model = glm::scale(model, mTransform->Scale());
+
+	mCustomShader->SetUniform("uModel", model);
+
+	// Draw shape
+	glDrawArrays(GL_TRIANGLES, 0, mModel->VertexCount());
+
+	// Reset the state
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 {
 	glBindVertexArray(mModel->ID());
@@ -84,7 +118,7 @@ void GameObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 	glm::mat4 model = glm::mat4(1.0f);
 
 	model = glm::translate(model, mTransform->Position());
-	
+
 	model = glm::rotate(model, glm::radians(mTransform->Rotation().x), glm::vec3(1, 0, 0));
 	model = glm::rotate(model, glm::radians(mTransform->Rotation().y), glm::vec3(0, 1, 0));
 	model = glm::rotate(model, glm::radians(mTransform->Rotation().z), glm::vec3(0, 0, 1));
@@ -132,4 +166,56 @@ void GameObject::OnCollisionStay(std::shared_ptr<Rigidbody> _other)
 void GameObject::OnCollisionExit(std::shared_ptr<Rigidbody> _other)
 {
 	//std::cout << "COLLISION EXIT" << std::endl;
+}
+
+void GameObject::UseCustomShader(const std::string& _key, const std::string& _generalPath)
+{
+	if (mShaderManager != nullptr)
+	{
+		if (mShaderManager->GetShader(_key) == nullptr)
+		{
+			mCustomShader = mShaderManager->AddShader(_key, _generalPath);
+			mUsingCustomShader = true;
+			if (mCustomShader == nullptr)
+			{
+				mUsingCustomShader = false;
+				//warning?
+			}
+		}
+		else
+		{
+			mCustomShader = mShaderManager->GetShader(_key);
+			mUsingCustomShader = true;
+		}
+	}
+	else
+	{
+		//warning?
+	}
+}
+
+void GameObject::UseCustomShader(const std::string& _key, const std::string& _vertexPath, const std::string& _fragmentPath)
+{
+	if (mShaderManager != nullptr)
+	{
+		if (mShaderManager->GetShader(_key) == nullptr)
+		{
+			mCustomShader = mShaderManager->AddShader(_key, _vertexPath, _fragmentPath);
+			mUsingCustomShader = true;
+			if (mCustomShader == nullptr)
+			{
+				mUsingCustomShader = false;
+				//warning?
+			}
+		}
+		else
+		{
+			mCustomShader = mShaderManager->GetShader(_key);
+			mUsingCustomShader = true;
+		}
+	}
+	else
+	{
+		//warning?
+	}
 }

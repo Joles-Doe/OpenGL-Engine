@@ -8,6 +8,7 @@
 
 #include "EventManager.h"
 #include "TimeManager.h"
+#include "ShaderManager.h"
 #include "Model.h"
 #include "Transform.h"
 #include "Texture.h"
@@ -37,9 +38,13 @@ public:
 	virtual void Update();
 
 	/// <summary>
-	/// Draw function - called by the Window to draw the Model.
+	/// Draw function - called by the Window to draw the Model. Uses a custom shader.
 	/// </summary>
-	/// <param name="_shader"> Shader used for the drawing process </param>
+	void Draw(const glm::mat4& _viewMatrix, const glm::mat4& _projectionMatrix);
+
+	/// <summary>
+	/// Draw function - called by the Window to draw the Model. Uses the default shader.
+	/// </summary>
 	void Draw(std::shared_ptr<ShaderProgram> _shader);
 
 	/// <summary>
@@ -101,16 +106,32 @@ public:
 	/// </summary>
 	/// <param name="_manager"> Time Manager </param>
 	void AttachTimeManager(std::shared_ptr<TimeManager> _manager) { mTimeManager = _manager; }
+
+	/// <summary>
+	/// Attaches the Shader Manager component to the GameObject.
+	/// </summary>
+	/// <param name="_manager"> Shader Manager </param>
+	void AttachShaderManager(std::shared_ptr<ShaderManager> _manager) { mShaderManager = _manager; }
+
+	void UseCustomShader(const std::string& _key, const std::string& _generalPath);
+
+	void UseCustomShader(const std::string& _key, const std::string& _vertexPath, const std::string& _fragmentPath);
+
+	bool HasCustomShader() const noexcept { return mUsingCustomShader;}
 protected:
 	bool mKILL;
 
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<TimeManager> mTimeManager;
+	std::shared_ptr<ShaderManager> mShaderManager;
 
 	std::shared_ptr<Transform> mTransform;
 	std::shared_ptr<Model> mModel;
 	std::shared_ptr<Texture> mTexture;
 	std::shared_ptr<Collider> mCollider;
 	std::shared_ptr<Rigidbody> mRigidbody;
+	std::shared_ptr<ShaderProgram> mCustomShader;
+private:
+	bool mUsingCustomShader;
 };
 
