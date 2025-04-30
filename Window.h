@@ -11,6 +11,7 @@
 #include "PhysicsManager.h"
 #include "TimeManager.h"
 #include "EventManager.h"
+#include "ShaderManager.h"
 #include "GameObject.h"
 #include "Rigidbody.h"
 #include "ShaderProgram.h"
@@ -76,6 +77,8 @@ private:
 	std::shared_ptr<TimeManager> mTimeManager;
 	std::shared_ptr<PhysicsManager> mPhysicsManager;
 	std::shared_ptr<EventManager> mEventManager;
+	std::shared_ptr<ShaderManager> mShaderManager;
+	//remove
 	std::shared_ptr<ShaderProgram> mCurrentShader;
 
 	SDL_bool mMouseLocked;

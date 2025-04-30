@@ -1,6 +1,0 @@
-# PARAMETERS
-# ======================
-
-DefaultMass = 1.5f;
-DefaultElasticity = 0.5f;
-PhysicsIntegration = RK4;

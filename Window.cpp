@@ -30,6 +30,8 @@ Window::Window(int _w, int _h, const std::string& _name) :
 
 	mEventManager = std::make_shared<EventManager>();
 
+	mShaderManager = std::make_shared<ShaderManager>();
+	//remove
 	mCurrentShader = std::make_shared<ShaderProgram>();
 
 	glEnable(GL_CULL_FACE);
