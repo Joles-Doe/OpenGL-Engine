@@ -26,7 +26,5 @@ void main()
 
 	vec3 lighting = diffuse + specular; 
 	gl_FragColor = vec4(lighting, 1) * tex;
-
-	viewDir = normalize(uViewPos - vFragPos);
-	gl_FragColor = vec4(normalize(uViewPos / 10.0), 1.0);
+	
 }

@@ -118,6 +118,8 @@ public:
 	void UseCustomShader(const std::string& _key, const std::string& _vertexPath, const std::string& _fragmentPath);
 
 	bool HasCustomShader() const noexcept { return mUsingCustomShader;}
+
+	std::shared_ptr<ShaderProgram> mCustomShader;
 protected:
 	bool mKILL;
 
@@ -130,7 +132,7 @@ protected:
 	std::shared_ptr<Texture> mTexture;
 	std::shared_ptr<Collider> mCollider;
 	std::shared_ptr<Rigidbody> mRigidbody;
-	std::shared_ptr<ShaderProgram> mCustomShader;
+	
 private:
 	bool mUsingCustomShader;
 };

@@ -57,6 +57,9 @@ public:
 	/// <param name="_name"> Uniform variable name </param>
 	/// <param name="_value"> Value to set </param>
 	void SetUniform(const std::string& _name, float _value);
+
+	std::string mSource;
+
 private:
 	/// <summary>
 	/// Loads and compiles the given vertex and fragment shaders.

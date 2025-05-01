@@ -76,7 +76,10 @@ void GameObject::Draw(const glm::mat4& _viewMatrix, const glm::vec3& _viewPos, c
 	// rewrite this so that unnecessary updating isnt done every draw call
 	mCustomShader->SetActive();
 	mCustomShader->SetUniform("uView", _viewMatrix);
+
+	std::cout << _viewPos.x << std::endl;
 	mCustomShader->SetUniform("uViewPos", _viewPos);
+
 	mCustomShader->SetUniform("uProjection", _projectionMatrix);
 
 	glBindVertexArray(mModel->ID());

@@ -51,6 +51,8 @@ void ShaderProgram::LoadProgram(const std::string& _vertexPath, const std::strin
 	const char* vertexShaderCode = vertexCode.c_str();
 	const char* fragmentShaderCode = fragmentCode.c_str();
 
+	mSource = fragmentCode;
+
 	/*const char* vertexShaderCode =
 		"attribute vec3 aPosition;" \
 		"attribute vec2 aPixelColor;" \
@@ -145,7 +147,18 @@ void ShaderProgram::SetUniform(const std::string& _name, glm::vec4 _value)
 void ShaderProgram::SetUniform(const std::string& _name, glm::vec3 _value)
 {
 	glUseProgram(ID());
-	glUniform3fv(glGetUniformLocation(mID, _name.c_str()), 3, glm::value_ptr(_value));
+
+	if (ID() != 5) return;
+
+	printf("Setting uniform: %s\n", _name.c_str());
+	GLint x = glGetUniformLocation(mID, _name.c_str());
+	if (x == -1) std::cout << "uniform set failure " << std::endl;
+
+	std::cout << mID << std::endl;
+	std::cout << _value.x << std::endl;
+
+	//glUniform3fv(x, 3, glm::value_ptr(_value));
+	glUniform3f(x, _value.x, _value.y, _value.z);
 }
 
 void ShaderProgram::SetUniform(const std::string& _name, float _value)

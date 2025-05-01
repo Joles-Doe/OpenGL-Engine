@@ -59,6 +59,9 @@ int main()
 
 	testLightingD->UseCustomShader("LIGHTd", "./data/shaders/LightSpecular");
 
+	std::cout << testLightingD->mCustomShader->ID() << std::endl;
+	std::cout << testLightingD->mCustomShader->mSource << std::endl;
+
 	window.AddObject(testLightingD);
 
 	//==============================
