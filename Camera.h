@@ -46,6 +46,12 @@ public:
 	/// </summary>
 	/// <param name="_pos"> Vector position to set </param>
 	void Position(glm::vec3 _pos) noexcept { mPosition = _pos; }
+
+	/// <summary>
+	/// Gets the position of the Camera.
+	/// </summary>
+	/// <returns> Vector position </returns>
+	glm::vec3 Position() const noexcept { return mPosition; }
 	
 	/// <summary>
 	/// Returns the pitch of the Camera.

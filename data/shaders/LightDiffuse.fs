@@ -1,0 +1,21 @@
+uniform sampler2D uTexture;
+
+varying vec2 vTextureCoord;
+varying vec3 vNormal;
+varying vec3 vFragPos;
+
+void main()
+{
+	vec4 tex = texture2D(uTexture, vTextureCoord);
+	
+	vec3 lightPos = vec3(10, 10, 10);
+	vec3 diffuseColor = vec3(1, 1, 1);
+
+	vec3 N = normalize(vNormal);
+	vec3 lightDir = normalize(lightPos - vFragPos);
+	float diff = max(dot(N, lightDir), 0.0);
+	vec3 diffuse = diffuseColor * diff;
+
+	vec3 lighting = diffuse;
+	gl_FragColor = vec4(lighting, 1) * tex;
+}

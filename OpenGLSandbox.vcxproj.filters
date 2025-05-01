@@ -187,5 +187,17 @@
     <None Include="data\shaders\TestVertexShader.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="data\shaders\LightDiffuse.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\LightDiffuse.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\LightSpecular.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\LightSpecular.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -175,6 +175,10 @@
   <ItemGroup>
     <None Include="data\shaders\GenericFS.fs" />
     <None Include="data\shaders\GenericVS.vs" />
+    <None Include="data\shaders\LightDiffuse.fs" />
+    <None Include="data\shaders\LightDiffuse.vs" />
+    <None Include="data\shaders\LightSpecular.fs" />
+    <None Include="data\shaders\LightSpecular.vs" />
     <None Include="data\shaders\TestFragmentShader.fs" />
     <None Include="data\shaders\TestVertexShader.vs" />
   </ItemGroup>

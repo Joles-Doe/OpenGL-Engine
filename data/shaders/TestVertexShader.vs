@@ -2,6 +2,7 @@ attribute vec3 aPosition;
 
 uniform mat4 uProjection;
 uniform mat4 uView;
+uniform vec3 uViewPos;
 uniform mat4 uModel;
 
 varying float vDepth;

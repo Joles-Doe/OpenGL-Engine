@@ -105,6 +105,7 @@ void ShaderProgram::LoadProgram(const std::string& _vertexPath, const std::strin
 
 	glBindAttribLocation(mID, 0, "aPosition");
 	glBindAttribLocation(mID, 1, "aPixelColor");
+	glBindAttribLocation(mID, 2, "aNormal");
 
 	glLinkProgram(mID);
 	glGetProgramiv(mID, GL_LINK_STATUS, &success);

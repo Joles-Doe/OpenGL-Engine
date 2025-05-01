@@ -50,6 +50,18 @@ int main()
 	window.AddObject(testShader);
 
 	//==============================
+	// TEST 3 LIGHTING DIFFUSE
+	std::shared_ptr<GameObject> testLightingD = std::make_shared<GameObject>("./data/models/curuthers/curuthers.obj", "./data/models/curuthers/Whiskers_diffuse.png");
+	testLightingD->GetTransform()->Move(glm::vec3(-5.0f, 0.0f, -15.0f));
+	testLightingD->GetTransform()->Scale(glm::vec3(2.0f, 2.0f, 2.0f));
+	testLightingD->AttachTimeManager(window.GetTimeManager());
+	testLightingD->AttachShaderManager(window.GetShaderManager());
+
+	testLightingD->UseCustomShader("LIGHTd", "./data/shaders/LightSpecular");
+
+	window.AddObject(testLightingD);
+
+	//==============================
 
 	bool quit = false;
 	while (!quit)

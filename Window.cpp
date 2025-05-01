@@ -95,8 +95,9 @@ void Window::Update()
 	//Set active shader
 	mDefaultShader->SetActive();
 
-	//Upload matrices
+	//Upload uniforms { TURN INTO A UNIFORM BUFFER OBJECT EVENTUALLY }
 	mDefaultShader->SetUniform("uView", GetActiveCamera()->GetView());
+	mDefaultShader->SetUniform("uViewPos", GetActiveCamera()->Position());
 	mDefaultShader->SetUniform("uProjection", mProjection);
 
 	//Render objects
@@ -105,7 +106,7 @@ void Window::Update()
 		if (mObjects[i]->HasCustomShader())
 		{
 			//std::cout << i << " custom" << std::endl;
-			mObjects[i]->Draw(GetActiveCamera()->GetView(), mProjection);
+			mObjects[i]->Draw(GetActiveCamera()->GetView(), GetActiveCamera()->Position(), mProjection);
 		}
 		else
 		{

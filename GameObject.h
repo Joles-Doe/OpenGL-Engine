@@ -40,7 +40,7 @@ public:
 	/// <summary>
 	/// Draw function - called by the Window to draw the Model. Uses a custom shader.
 	/// </summary>
-	void Draw(const glm::mat4& _viewMatrix, const glm::mat4& _projectionMatrix);
+	void Draw(const glm::mat4& _viewMatrix, const glm::vec3& _viewPos, const glm::mat4& _projectionMatrix);
 
 	/// <summary>
 	/// Draw function - called by the Window to draw the Model. Uses the default shader.
