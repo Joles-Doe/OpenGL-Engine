@@ -51,8 +51,6 @@ void ShaderProgram::LoadProgram(const std::string& _vertexPath, const std::strin
 	const char* vertexShaderCode = vertexCode.c_str();
 	const char* fragmentShaderCode = fragmentCode.c_str();
 
-	mSource = fragmentCode;
-
 	/*const char* vertexShaderCode =
 		"attribute vec3 aPosition;" \
 		"attribute vec2 aPixelColor;" \
@@ -141,28 +139,30 @@ void ShaderProgram::SetUniform(const std::string& _name, glm::mat4 _value)
 void ShaderProgram::SetUniform(const std::string& _name, glm::vec4 _value)
 {
 	glUseProgram(ID());
-	glUniform4fv(glGetUniformLocation(mID, _name.c_str()), 4, glm::value_ptr(_value));
+
+	GLint loc = glGetUniformLocation(mID, _name.c_str());
+	if (loc == -1) return; // Early return if location is invalid
+
+	glUniform4f(loc, _value.x, _value.y, _value.z, _value.w);
+	//glUniform4fv(glGetUniformLocation(mID, _name.c_str()), 4, glm::value_ptr(_value));
 }
 
 void ShaderProgram::SetUniform(const std::string& _name, glm::vec3 _value)
 {
 	glUseProgram(ID());
 
-	if (ID() != 5) return;
+	GLint loc = glGetUniformLocation(mID, _name.c_str());
+	if (loc == -1) return; // Early return if location is invalid
 
-	printf("Setting uniform: %s\n", _name.c_str());
-	GLint x = glGetUniformLocation(mID, _name.c_str());
-	if (x == -1) std::cout << "uniform set failure " << std::endl;
-
-	std::cout << mID << std::endl;
-	std::cout << _value.x << std::endl;
-
-	//glUniform3fv(x, 3, glm::value_ptr(_value));
-	glUniform3f(x, _value.x, _value.y, _value.z);
+	glUniform3f(loc, _value.x, _value.y, _value.z);
 }
 
 void ShaderProgram::SetUniform(const std::string& _name, float _value)
 {
 	glUseProgram(ID());
-	glUniform1f(glGetUniformLocation(mID, _name.c_str()), _value);
+
+	GLint loc = glGetUniformLocation(mID, _name.c_str());
+	if (loc == -1) return; // Early return if location is invalid
+
+	glUniform1f(loc, _value);
 }

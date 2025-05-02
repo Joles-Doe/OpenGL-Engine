@@ -57,12 +57,21 @@ int main()
 	testLightingD->AttachTimeManager(window.GetTimeManager());
 	testLightingD->AttachShaderManager(window.GetShaderManager());
 
-	testLightingD->UseCustomShader("LIGHTd", "./data/shaders/LightSpecular");
-
-	std::cout << testLightingD->mCustomShader->ID() << std::endl;
-	std::cout << testLightingD->mCustomShader->mSource << std::endl;
+	testLightingD->UseCustomShader("LIGHTd", "./data/shaders/LightDiffuse");
 
 	window.AddObject(testLightingD);
+
+	//==============================
+	// TEST 4 LIGHTING SPECULAR
+	std::shared_ptr<GameObject> testLightingS = std::make_shared<GameObject>(SPHERE, GREEN);
+	testLightingS->GetTransform()->Move(glm::vec3(-10.0f, 0.0f, -15.0f));
+	testLightingS->GetTransform()->Scale(glm::vec3(2.0f, 2.0f, 2.0f));
+	testLightingS->AttachTimeManager(window.GetTimeManager());
+	testLightingS->AttachShaderManager(window.GetShaderManager());
+
+	testLightingS->UseCustomShader("LIGHTs", "./data/shaders/LightSpecular");
+
+	window.AddObject(testLightingS);
 
 	//==============================
 
