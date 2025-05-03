@@ -11,7 +11,6 @@
 #include "Window.h"
 #include "Camera.h"
 #include "GameObject.h"
-#include "Canvas.h"
 
 #undef main
 
@@ -73,17 +72,6 @@ int main()
 	testLightingS->UseCustomShader("LIGHTs", "./data/shaders/LightSpecular");
 
 	window.AddObject(testLightingS);
-
-	//==============================
-	// TEST 4 HUD
-	std::shared_ptr<Canvas> testCanvas = std::make_shared<Canvas>();
-	std::shared_ptr<CanvasObject> testCanvasObject = std::make_shared<CanvasObject>(glm::vec2(0.0f, 0.0f), 300.0f, 300.0f);
-
-	testCanvasObject->SetFillColor(PURPLE);
-	
-	testCanvas->AddCanvasObject(testCanvasObject);
-
-	window.AddCanvas(testCanvas);
 
 	//==============================
 
