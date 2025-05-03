@@ -43,6 +43,9 @@ GameObject::GameObject(SHAPE _modelShape, COLOR _color) : mKILL(false), mUsingCu
 	case WHITE:
 		mTexture = std::make_shared<Texture>("./data/models/primitives/colors/white.png");
 		break;
+	case TRANSPARENT:
+		mTexture = std::make_shared<Texture>("./data/models/primitives/colors/transparent.png");
+		break;
 	default:
 	case BLACK:
 		mTexture = std::make_shared<Texture>("./data/models/primitives/colors/black.png");

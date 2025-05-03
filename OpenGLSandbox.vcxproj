@@ -134,6 +134,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="CanvasObject.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="EventManager.cpp" />
@@ -155,6 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Canvas.h" />
+    <ClInclude Include="CanvasObject.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="EventManager.h" />
