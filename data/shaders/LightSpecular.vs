@@ -1,10 +1,12 @@
-attribute vec3 aPosition;
-attribute vec2 aPixelColor;
-attribute vec3 aNormal;
+#version 330 core
 
-varying vec2 vTextureCoord;
-varying vec3 vNormal;
-varying vec3 vFragPos;
+in vec3 aPosition;
+in vec2 aPixelColor;
+in vec3 aNormal;
+
+out vec2 vTextureCoord;
+out vec3 vNormal;
+out vec3 vFragPos;
 
 uniform mat4 uProjection;
 uniform mat4 uView;

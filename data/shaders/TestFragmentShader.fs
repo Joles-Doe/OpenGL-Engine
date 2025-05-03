@@ -1,5 +1,3 @@
-precision mediump float;
-
 varying float vDepth;
 
 void main()

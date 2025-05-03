@@ -1,9 +1,13 @@
+#version 330 core
+
 uniform sampler2D uTexture;
 uniform vec3 uViewPos;
 
-varying vec2 vTextureCoord;
-varying vec3 vNormal;
-varying vec3 vFragPos;
+in vec2 vTextureCoord;
+in vec3 vNormal;
+in vec3 vFragPos;
+
+out vec4 oFragColor;
 
 void main()
 {
@@ -25,6 +29,5 @@ void main()
 	vec3 specular = spec * specularColor;
 
 	vec3 lighting = diffuse + specular; 
-	gl_FragColor = vec4(lighting, 1) * tex;
-	
+	oFragColor = vec4(lighting, 1) * tex;
 }

@@ -1,7 +1,7 @@
-attribute vec3 aPosition;
-attribute vec2 aPixelColor;
+in vec3 aPosition;
+in vec2 aPixelColor;
 
-varying vec2 vTextureCoord;
+out vec2 vTextureCoord;
 
 uniform mat4 uProjection;
 uniform mat4 uView;

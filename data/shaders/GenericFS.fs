@@ -1,9 +1,11 @@
 uniform sampler2D uTexture;
 
-varying vec2 vTextureCoord;
+in vec2 vTextureCoord;
+
+out vec4 oFragColor;
 
 void main()
 {
 	vec4 tex = texture2D(uTexture, vTextureCoord);
-	gl_FragColor = tex;
+	oFragColor = tex;
 }

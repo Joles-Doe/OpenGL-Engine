@@ -26,8 +26,8 @@ void Camera::Update()
             }
 
             MouseAxis mouseMovement = mEventManager->GetMouseAxis();
-            mYaw += mouseMovement.x * 0.1;
-            mPitch -= mouseMovement.y * 0.1;
+            mYaw += mouseMovement.x * 0.3;
+            mPitch -= mouseMovement.y * 0.3;
 
             if (mPitch > 89.0f) mPitch = 89.0f;
             if (mPitch < -89.0f) mPitch = -89.0f;
