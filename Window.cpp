@@ -35,7 +35,9 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
-	mProjection = glm::perspective(45.0f, ((float)_w / (float)_h), 0.1f, 100.0f);
+	mPerspectiveProjection = glm::perspective(45.0f, ((float)_w / (float)_h), 0.1f, 100.0f);
+	//mOrthoProjection = glm::ortho(0.0f, (float)_w, 0.0f, (float)_h);
+	mOrthoProjection = glm::ortho(0.0f, (float)_w, (float)_h, 0.0f, -1.0f, 10.0f);
 }
 
 Window::~Window()
@@ -82,7 +84,8 @@ void Window::Update()
 	if (windowWidth != mPrevWidth || windowHeight != mPrevHeight)
 	{
 		glViewport(0, 0, windowWidth, windowHeight);
-		mProjection = glm::perspective(45.0f, ((float)windowWidth / (float)windowHeight), 0.1f, 100.0f);
+		mPerspectiveProjection = glm::perspective(45.0f, ((float)windowWidth / (float)windowHeight), 0.1f, 100.0f);
+		mOrthoProjection = glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight);
 
 		mPrevWidth = windowWidth;
 		mPrevHeight = windowHeight;
@@ -98,7 +101,7 @@ void Window::Update()
 	//Upload uniforms { TURN INTO A UNIFORM BUFFER OBJECT EVENTUALLY }
 	mDefaultShader->SetUniform("uView", GetActiveCamera()->GetView());
 	mDefaultShader->SetUniform("uViewPos", GetActiveCamera()->Position());
-	mDefaultShader->SetUniform("uProjection", mProjection);
+	mDefaultShader->SetUniform("uProjection", mPerspectiveProjection);
 
 	//Render objects
 	for (int i = 0; i < mObjects.size(); i++)
@@ -106,7 +109,7 @@ void Window::Update()
 		if (mObjects[i]->HasCustomShader())
 		{
 			//std::cout << i << " custom" << std::endl;
-			mObjects[i]->Draw(GetActiveCamera()->GetView(), GetActiveCamera()->Position(), mProjection);
+			mObjects[i]->Draw(GetActiveCamera()->GetView(), GetActiveCamera()->Position(), mPerspectiveProjection);
 		}
 		else
 		{
@@ -114,6 +117,23 @@ void Window::Update()
 			mDefaultShader->SetActive();
 			mObjects[i]->Draw(mDefaultShader);
 		}
+	}
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	mDefaultShader->SetActive();
+	mDefaultShader->SetUniform("uView", glm::mat4(1.0f));
+	mDefaultShader->SetUniform("uProjection", mOrthoProjection);
+	for (int i = 0; i < mHUDObjects.size(); i++)
+	{
+		mHUDObjects[i]->Draw(mDefaultShader);
+	}
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
+	GLenum err;
+	while ((err = glGetError()) != GL_NO_ERROR) {
+		std::cout << "OpenGL error: " << err << std::endl;
 	}
 
 	//Reset program
@@ -133,6 +153,12 @@ void Window::Update()
 void Window::AddObject(std::shared_ptr<GameObject> _obj)
 {
 	mObjects.push_back(_obj);
+	_obj->Start();
+}
+
+void Window::AddHUDObject(std::shared_ptr<HUDObject> _obj)
+{
+	mHUDObjects.push_back(_obj);
 	_obj->Start();
 }
 
@@ -164,7 +190,17 @@ void Window::CullDeletedObjects()
 	mObjects.erase(
 		std::remove_if(mObjects.begin(), mObjects.end(),
 			[](const std::shared_ptr<GameObject>& obj) {
-				return obj->IsKill(); // true = remove it
+				return obj->IsKill() || obj.unique(); // true = remove it
 			}),
 		mObjects.end());
+}
+
+void Window::CullDeletedHUDObjects()
+{
+	mHUDObjects.erase(
+		std::remove_if(mHUDObjects.begin(), mHUDObjects.end(),
+			[](const std::shared_ptr<HUDObject>& obj) {
+				return obj.unique(); // true = remove it
+			}),
+		mHUDObjects.end());
 }

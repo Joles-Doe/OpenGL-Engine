@@ -11,6 +11,7 @@
 #include "Window.h"
 #include "Camera.h"
 #include "GameObject.h"
+#include "HUDObject.h"
 
 #undef main
 
@@ -72,6 +73,14 @@ int main()
 	testLightingS->UseCustomShader("LIGHTs", "./data/shaders/LightSpecular");
 
 	window.AddObject(testLightingS);
+
+	//==============================
+	// TEST 5 HUD
+	std::shared_ptr<HUDObject> testHUD = std::make_shared<HUDObject>(glm::vec2(0, 0), 100, 200);
+
+	testHUD->SetFillColor(RED);
+
+	window.AddHUDObject(testHUD);
 
 	//==============================
 

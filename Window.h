@@ -13,6 +13,7 @@
 #include "EventManager.h"
 #include "ShaderManager.h"
 #include "GameObject.h"
+#include "HUDObject.h"
 #include "Rigidbody.h"
 #include "ShaderProgram.h"
 #include "Camera.h"
@@ -36,6 +37,12 @@ public:
 	/// </summary>
 	/// <param name="_obj"> Object to add </param>
 	void AddObject(std::shared_ptr<GameObject> _obj);
+
+	/// <summary>
+	/// Adds an object to the HUD.
+	/// </summary>
+	/// <param name="_obj"> Object to add </param>
+	void AddHUDObject(std::shared_ptr<HUDObject> _obj);
 
 	/// <summary>
 	/// Returns the camera with the highest priority.
@@ -88,15 +95,22 @@ private:
 
 	SDL_bool mMouseLocked;
 
-	glm::mat4 mProjection;
+	glm::mat4 mPerspectiveProjection;
+	glm::mat4 mOrthoProjection;
 
 	std::vector<std::shared_ptr<Camera>> mCameras;
 	std::vector<std::shared_ptr<GameObject>> mObjects;
+	std::vector<std::shared_ptr<HUDObject>> mHUDObjects;
 
 	/// <summary>
 	/// Removes GameObjects who are no longer initialized.
 	/// </summary>
 	void CullDeletedObjects();
+
+	/// <summary>
+	/// Removes HUDObjects who are no longer initialized.
+	/// </summary>
+	void CullDeletedHUDObjects();
 
 	int mPrevWidth;
 	int mPrevHeight;
