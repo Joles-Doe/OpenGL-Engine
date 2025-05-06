@@ -1,4 +1,6 @@
-attribute vec3 aPosition;
+#version 330 core
+
+in vec3 aPosition;
 
 uniform mat4 uProjection;
 uniform mat4 uView;

@@ -1,4 +1,36 @@
 ﻿  Camera.cpp
-C:\Users\Scott\Documents\GitHub\OpenGL-Engine\Camera.cpp(29,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Scott\Documents\GitHub\OpenGL-Engine\Camera.cpp(30,39): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe
+D:\s5623772\OpenGL-Engine\Camera.cpp(29,37): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\Camera.cpp(30,39): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  Collider.cpp
+  DynamicBody.cpp
+  EventManager.cpp
+  GameObject.cpp
+  KinematicBody.cpp
+  LookAroundCamera.cpp
+D:\s5623772\OpenGL-Engine\LookAroundCamera.cpp(10,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\s5623772\OpenGL-Engine\LookAroundCamera.cpp(11,31): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+D:\s5623772\OpenGL-Engine\main.cpp(19,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Model.cpp
+  PhysicsManager.cpp
+  RenderTexture.cpp
+  Rigidbody.cpp
+  ShaderManager.cpp
+  ShaderProgram.cpp
+  SharedStructs&Enums.h
+  Texture.cpp
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244: '=': conversion from 'const T' to '_Ty', possible loss of data
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         with
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         [
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:             T=float
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         ]
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         and
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         [
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:             _Ty=unsigned char
+D:\s5623772\OpenGL-Engine\Texture.cpp(42,30): warning C4244:         ]
+  TimeManager.cpp
+D:\s5623772\OpenGL-Engine\TimeManager.cpp(14,14): warning C4018: '<': signed/unsigned mismatch
+  Transform.cpp
+  Window.cpp
+  Generating Code...
+  OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

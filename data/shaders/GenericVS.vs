@@ -1,3 +1,5 @@
+#version 330 core
+
 in vec3 aPosition;
 in vec2 aPixelColor;
 
