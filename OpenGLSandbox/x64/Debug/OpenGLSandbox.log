@@ -1,2 +1,26 @@
-﻿  HUDObject.cpp
-  OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe
+﻿  main.cpp
+C:\Users\Scott\Documents\GitHub\OpenGL-Engine\main.cpp(20,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xutility(406,82): warning C4244: 'argument': conversion from '_Ty' to 'const float', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xutility(406,82): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xutility(406,82): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xutility(406,82): warning C4244:             _Ty=int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xutility(406,82): warning C4244:         ]
+  (compiling source file 'main.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\xutility(406,82):
+      the template instantiation context (the oldest one first) is
+          C:\Users\Scott\Documents\GitHub\OpenGL-Engine\main.cpp(79,44):
+          see reference to function template instantiation 'std::shared_ptr<HUDObject> std::make_shared<HUDObject,glm::vec2,int,int>(glm::vec2 &&,int &&,int &&)' being compiled
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(2906,46):
+          see reference to function template instantiation 'std::_Ref_count_obj2<HUDObject>::_Ref_count_obj2<_Ty,int,int>(_Ty &&,int &&,int &&)' being compiled
+          with
+          [
+              _Ty=glm::vec2
+          ]
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\memory(2095,18):
+          see reference to function template instantiation 'void std::_Construct_in_place<_Ty,glm::vec<2,float,glm::packed_highp>,int,int>(_Ty &,glm::vec<2,float,glm::packed_highp> &&,int &&,int &&) noexcept(false)' being compiled
+          with
+          [
+              _Ty=HUDObject
+          ]
+  
+  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

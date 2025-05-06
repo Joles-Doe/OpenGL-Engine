@@ -1,6 +1,6 @@
 #include "HUDObject.h"
 
-HUDObject::HUDObject(const glm::vec2& _topLeft, const float& _width, const float& _height)
+HUDObject::HUDObject(const glm::vec2& _topLeft, const float& _width, const float& _height) : mVaoID(0), mVboID(0), mEboID(0)
 {
     mTopLeft = _topLeft;
     mSize = glm::vec2(_width, _height);
@@ -51,12 +51,13 @@ void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
     // Initialise the HUD Quad if it's dirty
     if (mDirty)
     {
-        // Pos [2], Tex coord [2]
+        // Pos [3], Tex coord [2]
         float quad[] = {
-            0.0f, 0.0f, 0.0f, 0.0f,
-            1.0f, 0.0f, 1.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            0.0f, 1.0f, 0.0f, 1.0f
+            // x     y     z     u     v
+            0.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+            1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+            1.0f, 1.0f, 0.0f,  1.0f, 1.0f,
+            0.0f, 1.0f, 0.0f,  0.0f, 1.0f
         };
         unsigned int indices[] = { 0, 1, 2, 2, 3, 0 };
 
@@ -68,10 +69,10 @@ void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
         glBindVertexArray(0);
         mDirty = false;
@@ -84,15 +85,14 @@ void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
         glBindTexture(GL_TEXTURE_2D, mTexture->ID());
     }
 
-    // Adjust position to bottom-left corner
-    glm::vec2 pos = mTopLeft;
-    pos.y += mSize.y;
-
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(pos, 0.0f));
+    model = glm::translate(model, glm::vec3(mTopLeft, 0.0f));
     model = glm::scale(model, glm::vec3(mSize, 1.0f));
 
     _shader->SetUniform("uModel", model);
+
+    int currentVAO = 0;
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVAO);
 
     // Draw elements
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

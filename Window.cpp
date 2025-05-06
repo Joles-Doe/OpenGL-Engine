@@ -37,7 +37,7 @@ Window::Window(int _w, int _h, const std::string& _name) :
 
 	mPerspectiveProjection = glm::perspective(45.0f, ((float)_w / (float)_h), 0.1f, 100.0f);
 	//mOrthoProjection = glm::ortho(0.0f, (float)_w, 0.0f, (float)_h);
-	mOrthoProjection = glm::ortho(0.0f, (float)_w, (float)_h, 0.0f, -1.0f, 10.0f);
+	mOrthoProjection = glm::ortho(0.0f, (float)_w, (float)_h, 0.0f);
 }
 
 Window::~Window()
@@ -85,7 +85,7 @@ void Window::Update()
 	{
 		glViewport(0, 0, windowWidth, windowHeight);
 		mPerspectiveProjection = glm::perspective(45.0f, ((float)windowWidth / (float)windowHeight), 0.1f, 100.0f);
-		mOrthoProjection = glm::ortho(0.0f, (float)windowWidth, 0.0f, (float)windowHeight);
+		mOrthoProjection = glm::ortho(0.0f, (float)windowWidth, (float)windowHeight, 0.0f);
 
 		mPrevWidth = windowWidth;
 		mPrevHeight = windowHeight;
@@ -124,17 +124,13 @@ void Window::Update()
 	mDefaultShader->SetActive();
 	mDefaultShader->SetUniform("uView", glm::mat4(1.0f));
 	mDefaultShader->SetUniform("uProjection", mOrthoProjection);
+
 	for (int i = 0; i < mHUDObjects.size(); i++)
 	{
 		mHUDObjects[i]->Draw(mDefaultShader);
 	}
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-
-	GLenum err;
-	while ((err = glGetError()) != GL_NO_ERROR) {
-		std::cout << "OpenGL error: " << err << std::endl;
-	}
 
 	//Reset program
 	glUseProgram(0);
