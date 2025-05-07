@@ -78,7 +78,7 @@ int main()
 	// TEST 5 HUD
 	std::shared_ptr<HUDObject> testHUD = std::make_shared<HUDObject>(glm::vec2(0, 0), 400, WINDOW_HEIGHT);
 
-	testHUD->SetFillColor(RED);
+	testHUD->SetFillColor(ORANGE);
 
 	window.AddHUDObject(testHUD);
 

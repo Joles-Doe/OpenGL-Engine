@@ -176,6 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GenericFS.fs" />
+    <None Include="data\shaders\GenericHUD.fs" />
+    <None Include="data\shaders\GenericHUD.vs" />
+    <None Include="data\shaders\GenericHUDImage.fs" />
+    <None Include="data\shaders\GenericHUDImage.vs" />
     <None Include="data\shaders\GenericVS.vs" />
     <None Include="data\shaders\LightDiffuse.fs" />
     <None Include="data\shaders\LightDiffuse.vs" />

@@ -31,6 +31,8 @@ Window::Window(int _w, int _h, const std::string& _name) :
 
 	mShaderManager = std::make_shared<ShaderManager>();
 	mDefaultShader = mShaderManager->GetShader("DEFAULT");
+	mDefaultHUDShader = mShaderManager->AddShader("DEFAULTHUD", "./data/shaders/GenericHUD");
+	mDefaultHUDImageShader = mShaderManager->AddShader("DEFAULTHUDIMAGE", "./data/shaders/GenericHUDImage");
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -57,6 +59,25 @@ void Window::Update()
 	
 	//Remove dead objects
 	CullDeletedObjects();
+	CullDeletedHUDObjects();
+
+	//Handle HUD actions
+	bool hasClicked = mEventManager->GetMouseDown();
+	glm::vec2 mousePos = glm::vec2(mEventManager->GetMousePos().x, mEventManager->GetMousePos().y);
+	for (int i = 0; i < mHUDObjects.size(); i++)
+	{
+		if (mHUDObjects[i]->MouseIntersect(mousePos))
+		{
+			if (hasClicked)
+			{
+				mHUDObjects[i]->OnClick();
+			}
+			else
+			{
+				mHUDObjects[i]->OnHover();
+			}
+		}
+	}
 
 	//Handle physics
 	if (mEnablePhysics)
@@ -121,13 +142,15 @@ void Window::Update()
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
-	mDefaultShader->SetActive();
-	mDefaultShader->SetUniform("uView", glm::mat4(1.0f));
-	mDefaultShader->SetUniform("uProjection", mOrthoProjection);
+	mDefaultHUDShader->SetActive();
+	mDefaultHUDShader->SetUniform("uProjection", mOrthoProjection);
+
+	mDefaultHUDImageShader->SetActive();
+	mDefaultHUDImageShader->SetUniform("uProjection", mOrthoProjection);
 
 	for (int i = 0; i < mHUDObjects.size(); i++)
 	{
-		mHUDObjects[i]->Draw(mDefaultShader);
+		mHUDObjects[i]->Draw(mHUDObjects[i]->UsingImage() ? mDefaultHUDImageShader : mDefaultHUDShader);
 	}
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);

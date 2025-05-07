@@ -205,5 +205,17 @@
     <None Include="data\shaders\LightSpecular.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="data\shaders\GenericHUD.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\GenericHUD.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\GenericHUDImage.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\GenericHUDImage.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -17,6 +17,7 @@ class HUDObject
 {
 public:
     HUDObject(const glm::vec2& _topLeft, const float& _width, const float& _height);
+    ~HUDObject();
 
     /// <summary>
     /// Start function - called once by the Window when the GameObject gets initialized. Use this as your constructor to initialize all of your variables.
@@ -28,15 +29,32 @@ public:
     /// </summary>
     virtual void Update();
 
+    virtual void OnHover();
+
+    virtual void OnClick();
+
     /// <summary>
     /// Draw function - called by the Window to draw the Object.
     /// </summary>
     void Draw(std::shared_ptr<ShaderProgram> _shader);
 
+    glm::vec2 GetSize() const noexcept { return mSize; }
+    glm::vec2 GetTopLeft() const noexcept { return mTopLeft; }
+
+    bool MouseIntersect(glm::vec2 _mousePos);
+
     void SetFillColor(COLOR _fill);
+    void SetFillColor(glm::ivec3 _color);
+    void SetFillColor(glm::ivec4 _color);
+    void SetFillColor(int _r, int _g, int _b);
+    void SetFillColor(int _r, int _g, int _b, int _a);
 
     void SetImage(const std::string& _path);
+
+    bool UsingImage() const;
 private:
+    float RGBtoUnit(int _value);
+
     std::shared_ptr<Model> mModel;
     std::shared_ptr<Texture> mTexture;
 
@@ -47,4 +65,7 @@ private:
 
     glm::vec2 mTopLeft;
     glm::vec2 mSize;
+
+    bool mUsingImage;
+    glm::vec4 mColor;
 };

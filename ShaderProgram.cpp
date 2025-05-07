@@ -86,6 +86,7 @@ void ShaderProgram::LoadProgram(const std::string& _vertexPath, const std::strin
 	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &success);
 	if (!success)
 	{
+		std::cout << vertexShaderCode << std::endl;
 		throw std::runtime_error("Vertex Shader compile error");
 	}
 

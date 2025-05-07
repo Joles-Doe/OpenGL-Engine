@@ -22,7 +22,7 @@ void Camera::Update()
             if (!mOrbitMouseLocked)
             {
                 mOrbitMouseLocked = SDL_TRUE;
-                SDL_SetRelativeMouseMode(mOrbitMouseLocked);
+                mEventManager->SetRelativeMouseMode(true);
             }
 
             MouseAxis mouseMovement = mEventManager->GetMouseAxis();
@@ -35,7 +35,7 @@ void Camera::Update()
         else if (mOrbitMouseLocked)
         {
             mOrbitMouseLocked = SDL_FALSE;
-            SDL_SetRelativeMouseMode(mOrbitMouseLocked);
+            mEventManager->SetRelativeMouseMode(false);
         }
 
         glm::vec3 front;

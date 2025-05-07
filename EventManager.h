@@ -72,6 +72,10 @@ public:
 	/// </summary>
 	/// <returns> A struct containing the relative X and Y movements of the mouse. </returns>
 	MouseAxis GetMouseAxis() const noexcept { return mMouseMovement; }
+
+	MouseAxis GetMousePos() const noexcept { return mMousePos; }
+
+	void SetRelativeMouseMode(bool _val);
 private:
 	//Holds the event during the poll sequence
 	SDL_Event mCurrentEvent;
@@ -104,6 +108,8 @@ private:
 	//Mouse specific
 	bool mMouse1Down{ false };
 	bool mMouse2Down{ false };
-	MouseAxis mMouseMovement;
+	MouseAxis mMouseMovement{ 0 };
+	MouseAxis mMousePos{ -1 };
+	bool mMouseLocked{ false };
 };
 

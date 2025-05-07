@@ -6,6 +6,27 @@ HUDObject::HUDObject(const glm::vec2& _topLeft, const float& _width, const float
     mSize = glm::vec2(_width, _height);
 
     mDirty = true;
+
+    mColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    mUsingImage = false;
+}
+
+HUDObject::~HUDObject()
+{
+    if (mVaoID)
+    {
+        glDeleteVertexArrays(1, &mVaoID);
+    }
+    
+    if (mVboID)
+    {
+        glDeleteBuffers(1, &mVboID);
+    }
+
+    if (mEboID)
+    {
+        glDeleteBuffers(1, &mEboID);
+    }
 }
 
 void HUDObject::Start()
@@ -14,6 +35,19 @@ void HUDObject::Start()
 
 void HUDObject::Update()
 {
+}
+
+void HUDObject::OnHover()
+{
+}
+
+void HUDObject::OnClick()
+{
+    int r = 1 + rand() % 254;
+    int g = 1 + rand() % 254;
+    int b = 1 + rand() % 254;
+
+    SetFillColor(r, g, b);
 }
 
 void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
@@ -80,9 +114,13 @@ void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
 
     glBindVertexArray(mVaoID);
 
-    if (mTexture)
+    if (mUsingImage)
     {
         glBindTexture(GL_TEXTURE_2D, mTexture->ID());
+    }
+    else
+    {
+        _shader->SetUniform("uColor", mColor);
     }
 
     glm::mat4 model = glm::mat4(1.0f);
@@ -102,36 +140,64 @@ void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+bool HUDObject::MouseIntersect(glm::vec2 _mousePos)
+{
+    return (_mousePos.x >= mTopLeft.x &&
+        _mousePos.x <= mTopLeft.x + mSize.x &&
+        _mousePos.y >= mTopLeft.y &&
+        _mousePos.y <= mTopLeft.y + mSize.y);
+}
+
 void HUDObject::SetFillColor(COLOR _fill)
 {
     switch (_fill)
     {
     case RED:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/red.png");
+        mColor = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
         break;
     case BLUE:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/blue.png");
+        mColor = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
         break;
     case GREEN:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/green.png");
+        mColor = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
         break;
     case ORANGE:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/orange.png");
+        mColor = glm::vec4(1.0f, 0.49f, 0.153f, 1.0f);
         break;
     case PURPLE:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/purple.png");
+        mColor = glm::vec4(0.635f, 0.286f, 0.643f, 1.0f);
         break;
     case YELLOW:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/yellow.png");
+        mColor = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
         break;
     case WHITE:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/white.png");
+        mColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
         break;
     default:
     case BLACK:
-        mTexture = std::make_shared<Texture>("./data/models/primitives/colors/black.png");
+        mColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         break;
     }
+}
+
+void HUDObject::SetFillColor(glm::ivec3 _color)
+{
+    mColor = glm::vec4(RGBtoUnit(_color.x), RGBtoUnit(_color.y), RGBtoUnit(_color.z), 1.0f);
+}
+
+void HUDObject::SetFillColor(glm::ivec4 _color)
+{
+    mColor = glm::vec4(RGBtoUnit(_color.x), RGBtoUnit(_color.y), RGBtoUnit(_color.z), RGBtoUnit(_color.w));
+}
+
+void HUDObject::SetFillColor(int _r, int _g, int _b)
+{
+    mColor = glm::vec4(RGBtoUnit(_r), RGBtoUnit(_g), RGBtoUnit(_b), 1.0f);
+}
+
+void HUDObject::SetFillColor(int _r, int _g, int _b, int _a)
+{
+    mColor = glm::vec4(RGBtoUnit(_r), RGBtoUnit(_g), RGBtoUnit(_b), RGBtoUnit(_a));
 }
 
 void HUDObject::SetImage(const std::string& _path)
@@ -140,9 +206,21 @@ void HUDObject::SetImage(const std::string& _path)
     {
         std::shared_ptr<Texture> newtex = std::make_shared<Texture>(_path);
         mTexture = newtex;
+        mUsingImage = true;
     }
     catch (std::runtime_error& e)
     {
         std::cout << e.what();
+        mUsingImage = false;
     }
+}
+
+bool HUDObject::UsingImage() const
+{
+    return mUsingImage;
+}
+
+float HUDObject::RGBtoUnit(int _value)
+{
+    return std::round(((float)_value / 255) * 1000) / 1000;
 }

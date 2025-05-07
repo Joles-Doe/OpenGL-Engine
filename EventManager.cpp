@@ -1,7 +1,13 @@
 #include "EventManager.h"
 
-//remove
 #include <iostream>
+
+void EventManager::SetRelativeMouseMode(bool _val)
+{
+	SDL_bool lock = _val ? SDL_TRUE : SDL_FALSE;
+	SDL_SetRelativeMouseMode(lock);
+	mMouseLocked = _val;
+}
 
 void EventManager::ResetVariables()
 {
@@ -10,6 +16,11 @@ void EventManager::ResetVariables()
 	mMouseMove = false;
 	mMouseMovement.x = 0;
 	mMouseMovement.y = 0;
+	if (mMouseLocked)
+	{
+		mMousePos.x = -1;
+		mMousePos.y = -1;
+	}
 }
 
 void EventManager::PollEvents()
@@ -134,6 +145,10 @@ void EventManager::PollEvents()
 			mMouseMove = true;
 			mMouseMovement.x = mCurrentEvent.motion.xrel;
 			mMouseMovement.y = mCurrentEvent.motion.yrel;
+			if (!mMouseLocked)
+			{
+				SDL_GetMouseState(&mMousePos.x, &mMousePos.y);
+			}
 			break;
 		}
 	}

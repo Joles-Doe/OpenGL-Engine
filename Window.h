@@ -92,6 +92,8 @@ private:
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<ShaderManager> mShaderManager;
 	std::shared_ptr<ShaderProgram> mDefaultShader;
+	std::shared_ptr<ShaderProgram> mDefaultHUDShader;
+	std::shared_ptr<ShaderProgram> mDefaultHUDImageShader;
 
 	SDL_bool mMouseLocked;
 
