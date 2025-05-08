@@ -142,6 +142,9 @@ void Window::Update()
 
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	mDefaultHUDShader->SetActive();
 	mDefaultHUDShader->SetUniform("uProjection", mOrthoProjection);
 
@@ -154,6 +157,7 @@ void Window::Update()
 	}
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 
 	//Reset program
 	glUseProgram(0);
@@ -219,7 +223,7 @@ void Window::CullDeletedHUDObjects()
 	mHUDObjects.erase(
 		std::remove_if(mHUDObjects.begin(), mHUDObjects.end(),
 			[](const std::shared_ptr<HUDObject>& obj) {
-				return obj.unique(); // true = remove it
+				return obj->IsKill() || obj.unique(); // true = remove it
 			}),
 		mHUDObjects.end());
 }

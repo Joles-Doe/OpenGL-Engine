@@ -38,6 +38,12 @@ public:
     /// </summary>
     void Draw(std::shared_ptr<ShaderProgram> _shader);
 
+    /// <summary>
+    /// Returns true or false dependent on if the GameObject is dead and will be culled.
+    /// </summary>
+    /// <returns> Returns true or false dependent on if the GameObject needs culling </returns>
+    bool IsKill() const noexcept { return mKILL; }
+
     glm::vec2 GetSize() const noexcept { return mSize; }
     glm::vec2 GetTopLeft() const noexcept { return mTopLeft; }
 
@@ -52,11 +58,13 @@ public:
     void SetImage(const std::string& _path);
 
     bool UsingImage() const;
-private:
+protected:
     float RGBtoUnit(int _value);
 
     std::shared_ptr<Model> mModel;
     std::shared_ptr<Texture> mTexture;
+
+    bool mKILL;
 
     GLuint mVaoID;
     GLuint mVboID;

@@ -5,6 +5,7 @@ HUDObject::HUDObject(const glm::vec2& _topLeft, const float& _width, const float
     mTopLeft = _topLeft;
     mSize = glm::vec2(_width, _height);
 
+    mKILL = false;
     mDirty = true;
 
     mColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -43,11 +44,6 @@ void HUDObject::OnHover()
 
 void HUDObject::OnClick()
 {
-    int r = 1 + rand() % 254;
-    int g = 1 + rand() % 254;
-    int b = 1 + rand() % 254;
-
-    SetFillColor(r, g, b);
 }
 
 void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)

@@ -1,7 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 960
+#define WINDOW_HEIGHT 540
 
 #include <memory>
 #include <random>
@@ -13,6 +13,8 @@
 #include "GameObject.h"
 #include "HUDObject.h"
 
+#include "TitleText.h"
+
 #undef main
 
 int main()
@@ -20,7 +22,7 @@ int main()
 	srand(time(NULL));
 	Window window(WINDOW_WIDTH, WINDOW_HEIGHT, "test");
 
-	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::ORBIT);
+	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::STATIC);
 	cam->AttachTimeManager(window.GetTimeManager());
 	cam->AttachEventManager(window.GetEventManager());
 
@@ -76,9 +78,9 @@ int main()
 
 	//==============================
 	// TEST 5 HUD
-	std::shared_ptr<HUDObject> testHUD = std::make_shared<HUDObject>(glm::vec2(0, 0), 400, WINDOW_HEIGHT);
+	std::shared_ptr<TitleText> testHUD = std::make_shared<TitleText>(glm::vec2(0, 0), WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	testHUD->SetFillColor(ORANGE);
+	testHUD->SetImage("./data/hud/Title Text.png");
 
 	window.AddHUDObject(testHUD);
 
