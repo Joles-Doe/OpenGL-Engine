@@ -105,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>contrib/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +123,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>contrib/include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,10 +150,12 @@
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="ShaderStore.cpp" />
     <ClCompile Include="SharedStructs&amp;Enums.h" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="TitleText.cpp" />
+    <ClCompile Include="TitleTextBG.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -170,9 +174,11 @@
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="ShaderStore.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="TitleText.h" />
+    <ClInclude Include="TitleTextBG.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -188,6 +194,8 @@
     <None Include="data\shaders\LightSpecular.fs" />
     <None Include="data\shaders\LightSpecular.vs" />
     <None Include="data\shaders\TestFragmentShader.fs" />
+    <None Include="data\shaders\TestHUD.fs" />
+    <None Include="data\shaders\TestHUD.vs" />
     <None Include="data\shaders\TestVertexShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

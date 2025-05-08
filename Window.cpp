@@ -97,6 +97,11 @@ void Window::Update()
 		mObjects[i]->Update();
 	}
 
+	for (int i = 0; i < mHUDObjects.size(); i++)
+	{
+		mHUDObjects[i]->Update();
+	}
+
 	//Calculate window size in case of resize
 	int windowWidth;
 	int windowHeight;
@@ -129,7 +134,6 @@ void Window::Update()
 	{
 		if (mObjects[i]->HasCustomShader())
 		{
-			//std::cout << i << " custom" << std::endl;
 			mObjects[i]->Draw(GetActiveCamera()->GetView(), GetActiveCamera()->Position(), mPerspectiveProjection);
 		}
 		else
@@ -153,7 +157,14 @@ void Window::Update()
 
 	for (int i = 0; i < mHUDObjects.size(); i++)
 	{
-		mHUDObjects[i]->Draw(mHUDObjects[i]->UsingImage() ? mDefaultHUDImageShader : mDefaultHUDShader);
+		if (mHUDObjects[i]->HasCustomShader())
+		{
+			mHUDObjects[i]->Draw(mOrthoProjection);
+		}
+		else
+		{
+			mHUDObjects[i]->Draw(mHUDObjects[i]->UsingImage() ? mDefaultHUDImageShader : mDefaultHUDShader);
+		}
 	}
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -213,7 +224,7 @@ void Window::CullDeletedObjects()
 	mObjects.erase(
 		std::remove_if(mObjects.begin(), mObjects.end(),
 			[](const std::shared_ptr<GameObject>& obj) {
-				return obj->IsKill() || obj.unique(); // true = remove it
+				return obj->IsKill() || obj.use_count() == 1; // true = remove it
 			}),
 		mObjects.end());
 }
@@ -223,7 +234,7 @@ void Window::CullDeletedHUDObjects()
 	mHUDObjects.erase(
 		std::remove_if(mHUDObjects.begin(), mHUDObjects.end(),
 			[](const std::shared_ptr<HUDObject>& obj) {
-				return obj->IsKill() || obj.unique(); // true = remove it
+				return obj->IsKill() || obj.use_count() == 1; // true = remove it
 			}),
 		mHUDObjects.end());
 }

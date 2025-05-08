@@ -126,6 +126,12 @@
     <ClCompile Include="TitleText.cpp">
       <Filter>Source Files\Custom GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderStore.cpp">
+      <Filter>Source Files\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleTextBG.cpp">
+      <Filter>Source Files\Custom GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -185,6 +191,12 @@
     <ClInclude Include="TitleText.h">
       <Filter>Header Files\Custom GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderStore.h">
+      <Filter>Header Files\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleTextBG.h">
+      <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GenericFS.fs">
@@ -221,6 +233,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="data\shaders\GenericHUDImage.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\TestHUD.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\TestHUD.vs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

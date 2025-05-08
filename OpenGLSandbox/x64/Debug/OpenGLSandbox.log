@@ -1,28 +1,2 @@
-﻿  main.cpp
-D:\s5623772\OpenGL-Engine\main.cpp(22,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\xutility(255,82): warning C4244: 'argument': conversion from '_Ty' to 'const float', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\xutility(255,82): warning C4244:         with
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\xutility(255,82): warning C4244:         [
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\xutility(255,82): warning C4244:             _Ty=int
-C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\xutility(255,82): warning C4244:         ]
-  (compiling source file 'main.cpp')
-  C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\xutility(255,82):
-  the template instantiation context (the oldest one first) is
-  	D:\s5623772\OpenGL-Engine\main.cpp(81,44):
-  	see reference to function template instantiation 'std::shared_ptr<TitleText> std::make_shared<TitleText,glm::vec2,int,int>(glm::vec2 &&,int &&,int &&)' being compiled
-  	C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\memory(2769,46):
-  	see reference to function template instantiation 'std::_Ref_count_obj2<TitleText>::_Ref_count_obj2<_Ty,int,int>(_Ty &&,int &&,int &&)' being compiled
-          with
-          [
-              _Ty=glm::vec2
-          ]
-  	C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.38.33130\include\memory(2094,18):
-  	see reference to function template instantiation 'void std::_Construct_in_place<_Ty,glm::vec<2,float,glm::packed_highp>,int,int>(_Ty &,glm::vec<2,float,glm::packed_highp> &&,int &&,int &&) noexcept(false)' being compiled
-          with
-          [
-              _Ty=TitleText
-          ]
-  
-  TitleText.cpp
-  Generating Code...
+﻿  TitleTextBG.cpp
   OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

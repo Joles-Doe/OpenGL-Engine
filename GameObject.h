@@ -9,6 +9,7 @@
 #include "EventManager.h"
 #include "TimeManager.h"
 #include "ShaderManager.h"
+#include "ShaderStore.h"
 #include "Model.h"
 #include "Transform.h"
 #include "Texture.h"
@@ -117,15 +118,15 @@ public:
 
 	void UseCustomShader(const std::string& _key, const std::string& _vertexPath, const std::string& _fragmentPath);
 
-	bool HasCustomShader() const noexcept { return mUsingCustomShader;}
-
-	std::shared_ptr<ShaderProgram> mCustomShader;
+	bool HasCustomShader() const noexcept { return mUsingCustomShader; }
 protected:
 	bool mKILL;
 
 	std::shared_ptr<EventManager> mEventManager;
 	std::shared_ptr<TimeManager> mTimeManager;
 	std::shared_ptr<ShaderManager> mShaderManager;
+	std::shared_ptr<ShaderProgram> mCustomShader;
+	std::unique_ptr<ShaderStore> mShaderStore;
 
 	std::shared_ptr<Transform> mTransform;
 	std::shared_ptr<Model> mModel;

@@ -14,6 +14,7 @@
 #include "HUDObject.h"
 
 #include "TitleText.h"
+#include "TitleTextBG.h"
 
 #undef main
 
@@ -22,7 +23,7 @@ int main()
 	srand(time(NULL));
 	Window window(WINDOW_WIDTH, WINDOW_HEIGHT, "test");
 
-	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::STATIC);
+	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::ORBIT);
 	cam->AttachTimeManager(window.GetTimeManager());
 	cam->AttachEventManager(window.GetEventManager());
 
@@ -77,9 +78,19 @@ int main()
 	window.AddObject(testLightingS);
 
 	//==============================
+	// TEST 6 HUD BG
+	std::shared_ptr<TitleTextBG> testHUDBG = std::make_shared<TitleTextBG>(glm::vec2(0, 0), WINDOW_WIDTH, WINDOW_HEIGHT);
+	testHUDBG->AttachEventManager(window.GetEventManager());
+	testHUDBG->AttachShaderManager(window.GetShaderManager());
+	testHUDBG->UseCustomShader("HUDBG", "./data/shaders/TestHUD");
+
+	testHUDBG->SetFillColor(RED);
+
+	window.AddHUDObject(testHUDBG);
+
+	//==============================
 	// TEST 5 HUD
 	std::shared_ptr<TitleText> testHUD = std::make_shared<TitleText>(glm::vec2(0, 0), WINDOW_WIDTH, WINDOW_HEIGHT);
-
 	testHUD->SetImage("./data/hud/Title Text.png");
 
 	window.AddHUDObject(testHUD);

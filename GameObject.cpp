@@ -73,11 +73,15 @@ void GameObject::Update()
 
 void GameObject::Draw(const glm::mat4& _viewMatrix, const glm::vec3& _viewPos, const glm::mat4& _projectionMatrix)
 {
-	// rewrite this so that unnecessary updating isnt done every draw call
-	mCustomShader->SetActive();
-	mCustomShader->SetUniform("uView", _viewMatrix);
-	mCustomShader->SetUniform("uViewPos", _viewPos);
-	mCustomShader->SetUniform("uProjection", _projectionMatrix);
+	//// rewrite this so that unnecessary updating isnt done every draw call
+	//mCustomShader->SetActive();
+	//mCustomShader->SetUniform("uView", _viewMatrix);
+	//mCustomShader->SetUniform("uViewPos", _viewPos);
+	//mCustomShader->SetUniform("uProjection", _projectionMatrix);
+
+	mShaderStore->ChangeUniform("uView", _viewMatrix);
+	mShaderStore->ChangeUniform("uViewPos", _viewPos);
+	mShaderStore->ChangeUniform("uProjection", _projectionMatrix);
 
 	glBindVertexArray(mModel->ID());
 
@@ -97,7 +101,11 @@ void GameObject::Draw(const glm::mat4& _viewMatrix, const glm::vec3& _viewPos, c
 
 	model = glm::scale(model, mTransform->Scale());
 
-	mCustomShader->SetUniform("uModel", model);
+	//mCustomShader->SetUniform("uModel", model);
+	mShaderStore->ChangeUniform("uModel", model);
+
+	// Set uniforms
+	mShaderStore->UpdateShaderUniforms(mCustomShader);
 
 	// Draw shape
 	glDrawArrays(GL_TRIANGLES, 0, mModel->VertexCount());
@@ -189,6 +197,12 @@ void GameObject::UseCustomShader(const std::string& _key, const std::string& _ge
 			mCustomShader = mShaderManager->GetShader(_key);
 			mUsingCustomShader = true;
 		}
+
+		// If now using custom shader, initialise shader store
+		if (mUsingCustomShader)
+		{
+			mShaderStore = std::make_unique<ShaderStore>(ShaderStore::THREE_DIMENSION);
+		}
 	}
 	else
 	{
@@ -214,6 +228,12 @@ void GameObject::UseCustomShader(const std::string& _key, const std::string& _ve
 		{
 			mCustomShader = mShaderManager->GetShader(_key);
 			mUsingCustomShader = true;
+		}
+
+		// If now using custom shader, initialise shader store
+		if (mUsingCustomShader)
+		{
+			mShaderStore = std::make_unique<ShaderStore>(ShaderStore::THREE_DIMENSION);
 		}
 	}
 	else
