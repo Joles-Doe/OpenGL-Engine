@@ -12,5 +12,9 @@ public:
 	void Update();
 
 	void OnClick();
+
+private:
+	bool mOpen;
+	float mRadius;
 };
 

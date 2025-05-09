@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Custom GameObjects">
       <UniqueIdentifier>{2df11b48-1730-4112-8035-908b07d4b6e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\States">
+      <UniqueIdentifier>{7fd89873-1724-4fd6-bcd3-3d9c684dd90c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\States">
+      <UniqueIdentifier>{4188ee6f-ef38-4a79-b93a-e82057a46c8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -132,6 +138,15 @@
     <ClCompile Include="TitleTextBG.cpp">
       <Filter>Source Files\Custom GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Source Files\Custom GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -197,6 +212,15 @@
     <ClInclude Include="TitleTextBG.h">
       <Filter>Header Files\Custom GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data\shaders\GenericFS.fs">
@@ -205,10 +229,10 @@
     <None Include="data\shaders\GenericVS.vs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="data\shaders\TestFragmentShader.fs">
+    <None Include="data\shaders\DistanceHeat.fs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="data\shaders\TestVertexShader.vs">
+    <None Include="data\shaders\DistanceHeat.vs">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="data\shaders\LightDiffuse.fs">
@@ -235,10 +259,16 @@
     <None Include="data\shaders\GenericHUDImage.vs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="data\shaders\TestHUD.fs">
+    <None Include="data\shaders\TitleHUD.fs">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="data\shaders\TestHUD.vs">
+    <None Include="data\shaders\TitleHUD.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\Plasma.vs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="data\shaders\Plasma.fs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

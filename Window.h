@@ -18,14 +18,19 @@
 #include "ShaderProgram.h"
 #include "Camera.h"
 
+class GameState;
+class Game;
+
 /// <summary>
 /// Window - Main class managing the engine. Holds references to the SDL window, and all relevant components.
 /// </summary>
-class Window
+class Window : public std::enable_shared_from_this<Window>
 {
 public:
 	Window(int _w, int _h, const std::string& _name);
 	~Window();
+
+	void Init();
 
 	/// <summary>
 	/// Main update function. Called by the main gameplay loop once per frame and updates, and draws, every stored object.
@@ -80,12 +85,16 @@ public:
 	/// <param name="_rb"> Rigidbody to add </param>
 	void EnableRigidbody(std::shared_ptr<Rigidbody> _rb) { mPhysicsManager->Add(_rb); }
 
+	glm::vec2 GetWindowSize() { return glm::vec2(mWindowWidth, mWindowHeight); }
+
 	/// <summary>
 	/// Returns True or False dependent on if the close button has been pressed, or if the engine wants to exit.
 	/// </summary>
 	/// <returns> True or False dependent on if the program needs to close </returns>
 	bool GetQuitState();
 private:
+	bool mQUIT;
+	
 	SDL_Window* mWindow;
 	std::shared_ptr<TimeManager> mTimeManager;
 	std::shared_ptr<PhysicsManager> mPhysicsManager;
@@ -116,7 +125,12 @@ private:
 
 	int mPrevWidth;
 	int mPrevHeight;
+	int mWindowWidth;
+	int mWindowHeight;
 
 	bool mFirstFrameRendered;
 	bool mEnablePhysics;
+
+	//=============================================
+	std::unique_ptr<Game> mGame;
 };

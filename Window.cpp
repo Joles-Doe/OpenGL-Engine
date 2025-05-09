@@ -1,12 +1,18 @@
 #include "Window.h"
 
+#include "GameState.h"
+#include "Game.h"
+
 Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow(nullptr),
 	mMouseLocked(SDL_FALSE),
 	mPrevWidth(_w),
 	mPrevHeight(_h),
+	mWindowWidth(_w),
+	mWindowHeight(_h),
 	mFirstFrameRendered(false),
-	mEnablePhysics(false)
+	mEnablePhysics(false),
+	mQUIT(false)
 {
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -47,6 +53,12 @@ Window::~Window()
 	SDL_GL_DeleteContext(mWindow);
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
+}
+
+void Window::Init()
+{
+	// Incorporate some sort of scene loader eventually, instead of hardcoding the scenes.
+	mGame = std::make_unique<Game>(shared_from_this());
 }
 
 void Window::Update()
@@ -103,18 +115,16 @@ void Window::Update()
 	}
 
 	//Calculate window size in case of resize
-	int windowWidth;
-	int windowHeight;
-	SDL_GetWindowSize(mWindow, &windowWidth, &windowHeight);
+	SDL_GetWindowSize(mWindow, &mWindowWidth, &mWindowHeight);
 
-	if (windowWidth != mPrevWidth || windowHeight != mPrevHeight)
+	if (mWindowWidth != mPrevWidth || mWindowHeight != mPrevHeight)
 	{
-		glViewport(0, 0, windowWidth, windowHeight);
-		mPerspectiveProjection = glm::perspective(45.0f, ((float)windowWidth / (float)windowHeight), 0.1f, 100.0f);
-		mOrthoProjection = glm::ortho(0.0f, (float)windowWidth, (float)windowHeight, 0.0f);
+		glViewport(0, 0, mWindowWidth, mWindowHeight);
+		mPerspectiveProjection = glm::perspective(45.0f, ((float)mWindowWidth / (float)mWindowHeight), 0.1f, 100.0f);
+		mOrthoProjection = glm::ortho(0.0f, (float)mWindowWidth, (float)mWindowHeight, 0.0f);
 
-		mPrevWidth = windowWidth;
-		mPrevHeight = windowHeight;
+		mPrevWidth = mWindowWidth;
+		mPrevHeight = mWindowHeight;
 	}
 
 	//Clear buffers before rendering
@@ -179,8 +189,16 @@ void Window::Update()
 		mEnablePhysics = true;
 	}
 
-	//Swap buffers and wait until next frame
+	//Swap buffers
 	SDL_GL_SwapWindow(mWindow);
+
+	//Check if scene wants to quit
+	if (mGame->GetExit())
+	{
+		mQUIT = true;
+	}
+
+	//Wait until next frame
 	mTimeManager->Wait();
 }
 

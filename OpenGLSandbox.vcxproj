@@ -135,11 +135,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HUDObject.cpp" />
     <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="LookAroundCamera.cpp" />
@@ -160,11 +163,14 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="EventManager.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="HUDObject.h" />
     <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="LookAroundCamera.h" />
@@ -193,10 +199,12 @@
     <None Include="data\shaders\LightDiffuse.vs" />
     <None Include="data\shaders\LightSpecular.fs" />
     <None Include="data\shaders\LightSpecular.vs" />
-    <None Include="data\shaders\TestFragmentShader.fs" />
-    <None Include="data\shaders\TestHUD.fs" />
-    <None Include="data\shaders\TestHUD.vs" />
-    <None Include="data\shaders\TestVertexShader.vs" />
+    <None Include="data\shaders\DistanceHeat.fs" />
+    <None Include="data\shaders\Plasma.fs" />
+    <None Include="data\shaders\Plasma.vs" />
+    <None Include="data\shaders\TitleHUD.fs" />
+    <None Include="data\shaders\TitleHUD.vs" />
+    <None Include="data\shaders\DistanceHeat.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
