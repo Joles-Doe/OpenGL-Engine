@@ -9,7 +9,6 @@ public:
 
 	void Start();
 	void Update();
-
 private:
 	float mTimer;
 };

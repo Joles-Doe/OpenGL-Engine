@@ -18,7 +18,6 @@ void PhysicsManager::Update()
 	// Updates every stored Rigidbody
 	for (int i = 0; i < mRigidbodies.size(); i++)
 	{
-		std::cout << "Update: " << i << std::endl;
 		mRigidbodies[i]->Update(mTimeManager->DeltaTime());
 	}
 

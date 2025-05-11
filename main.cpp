@@ -94,9 +94,3 @@ int main()
 
 	return 0;
 }
-
-void StartScreen(Window& window)
-{
-
-
-}

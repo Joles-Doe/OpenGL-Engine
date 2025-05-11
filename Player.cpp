@@ -2,9 +2,11 @@
 
 void Player::Start()
 {
-	mFreeze = true;
+	//CHANGE BACK TO OPPOSITE
+	mFreeze = false;
+	mCanJump = true;
+
 	mFirstUnfroze = true;
-	mCanJump = false;
 	mDead = false;
 
 	mRigidbody->Elasticity(0.0f);
@@ -16,12 +18,12 @@ void Player::Update()
 	{
 		if (mRigidbody->Acceleration().y == 0.0f)
 		{
-			mRigidbody->Acceleration(glm::vec3(0.0f, -9.8f, 0.0f));
+			mRigidbody->Acceleration(glm::vec3(0.0f, -15.0f, 0.0f));
 		}
-
+		
 		if (mEventManager->GetMouseDown("1") && mCanJump)
 		{
-			mRigidbody->AddForce(glm::vec3(0.0f, 4.0f, 0.0f));
+			mRigidbody->Velocity(glm::vec3(0.0f, 10.0f, 0.0f));
 		}
 	}
 	else
@@ -35,9 +37,10 @@ void Player::Update()
 
 void Player::OnCollisionEnter(std::shared_ptr<Rigidbody> _other)
 {
-	// Attempt to typecast other object into a pipe
+	//Attempt to typecast other object into a pipe
 	std::weak_ptr<GameObject> obj = _other->GetGameObject();
-	std::shared_ptr<Pipe> pipe = std::dynamic_pointer_cast<Pipe>(std::make_shared<GameObject>(obj.lock()));
+	std::shared_ptr<GameObject> objLocked = obj.lock();
+	std::shared_ptr<Pipe> pipe = std::dynamic_pointer_cast<Pipe>(objLocked);
 
 	// If typecast succeeds, player has collided with a pipe
 	if (pipe)

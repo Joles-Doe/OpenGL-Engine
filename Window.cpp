@@ -241,7 +241,8 @@ void Window::CullDeletedObjects()
 {
 	mObjects.erase(
 		std::remove_if(mObjects.begin(), mObjects.end(),
-			[](const std::shared_ptr<GameObject>& obj) {
+			[](const std::shared_ptr<GameObject>& obj) 
+			{
 				return obj->IsKill() || obj.use_count() == 1; // true = remove it
 			}),
 		mObjects.end());
@@ -251,7 +252,8 @@ void Window::CullDeletedHUDObjects()
 {
 	mHUDObjects.erase(
 		std::remove_if(mHUDObjects.begin(), mHUDObjects.end(),
-			[](const std::shared_ptr<HUDObject>& obj) {
+			[](const std::shared_ptr<HUDObject>& obj) 
+			{
 				return obj->IsKill() || obj.use_count() == 1; // true = remove it
 			}),
 		mHUDObjects.end());

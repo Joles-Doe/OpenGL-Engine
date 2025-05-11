@@ -93,7 +93,7 @@ bool Collider::IsColliding(std::shared_ptr<Collider> _other)
 		switch (_other->GetShape())
 		{
 		case CUBE:
-			collided = OBBCubeToCube(_other);
+			collided = AABBCubeToCube(_other);
 			break;
 		case SPHERE:
 			collided = CubeToSphere(shared_from_this(), _other);
