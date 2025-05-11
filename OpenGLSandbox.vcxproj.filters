@@ -147,6 +147,18 @@
     <ClCompile Include="Background.cpp">
       <Filter>Source Files\Custom GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Custom GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PipeSpawner.cpp">
+      <Filter>Source Files\Custom GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Custom GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files\Custom GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -219,6 +231,18 @@
       <Filter>Header Files\States</Filter>
     </ClInclude>
     <ClInclude Include="Background.h">
+      <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="PipeSpawner.h">
+      <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Custom GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
       <Filter>Header Files\Custom GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

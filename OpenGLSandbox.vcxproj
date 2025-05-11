@@ -141,6 +141,7 @@
     <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HUDObject.cpp" />
@@ -149,6 +150,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PipeSpawner.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderTexture.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
@@ -169,6 +173,7 @@
     <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="HUDObject.h" />
@@ -176,6 +181,9 @@
     <ClInclude Include="LookAroundCamera.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PipeSpawner.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RenderTexture.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="ShaderManager.h" />
