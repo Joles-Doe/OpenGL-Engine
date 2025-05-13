@@ -3,6 +3,8 @@
 void PipeSpawner::SpawnPipe()
 {
 	float randY = 1 + rand() % 15;
+	SHADERS randShader = static_cast<SHADERS>(rand() % SHADER_COUNT);
+	std::pair<std::string, std::string> shaderPair = GetShader(randShader);
 
 	std::shared_ptr<Pipe> pipeTop = std::make_shared<Pipe>(CUBE);
 	pipeTop->GetTransform()->Position(glm::vec3(25.0f, randY, -12.0f)); // max top 15 with 17 y scale (gap of 24)
@@ -10,7 +12,7 @@ void PipeSpawner::SpawnPipe()
 
 	pipeTop->AttachTimeManager(mWindow->GetTimeManager());
 	pipeTop->AttachShaderManager(mWindow->GetShaderManager());
-	pipeTop->UseCustomShader("DISTANCE", "./data/shaders/DistanceHeat");
+	pipeTop->UseCustomShader(shaderPair.first, shaderPair.second);
 
 	pipeTop->CreateCollider(CUBE);
 	pipeTop->CreateRigidbody(KINEMATIC);
@@ -23,7 +25,7 @@ void PipeSpawner::SpawnPipe()
 
 	pipeBottom->AttachTimeManager(mWindow->GetTimeManager());
 	pipeBottom->AttachShaderManager(mWindow->GetShaderManager());
-	pipeBottom->UseCustomShader("DISTANCE", "./data/shaders/DistanceHeat");
+	pipeBottom->UseCustomShader(shaderPair.first, shaderPair.second);
 
 	pipeBottom->CreateCollider(CUBE);
 	pipeBottom->CreateRigidbody(KINEMATIC);
@@ -61,4 +63,29 @@ void PipeSpawner::CullPipes()
 				return obj->GetTransform()->Position().x < -25.0f;
 			}),
 			mPipes.end());
+}
+
+std::pair<std::string, std::string> PipeSpawner::GetShader(SHADERS _shad)
+{
+	std::pair<std::string, std::string> shader = std::pair<std::string, std::string>();
+	switch (_shad)
+	{
+	case HEAT:
+		shader.first = "DISTANCE";
+		shader.second = "./data/shaders/DistanceHeat";
+		break;
+	case RAINBOW:
+		shader.first = "RAINBOW";
+		shader.second = "./data/shaders/Rainbow";
+		break;
+	case SPIRAL:
+		shader.first = "SPIRAL";
+		shader.second = "./data/shaders/Spiral";
+		break;
+	case FRACTAL:
+		shader.first = "FRACTAL";
+		shader.second = "./data/shaders/Fractal";
+	}
+
+	return shader;
 }

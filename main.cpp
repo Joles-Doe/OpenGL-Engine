@@ -25,7 +25,7 @@ int main()
 	std::shared_ptr<Window> window = std::make_shared<Window>(WINDOW_WIDTH, WINDOW_HEIGHT, "test");
 	window->Init();
 
-	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::ORBIT);
+	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::STATIC);
 	cam->AttachTimeManager(window->GetTimeManager());
 	cam->AttachEventManager(window->GetEventManager());
 

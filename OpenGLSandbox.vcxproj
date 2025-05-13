@@ -139,6 +139,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
+    <ClCompile Include="EndScreen.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DynamicBody.h" />
+    <ClInclude Include="EndScreen.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
@@ -197,6 +199,10 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\shaders\EndScreen.fs" />
+    <None Include="data\shaders\EndScreen.vs" />
+    <None Include="data\shaders\Fractal.fs" />
+    <None Include="data\shaders\Fractal.vs" />
     <None Include="data\shaders\GenericFS.fs" />
     <None Include="data\shaders\GenericHUD.fs" />
     <None Include="data\shaders\GenericHUD.vs" />
@@ -210,9 +216,15 @@
     <None Include="data\shaders\DistanceHeat.fs" />
     <None Include="data\shaders\Plasma.fs" />
     <None Include="data\shaders\Plasma.vs" />
+    <None Include="data\shaders\Rainbow.fs" />
+    <None Include="data\shaders\Rainbow.vs" />
+    <None Include="data\shaders\SimpleCel.fs" />
+    <None Include="data\shaders\SimpleCel.vs" />
     <None Include="data\shaders\TitleHUD.fs" />
     <None Include="data\shaders\TitleHUD.vs" />
     <None Include="data\shaders\DistanceHeat.vs" />
+    <None Include="data\shaders\Spiral.fs" />
+    <None Include="data\shaders\Spiral.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -132,5 +132,5 @@ private:
 	bool mEnablePhysics;
 
 	//=============================================
-	std::unique_ptr<Game> mGame;
+	std::shared_ptr<Game> mGame;
 };

@@ -2,9 +2,8 @@
 
 void Player::Start()
 {
-	//CHANGE BACK TO OPPOSITE
 	mFreeze = false;
-	mCanJump = true;
+	mCanJump = false;
 
 	mFirstUnfroze = true;
 	mDead = false;
@@ -18,19 +17,26 @@ void Player::Update()
 	{
 		if (mRigidbody->Acceleration().y == 0.0f)
 		{
-			mRigidbody->Acceleration(glm::vec3(0.0f, -15.0f, 0.0f));
+			mRigidbody->Acceleration(glm::vec3(0.0f, -20.0f, 0.0f));
 		}
 		
 		if (mEventManager->GetMouseDown("1") && mCanJump)
 		{
-			mRigidbody->Velocity(glm::vec3(0.0f, 10.0f, 0.0f));
+			mRigidbody->Velocity(glm::vec3(0.0f, 8.0f, 0.0f));
+		}
+
+		// If player clips out of bounds, automatically end game
+		if (mTransform->Position().y < -100.0f)
+		{
+			mDead = true;
 		}
 	}
 	else
 	{
 		if (mRigidbody->Acceleration().y != 0.0f)
 		{
-			mRigidbody->Acceleration(glm::vec3(0.0f, -9.8f, 0.0f));
+			mRigidbody->Acceleration(glm::vec3(0.0f, 0.0f, 0.0f));
+			mRigidbody->Velocity(glm::vec3(0.0f));
 		}
 	}
 }

@@ -13,7 +13,9 @@ public:
 
 	void OnCollisionEnter(std::shared_ptr<Rigidbody> _other);
 
+	bool GetFreeze() { return mFreeze; }
 	void SetFreeze(bool _val) { mFreeze = _val; }
+	bool GetJump() { return mCanJump; }
 	void SetJump(bool _val) { mCanJump = _val; }
 	bool GetDead() const { return mDead; }
 private:

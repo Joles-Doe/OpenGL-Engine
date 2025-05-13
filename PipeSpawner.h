@@ -21,5 +21,15 @@ private:
 	std::shared_ptr<Window> mWindow;
 
 	std::vector<std::shared_ptr<Pipe>> mPipes;
+
+	enum SHADERS
+	{
+		HEAT,
+		RAINBOW,
+		SPIRAL,
+		FRACTAL,
+		SHADER_COUNT
+	};
+	std::pair<std::string, std::string> GetShader(SHADERS _shad);
 };
 

@@ -17,7 +17,7 @@ Window::Window(int _w, int _h, const std::string& _name) :
 	mWindow = SDL_CreateWindow(_name.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		_w, _h,
-		SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		SDL_WINDOW_OPENGL);
 
 	if (!SDL_GL_CreateContext(mWindow))
 	{
@@ -58,7 +58,8 @@ Window::~Window()
 void Window::Init()
 {
 	// Incorporate some sort of scene loader eventually, instead of hardcoding the scenes.
-	mGame = std::make_unique<Game>(shared_from_this());
+	mGame = std::make_shared<Game>(shared_from_this());
+	mGame->Attach();
 }
 
 void Window::Update()
@@ -82,12 +83,18 @@ void Window::Update()
 		{
 			if (hasClicked)
 			{
-				mHUDObjects[i]->OnClick();
+				if (mHUDObjects[i]->IsVisible())
+				{
+					mHUDObjects[i]->OnClick();
+				}
 			}
 			else
 			{
-				mHUDObjects[i]->OnHover();
-			}
+				if (mHUDObjects[i]->IsVisible())
+				{
+					mHUDObjects[i]->OnHover();
+				}
+			}	
 		}
 	}
 
@@ -234,7 +241,7 @@ void Window::AddCamera(std::shared_ptr<Camera> _cam)
 
 bool Window::GetQuitState()
 {
-	return mEventManager->GetQuitState();
+	return mEventManager->GetQuitState() || mQUIT;
 }
 
 void Window::CullDeletedObjects()

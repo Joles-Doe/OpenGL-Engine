@@ -1,2 +1,3 @@
-﻿  Game.cpp
-  OpenGLSandbox.vcxproj -> D:\s5623772\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe
+﻿  PipeSpawner.cpp
+C:\Users\Scott\Documents\GitHub\OpenGL-Engine\PipeSpawner.cpp(5,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

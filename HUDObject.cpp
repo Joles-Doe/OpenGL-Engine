@@ -109,41 +109,44 @@ void HUDObject::Draw(const glm::mat4& _projectionMatrix)
         mDirty = false;
     }
 
-    glBindVertexArray(mVaoID);
-
     /*mCustomShader->SetActive();
     mCustomShader->SetUniform("uProjection", _projectionMatrix);*/
 
-    mShaderStore->ChangeUniform("uProjection", _projectionMatrix);
-
-    if (mUsingImage)
+    if (mVISIBLE)
     {
-        glBindTexture(GL_TEXTURE_2D, mTexture->ID());
+        glBindVertexArray(mVaoID);
+
+        mShaderStore->ChangeUniform("uProjection", _projectionMatrix);
+
+        if (mUsingImage)
+        {
+            glBindTexture(GL_TEXTURE_2D, mTexture->ID());
+        }
+        else
+        {
+            //mCustomShader->SetUniform("uColor", mColor);
+            mShaderStore->ChangeUniform("uColor", mColor);
+        }
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(mTopLeft, 0.0f));
+        model = glm::scale(model, glm::vec3(mSize, 1.0f));
+
+        //mCustomShader->SetUniform("uModel", model);
+        mShaderStore->ChangeUniform("uModel", model);
+
+        int currentVAO = 0;
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVAO);
+
+        mShaderStore->UpdateShaderUniforms(mCustomShader);
+
+        // Draw elements
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        // Reset the state
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
-    else
-    {
-        //mCustomShader->SetUniform("uColor", mColor);
-        mShaderStore->ChangeUniform("uColor", mColor);
-    }
-
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(mTopLeft, 0.0f));
-    model = glm::scale(model, glm::vec3(mSize, 1.0f));
-
-    //mCustomShader->SetUniform("uModel", model);
-    mShaderStore->ChangeUniform("uModel", model);
-
-    int currentVAO = 0;
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVAO);
-
-    mShaderStore->UpdateShaderUniforms(mCustomShader);
-
-    // Draw elements
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    // Reset the state
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
@@ -208,32 +211,35 @@ void HUDObject::Draw(std::shared_ptr<ShaderProgram> _shader)
         mDirty = false;
     }
 
-    glBindVertexArray(mVaoID);
-
-    if (mUsingImage)
+    if (mVISIBLE)
     {
-        glBindTexture(GL_TEXTURE_2D, mTexture->ID());
+        glBindVertexArray(mVaoID);
+
+        if (mUsingImage)
+        {
+            glBindTexture(GL_TEXTURE_2D, mTexture->ID());
+        }
+        else
+        {
+            _shader->SetUniform("uColor", mColor);
+        }
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(mTopLeft, 0.0f));
+        model = glm::scale(model, glm::vec3(mSize, 1.0f));
+
+        _shader->SetUniform("uModel", model);
+
+        int currentVAO = 0;
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVAO);
+
+        // Draw elements
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        // Reset the state
+        glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
-    else
-    {
-        _shader->SetUniform("uColor", mColor);
-    }
-
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(mTopLeft, 0.0f));
-    model = glm::scale(model, glm::vec3(mSize, 1.0f));
-
-    _shader->SetUniform("uModel", model);
-
-    int currentVAO = 0;
-    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &currentVAO);
-
-    // Draw elements
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    // Reset the state
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void HUDObject::UseCustomShader(const std::string& _key, const std::string& _generalPath)

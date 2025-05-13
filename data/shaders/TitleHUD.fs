@@ -18,8 +18,7 @@ void main()
     float dist = distance(pixelUV, pixelMouse);
 
     float radius = vRadius;
-    float edge = 0.001;
-    float alpha = smoothstep(radius, radius + edge, dist);
+    float alpha = smoothstep(radius, radius, dist);
 
 
     vec4 color = vColor;

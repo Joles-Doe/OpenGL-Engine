@@ -14,6 +14,7 @@ Camera::Camera(Preset _preset) : mPriority(0), mOrbitMouseLocked(SDL_FALSE)
 
 void Camera::Update()
 {
+    glm::vec3 front;
     switch (mPreset)
     {
     case ORBIT:
@@ -38,7 +39,6 @@ void Camera::Update()
             mEventManager->SetRelativeMouseMode(false);
         }
 
-        glm::vec3 front;
         front.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
         front.y = sin(glm::radians(mPitch));
         front.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
@@ -71,6 +71,14 @@ void Camera::Update()
         {
             mPosition += glm::vec3(0, 1, 0) * mTimeManager->DeltaTime() * 10.0f;
         }
+
+        mView = glm::lookAt(mPosition, mPosition + mDirection, glm::vec3(0.0f, 1.0f, 0.0f));
+        break;
+    case STATIC:
+        front.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+        front.y = sin(glm::radians(mPitch));
+        front.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+        mDirection = glm::normalize(front);
 
         mView = glm::lookAt(mPosition, mPosition + mDirection, glm::vec3(0.0f, 1.0f, 0.0f));
         break;

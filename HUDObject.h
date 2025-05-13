@@ -50,7 +50,14 @@ public:
     /// </summary>
     /// <returns> Returns true or false dependent on if the GameObject needs culling </returns>
     bool IsKill() const noexcept { return mKILL; }
+
+    /// <summary>
+    /// Returns true or false dependent on if the GameObject is visible.
+    /// </summary>
+    bool IsVisible() const noexcept { return mVISIBLE; }
     
+    void SetVisible(bool _val) noexcept { mVISIBLE = _val; }
+
     glm::vec2 GetSize() const noexcept { return mSize; }
     glm::vec2 GetTopLeft() const noexcept { return mTopLeft; }
 
@@ -100,6 +107,7 @@ protected:
     std::shared_ptr<Texture> mTexture;
 
     bool mKILL;
+    bool mVISIBLE;
 
     GLuint mVaoID;
     GLuint mVboID;

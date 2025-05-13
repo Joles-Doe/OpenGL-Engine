@@ -74,9 +74,13 @@ void Game::LoadNoStart()
 	// BORDER TOP
 	mTopBorder = std::make_shared<GameObject>(CUBE, PURPLE);
 	mTopBorder->GetTransform()->Position(glm::vec3(0.0f, 7.8f, -12.0f));
-	mTopBorder->GetTransform()->Scale(glm::vec3(10.0f, 1.0f, 1.0f));
+	mTopBorder->GetTransform()->Scale(glm::vec3(50.0f, 1.0f, 1.0f));
+
+	mTopBorder->CreateCollider(CUBE);
+	mTopBorder->CreateRigidbody(KINEMATIC);
 
 	mWindow->AddObject(mTopBorder);
+	mWindow->EnableRigidbody(mTopBorder->GetRigidbody());
 
 	//==============================
 	// BORDER BOTTOM
@@ -101,22 +105,51 @@ void Game::LoadNoStart()
 	//==============================
 	// PLAYER
 	mPlayer = std::make_shared<Player>(CUBE);
-	mPlayer->GetTransform()->Position(glm::vec3(-1.0f, 10.0f, -12.0f));
-	mPlayer->GetTransform()->Scale(glm::vec3(2.0f, 2.0f, 2.0f));
+	mPlayer->GetTransform()->Position(glm::vec3(-6.0f, 10.0f, -12.0f));
+	mPlayer->GetTransform()->Scale(glm::vec3(1.5f, 1.5f, 1.5f));
 	mPlayer->AttachEventManager(mWindow->GetEventManager());
 	mPlayer->AttachTimeManager(mWindow->GetTimeManager());
-	
+	mPlayer->AttachShaderManager(mWindow->GetShaderManager());
+	mPlayer->UseCustomShader("PLAYER", "./data/shaders/SimpleCel");
+
 	mPlayer->CreateCollider(CUBE);
 	mPlayer->CreateRigidbody(DYNAMIC);
 
-	mPlayer->SetFreeze(false);
-	mPlayer->SetJump(true);
+	/*mPlayer->SetFreeze(false);
+	mPlayer->SetJump(true);*/
 
 	mWindow->AddObject(mPlayer);
 	mWindow->EnableRigidbody(mPlayer->GetRigidbody());
 
 	//==============================
+	// END SCREEN
+	mEndScreen = std::make_shared<EndScreen>(glm::vec2(0, 0), mWindow->GetWindowSize().x, mWindow->GetWindowSize().y);
+	mEndScreen->AttachEventManager(mWindow->GetEventManager());
+	mEndScreen->AttachTimeManager(mWindow->GetTimeManager());
+	mEndScreen->AttachShaderManager(mWindow->GetShaderManager());
+	mEndScreen->UseCustomShader("ENDBG", "./data/shaders/EndScreen");
+
+	mEndScreen->SetFillColor(PURPLE);
+	mEndScreen->SetImage("./data/hud/End Screen.png");
+	mEndScreen->SetVisible(false);
+
+	mWindow->AddHUDObject(mEndScreen);
+
+	//==============================
 	mGameManager = std::make_shared<GameManager>(CUBE);
 	mGameManager->GetTransform()->Position(glm::vec3(-30.0f, -30.0f, 0.0f));
+	mGameManager->AttachTimeManager(mWindow->GetTimeManager());
 
+	mGameManager->AttachBG(mStartBG);
+	mGameManager->AttachEndScreen(mEndScreen);
+	mGameManager->AttachPlayer(mPlayer);
+	mGameManager->AttachPipeSpawner(mSpawner);
+	mGameManager->AttachTopBorder(mTopBorder);
+
+	mWindow->AddObject(mGameManager);
+}
+
+void Game::Attach()
+{
+	mEndScreen->AttachGameState(shared_from_this());
 }
