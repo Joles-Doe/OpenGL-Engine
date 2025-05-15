@@ -46,9 +46,6 @@ public:
 	/// <param name="_key"> Name of key </param>
 	/// <returns> Shared_ptr to compiled shader on success, nullptr on failure </returns>
 	std::shared_ptr<ShaderProgram> GetShader(const std::string& _key) const;
-
-	//Add a remove shader method?
-
 private:
 	std::unordered_map<std::string, std::shared_ptr<ShaderProgram>> mShaderCache;
 

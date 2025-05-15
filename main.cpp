@@ -22,7 +22,7 @@ int main()
 {
 	srand(time(NULL));
 
-	std::shared_ptr<Window> window = std::make_shared<Window>(WINDOW_WIDTH, WINDOW_HEIGHT, "test");
+	std::shared_ptr<Window> window = std::make_shared<Window>(WINDOW_WIDTH, WINDOW_HEIGHT, "Jumpy Jets");
 	window->Init();
 
 	std::shared_ptr<Camera> cam = std::make_shared<Camera>(Camera::STATIC);

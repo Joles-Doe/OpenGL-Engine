@@ -1,3 +1,4 @@
-﻿  PipeSpawner.cpp
-C:\Users\Scott\Documents\GitHub\OpenGL-Engine\PipeSpawner.cpp(5,14): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+﻿  ShaderManager.cpp
+  SharedStructs&Enums.h
+  Generating Code...
   OpenGLSandbox.vcxproj -> C:\Users\Scott\Documents\GitHub\OpenGL-Engine\x64\Debug\OpenGLSandbox.exe

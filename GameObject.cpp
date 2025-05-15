@@ -73,12 +73,6 @@ void GameObject::Update()
 
 void GameObject::Draw(const glm::mat4& _viewMatrix, const glm::vec3& _viewPos, const glm::mat4& _projectionMatrix)
 {
-	//// rewrite this so that unnecessary updating isnt done every draw call
-	//mCustomShader->SetActive();
-	//mCustomShader->SetUniform("uView", _viewMatrix);
-	//mCustomShader->SetUniform("uViewPos", _viewPos);
-	//mCustomShader->SetUniform("uProjection", _projectionMatrix);
-
 	mShaderStore->ChangeUniform("uView", _viewMatrix);
 	mShaderStore->ChangeUniform("uViewPos", _viewPos);
 	mShaderStore->ChangeUniform("uProjection", _projectionMatrix);
